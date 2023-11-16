@@ -29,13 +29,11 @@ public class LoginController: ControllerBase
         var user = Authenticate(userLogin);
         Console.WriteLine(user);
 
-        if (user != null)
-        {
-            var token = GenerateToken(user);
-            return Ok(token);
-        }
+        if (user == null) return NotFound("user not found");
+        
+        var token = GenerateToken(user);
+        return new OkObjectResult(new {Token = token});
 
-        return NotFound("user not found");
     }
 
     private User? Authenticate(User user)
