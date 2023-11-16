@@ -1,4 +1,5 @@
 ﻿using System.Security.Claims;
+using backend.Data;
 using backend.Data.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -9,6 +10,13 @@ namespace backend.Controllers;
 [Route("api/[controller]")]
 public class UserController: ControllerBase
 {
+    private readonly EntityContext _context;
+
+    public UserController(EntityContext context)
+    {
+        _context = context;
+    }
+    
     [HttpGet]
     [Route("user")]
     [Authorize]
@@ -18,7 +26,7 @@ public class UserController: ControllerBase
 
         if (currentUser != null)
         {
-            return Ok($"Hi you are {currentUser.Username}");
+            return Ok($"Hi you are {currentUser.FirstName}");
         }
 
         return Unauthorized();
@@ -31,11 +39,9 @@ public class UserController: ControllerBase
         if (identity != null)
         {
             var userClaims = identity.Claims;
-            return new User
-            {
-                Username = userClaims.FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier)?.Value,
-                Password = "hidden"
-            };
+            var email = userClaims.FirstOrDefault(x => x.Type == ClaimTypes.Email)?.Value;
+            
+            return _context.Users.FirstOrDefault(x => x.Email == email);
         }
 
         return null;
