@@ -22,6 +22,15 @@ public class EntityContext : DbContext
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<User>()
-            .HasKey(c => c.Id);
+            .HasKey(c => c.id);
+
+        // #-----------#
+        // # Role User #
+        // #-----------#
+        modelBuilder.Entity<RoleUser>()
+            .HasKey(ru => ru.id);
+        modelBuilder.Entity<RoleUser>()
+            .Property(ru => ru.id)
+            .ValueGeneratedOnAdd();
     }
 }

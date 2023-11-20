@@ -26,7 +26,7 @@ public class UserController: ControllerBase
 
         if (currentUser != null)
         {
-            return Ok($"Hi you are {currentUser.FirstName}");
+            return Ok($"Hi you are {currentUser.first_name}");
         }
 
         return Unauthorized();
@@ -41,7 +41,7 @@ public class UserController: ControllerBase
             var userClaims = identity.Claims;
             var email = userClaims.FirstOrDefault(x => x.Type == ClaimTypes.Email)?.Value;
             
-            return _context.Users.FirstOrDefault(x => x.Email == email);
+            return _context.Users.FirstOrDefault(x => x.email == email);
         }
 
         return null;
