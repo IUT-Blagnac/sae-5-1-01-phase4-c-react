@@ -6,6 +6,7 @@ namespace backend.Data;
 public class EntityContext : DbContext
 {
     public DbSet<User> Users { get; set; }
+    public DbSet<RoleUser> RoleUsers { get; set; }
     
     protected readonly IConfiguration _configuration;
 
@@ -32,5 +33,10 @@ public class EntityContext : DbContext
         modelBuilder.Entity<RoleUser>()
             .Property(ru => ru.id)
             .ValueGeneratedOnAdd();
+
+        modelBuilder.Entity<User>()
+            .HasOne(u => u.role_user)
+            .WithMany(r => r.users)
+            .HasForeignKey(u => u.role_id);
     }
 }

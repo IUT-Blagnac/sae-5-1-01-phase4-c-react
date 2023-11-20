@@ -13,7 +13,8 @@ public class User
     public string first_name { get; set; }
     public string last_name { get; set; }
 
-    [ForeignKey("id_role")]
+    public int role_id { get; set; }
+    
     public RoleUser role_user { get; set; }
 
 }

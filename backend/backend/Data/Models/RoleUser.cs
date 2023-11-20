@@ -9,4 +9,5 @@ public class RoleUser
     public int id { get; set; }
     public string name { get; set; }
 
+    public List<User> users { get; set;  }
 }
