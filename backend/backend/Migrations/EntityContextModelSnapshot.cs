@@ -22,31 +22,64 @@ namespace backend.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
+            modelBuilder.Entity("backend.Data.Models.RoleUser", b =>
+                {
+                    b.Property<int>("id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("id"));
+
+                    b.Property<string>("name")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("id");
+
+                    b.ToTable("role_user");
+                });
+
             modelBuilder.Entity("backend.Data.Models.User", b =>
                 {
-                    b.Property<Guid>("Id")
+                    b.Property<Guid>("id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
-                    b.Property<string>("Email")
+                    b.Property<string>("email")
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<string>("FirstName")
+                    b.Property<string>("first_name")
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<string>("LastName")
+                    b.Property<int>("id_role")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("last_name")
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<string>("Password")
+                    b.Property<string>("password")
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.HasKey("Id");
+                    b.HasKey("id");
 
-                    b.ToTable("users");
+                    b.HasIndex("id_role");
+
+                    b.ToTable("user");
+                });
+
+            modelBuilder.Entity("backend.Data.Models.User", b =>
+                {
+                    b.HasOne("backend.Data.Models.RoleUser", "role_user")
+                        .WithMany()
+                        .HasForeignKey("id_role")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("role_user");
                 });
 #pragma warning restore 612, 618
         }

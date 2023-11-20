@@ -35,6 +35,7 @@ public class AuthController: ControllerBase
     public ActionResult Login([FromBody] UserLogin userLogin)
     {
         var user = Authenticate(userLogin);
+        Console.WriteLine(user);
 
         if (user == null) return Unauthorized("user not found");
         
@@ -48,27 +49,22 @@ public class AuthController: ControllerBase
     [Route("register")]
     public async Task<ActionResult> Register([FromBody] UserRegister userRegister)
     {
-        var user = _context.Users.FirstOrDefault(x => x.Email == userRegister.Email);
+        var user = _context.Users.FirstOrDefault(x => x.email == userRegister.Email);
 
         if (user != null)
         {
             return StatusCode(409, new { message = "User already exits" });
         }
 
-        if (userRegister.Password.Length < 8)
-        {
-            return StatusCode(409, new { message = "Password should be longer" });
-        }
-
         var hashedPassword = _passwordHasher.HashPassword(userRegister,userRegister.Password);
 
         var userItem = new User
         {
-            Id = Guid.NewGuid(),
-            Email = userRegister.Email,
-            Password = hashedPassword,
-            FirstName = userRegister.FirstName,
-            LastName = userRegister.LastName
+            id = Guid.NewGuid(),
+            email = userRegister.Email,
+            password = hashedPassword,
+            first_name = userRegister.FirstName,
+            last_name = userRegister.LastName
         };
 
         _context.Users.Add(userItem);
@@ -87,14 +83,9 @@ public class AuthController: ControllerBase
 
     private User? Authenticate(UserLogin userLogin)
     {
-        var user = _context.Users.FirstOrDefault(x => x.Email == userLogin.Email);
+        var user = _context.Users.FirstOrDefault(x => x.email == userLogin.Email);
 
-        if (user == null)
-        {
-            return null;
-        }
-        
-        var passwordVerification = _passwordHasher.VerifyHashedPassword(userLogin, user.Password, userLogin.Password);
+        var passwordVerification = _passwordHasher.VerifyHashedPassword(userLogin, user.password, userLogin.Password);
 
         switch (passwordVerification)
         {
@@ -114,7 +105,7 @@ public class AuthController: ControllerBase
         var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
         var claims = new[]
         {
-            new Claim(ClaimTypes.Email, user.Email)
+            new Claim(ClaimTypes.Email, user.email)
         };
 
         var token = new JwtSecurityToken(_configuration["Jwt:Issuer"],

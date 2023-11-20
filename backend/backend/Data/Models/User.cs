@@ -3,13 +3,17 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace backend.Data.Models;
 
-[Table("users")]
+[Table("user")]
 public class User
 {
-    public Guid Id { get; set; }
+    public Guid id { get; set; }
     [EmailAddress]
-    public string Email { get; set; }
-    public string Password { get; set; }
-    public string FirstName { get; set; }
-    public string LastName { get; set; }
+    public string email { get; set; }
+    public string password { get; set; }
+    public string first_name { get; set; }
+    public string last_name { get; set; }
+
+    [ForeignKey("id_role")]
+    public RoleUser role_user { get; set; }
+
 }
