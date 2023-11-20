@@ -35,7 +35,6 @@ public class AuthController: ControllerBase
     public ActionResult Login([FromBody] UserLogin userLogin)
     {
         var user = Authenticate(userLogin);
-        Console.WriteLine(user);
 
         if (user == null) return Unauthorized("user not found");
         
@@ -54,6 +53,11 @@ public class AuthController: ControllerBase
         if (user != null)
         {
             return StatusCode(409, new { message = "User already exits" });
+        }
+
+        if (userRegister.Password.Length < 8)
+        {
+            return StatusCode(409, new { message = "Password should be longer" });
         }
 
         var hashedPassword = _passwordHasher.HashPassword(userRegister,userRegister.Password);
@@ -85,6 +89,11 @@ public class AuthController: ControllerBase
     {
         var user = _context.Users.FirstOrDefault(x => x.Email == userLogin.Email);
 
+        if (user == null)
+        {
+            return null;
+        }
+        
         var passwordVerification = _passwordHasher.VerifyHashedPassword(userLogin, user.Password, userLogin.Password);
 
         switch (passwordVerification)
