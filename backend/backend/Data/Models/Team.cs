@@ -11,5 +11,7 @@ namespace backend.Data.Models
         public List<UserTeam> user_team { get; set; }
         public List<Challenge> creator_challenge { get; set; }
         public List<Challenge> target_challenge { get; set; }
+        
+        public List<Wish> wish { get; set; }
     }
 }
