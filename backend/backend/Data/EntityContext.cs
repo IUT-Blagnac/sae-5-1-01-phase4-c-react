@@ -38,6 +38,8 @@ public class EntityContext : DbContext
             }
         }
 
+        SaveChanges();
+
         //DEFAULT ADMIN USER
 
         if (!Users.Where(c => c.email == "admin@superadmin.com").Any())
