@@ -75,3 +75,9 @@ _[Ss]cripts
 *.nupkg
 *.ncrunchsolution
 *.dot[Cc]over
+
+# VISUAL STUDIO
+*.vsidx
+*.v2
+*.bin
+*.config
