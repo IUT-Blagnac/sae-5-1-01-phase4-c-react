@@ -21,4 +21,5 @@ public class User
     public int? id_groupe { get; set; }
     public Group? group { get; set; }
 
+    public List<Character> characters { get; set; }
 }

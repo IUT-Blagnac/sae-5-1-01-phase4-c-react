@@ -203,5 +203,20 @@ public class EntityContext : DbContext
             .HasOne(s => s.category)
             .WithMany(c => c.subject)
             .HasForeignKey(s => s.category_id);
+
+        modelBuilder.Entity<CharacterSkill>()
+            .HasOne(c => c.character)
+            .WithMany(c => c.character_skills)
+            .HasForeignKey(c => c.id_character);
+
+        modelBuilder.Entity<CharacterSkill>()
+            .HasOne(c => c.skill)
+            .WithMany(s => s.character_skills)
+            .HasForeignKey(c => c.id_skill);
+
+        modelBuilder.Entity<Character>()
+            .HasOne(c => c.user)
+            .WithMany(u => u.characters)
+            .HasForeignKey(c => c.id_user);
     }
 }

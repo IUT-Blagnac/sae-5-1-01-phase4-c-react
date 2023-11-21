@@ -1,10 +1,12 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
+﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace backend.Data.Models
 {
     [Table("subject")]
     public class Subject
     {
+        [Key]
         public Guid id { get; set; }
         public string name { get; set; }
         public string description { get; set; }
