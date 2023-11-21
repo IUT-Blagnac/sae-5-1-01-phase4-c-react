@@ -15,6 +15,7 @@ public class EntityContext : DbContext
     public DbSet<Subject> Subjects { get; set; }
     public DbSet<Wish> Wishes { get; set; }
     public DbSet<TeamSubject> TeamSubjects { get; set; }
+    public DbSet<Category> Categories { get; set; }
     
     protected readonly IConfiguration _configuration;
     private readonly PasswordHasher<User> _passwordHasher;
@@ -147,5 +148,13 @@ public class EntityContext : DbContext
             .HasOne(ts => ts.team)
             .WithMany(t => t.team_subject)
             .HasForeignKey(ts => ts.team_id);
+
+        modelBuilder.Entity<Category>()
+            .HasKey(c => c.id);
+
+        modelBuilder.Entity<Subject>()
+            .HasOne(s => s.category)
+            .WithMany(c => c.subject)
+            .HasForeignKey(s => s.category_id);
     }
 }
