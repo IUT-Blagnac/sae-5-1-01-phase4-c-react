@@ -18,9 +18,44 @@ import loginImage from "../assets/img/login.jpg";
 import Copyright from "../components/Copyright";
 
 export default function SignInSide() {
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    window.location.href = "/main/";
+
+    const data = new FormData(event.currentTarget);
+    const body = {
+      email: data.get("email"),
+      password: data.get("password"),
+    };
+
+    try {
+      const resLogin = await fetch("/api/Auth/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(body),
+      });
+
+      if (resLogin.status === 200) {
+        const resultLogin = await resLogin.json();
+        localStorage.setItem("token", resultLogin.token);
+
+        const resUser = await fetch("/api/User/currentUser", {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        });
+
+        const resultUser = await resUser.json();
+
+        localStorage.setItem("email", resultUser.email);
+        localStorage.setItem("firstname", resultUser.firstname);
+        localStorage.setItem("lastname", resultUser.lastname);
+        localStorage.setItem("statut", resultUser.role);
+
+        window.location.href = "/dashboard";
+      }
+    } catch (e) {}
   };
 
   return (
