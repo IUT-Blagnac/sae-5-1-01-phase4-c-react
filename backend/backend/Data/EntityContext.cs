@@ -50,7 +50,7 @@ public class EntityContext : DbContext
                 last_name = "SuperAdmin",
             };
 
-            defaultAdmin.password = _passwordHasher.HashPassword(defaultAdmin, "superadminpassword");
+            defaultAdmin.password = _passwordHasher.HashPassword(defaultAdmin, "isfqzA8@&Ne@y9Ls@9CK");
             Users.Add(defaultAdmin);
         }
 
