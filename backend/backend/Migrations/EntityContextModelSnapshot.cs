@@ -22,6 +22,35 @@ namespace backend.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
+            modelBuilder.Entity("backend.Data.Models.Challenge", b =>
+                {
+                    b.Property<Guid>("id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("creator_team_id")
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("description")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("name")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<Guid>("target_team_id")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("id");
+
+                    b.HasIndex("creator_team_id");
+
+                    b.HasIndex("target_team_id");
+
+                    b.ToTable("challenge");
+                });
+
             modelBuilder.Entity("backend.Data.Models.RoleUser", b =>
                 {
                     b.Property<int>("id")
@@ -37,6 +66,21 @@ namespace backend.Migrations
                     b.HasKey("id");
 
                     b.ToTable("role_user");
+                });
+
+            modelBuilder.Entity("backend.Data.Models.Team", b =>
+                {
+                    b.Property<Guid>("id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("name")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("id");
+
+                    b.ToTable("team");
                 });
 
             modelBuilder.Entity("backend.Data.Models.User", b =>
@@ -71,6 +115,44 @@ namespace backend.Migrations
                     b.ToTable("user");
                 });
 
+            modelBuilder.Entity("backend.Data.Models.UserTeam", b =>
+                {
+                    b.Property<Guid>("user_id")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("team_id")
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("role")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("user_id", "team_id");
+
+                    b.HasIndex("team_id");
+
+                    b.ToTable("user_equipe");
+                });
+
+            modelBuilder.Entity("backend.Data.Models.Challenge", b =>
+                {
+                    b.HasOne("backend.Data.Models.Team", "creator_team")
+                        .WithMany("creator_challenge")
+                        .HasForeignKey("creator_team_id")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("backend.Data.Models.Team", "target_team")
+                        .WithMany("target_challenge")
+                        .HasForeignKey("target_team_id")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("creator_team");
+
+                    b.Navigation("target_team");
+                });
+
             modelBuilder.Entity("backend.Data.Models.User", b =>
                 {
                     b.HasOne("backend.Data.Models.RoleUser", "role_user")
@@ -82,9 +164,42 @@ namespace backend.Migrations
                     b.Navigation("role_user");
                 });
 
+            modelBuilder.Entity("backend.Data.Models.UserTeam", b =>
+                {
+                    b.HasOne("backend.Data.Models.Team", "team")
+                        .WithMany("user_team")
+                        .HasForeignKey("team_id")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("backend.Data.Models.User", "user")
+                        .WithMany("user_team")
+                        .HasForeignKey("user_id")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("team");
+
+                    b.Navigation("user");
+                });
+
             modelBuilder.Entity("backend.Data.Models.RoleUser", b =>
                 {
                     b.Navigation("users");
+                });
+
+            modelBuilder.Entity("backend.Data.Models.Team", b =>
+                {
+                    b.Navigation("creator_challenge");
+
+                    b.Navigation("target_challenge");
+
+                    b.Navigation("user_team");
+                });
+
+            modelBuilder.Entity("backend.Data.Models.User", b =>
+                {
+                    b.Navigation("user_team");
                 });
 #pragma warning restore 612, 618
         }

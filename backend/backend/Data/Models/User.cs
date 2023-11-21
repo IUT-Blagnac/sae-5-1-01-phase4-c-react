@@ -16,5 +16,6 @@ public class User
     public int role_id { get; set; }
     
     public RoleUser role_user { get; set; }
+    public List<UserTeam> user_team { get; set; }
 
 }
