@@ -6,6 +6,10 @@ namespace backend.Data.Models
     public class UserTeam
     {
         public Guid user_id { get; set; }
-        public Guid E
+        public Guid team_id { get; set; }
+        public string role { get; set; }
+        
+        public User user { get; set; }
+        public Team team { get; set; } 
     }
 }

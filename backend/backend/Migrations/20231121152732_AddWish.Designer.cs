@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using backend.Data;
@@ -11,9 +12,11 @@ using backend.Data;
 namespace backend.Migrations
 {
     [DbContext(typeof(EntityContext))]
-    partial class EntityContextModelSnapshot : ModelSnapshot
+    [Migration("20231121152732_AddWish")]
+    partial class AddWish
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -21,21 +24,6 @@ namespace backend.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
-
-            modelBuilder.Entity("backend.Data.Models.Category", b =>
-                {
-                    b.Property<Guid>("id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
-
-                    b.Property<string>("name")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.HasKey("id");
-
-                    b.ToTable("category");
-                });
 
             modelBuilder.Entity("backend.Data.Models.Challenge", b =>
                 {
@@ -89,9 +77,6 @@ namespace backend.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
-                    b.Property<Guid>("category_id")
-                        .HasColumnType("uuid");
-
                     b.Property<string>("description")
                         .IsRequired()
                         .HasColumnType("text");
@@ -101,8 +86,6 @@ namespace backend.Migrations
                         .HasColumnType("text");
 
                     b.HasKey("id");
-
-                    b.HasIndex("category_id");
 
                     b.ToTable("subject");
                 });
@@ -120,21 +103,6 @@ namespace backend.Migrations
                     b.HasKey("id");
 
                     b.ToTable("team");
-                });
-
-            modelBuilder.Entity("backend.Data.Models.TeamSubject", b =>
-                {
-                    b.Property<Guid>("subject_id")
-                        .HasColumnType("uuid");
-
-                    b.Property<Guid>("team_id")
-                        .HasColumnType("uuid");
-
-                    b.HasKey("subject_id", "team_id");
-
-                    b.HasIndex("team_id");
-
-                    b.ToTable("team_subject");
                 });
 
             modelBuilder.Entity("backend.Data.Models.User", b =>
@@ -228,36 +196,6 @@ namespace backend.Migrations
                     b.Navigation("target_team");
                 });
 
-            modelBuilder.Entity("backend.Data.Models.Subject", b =>
-                {
-                    b.HasOne("backend.Data.Models.Category", "category")
-                        .WithMany("subject")
-                        .HasForeignKey("category_id")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("category");
-                });
-
-            modelBuilder.Entity("backend.Data.Models.TeamSubject", b =>
-                {
-                    b.HasOne("backend.Data.Models.Subject", "subject")
-                        .WithMany("team_subject")
-                        .HasForeignKey("subject_id")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("backend.Data.Models.Team", "team")
-                        .WithMany("team_subject")
-                        .HasForeignKey("team_id")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("subject");
-
-                    b.Navigation("team");
-                });
-
             modelBuilder.Entity("backend.Data.Models.User", b =>
                 {
                     b.HasOne("backend.Data.Models.RoleUser", "role_user")
@@ -307,11 +245,6 @@ namespace backend.Migrations
                     b.Navigation("team");
                 });
 
-            modelBuilder.Entity("backend.Data.Models.Category", b =>
-                {
-                    b.Navigation("subject");
-                });
-
             modelBuilder.Entity("backend.Data.Models.RoleUser", b =>
                 {
                     b.Navigation("users");
@@ -319,8 +252,6 @@ namespace backend.Migrations
 
             modelBuilder.Entity("backend.Data.Models.Subject", b =>
                 {
-                    b.Navigation("team_subject");
-
                     b.Navigation("wish");
                 });
 
@@ -329,8 +260,6 @@ namespace backend.Migrations
                     b.Navigation("creator_challenge");
 
                     b.Navigation("target_challenge");
-
-                    b.Navigation("team_subject");
 
                     b.Navigation("user_team");
 

@@ -9,7 +9,13 @@ public class EntityContext : DbContext
 {
     public DbSet<User> Users { get; set; }
     public DbSet<RoleUser> RoleUsers { get; set; }
-    public DbSet<Team> Equipes { get; set; }
+    public DbSet<Team> Teams { get; set; }
+    public DbSet<UserTeam> UserTeams { get; set; }
+    public DbSet<Challenge> Challenges { get; set; }
+    public DbSet<Subject> Subjects { get; set; }
+    public DbSet<Wish> Wishes { get; set; }
+    public DbSet<TeamSubject> TeamSubjects { get; set; }
+    public DbSet<Category> Categories { get; set; }
     
     protected readonly IConfiguration _configuration;
     private readonly PasswordHasher<User> _passwordHasher;
@@ -134,5 +140,68 @@ public class EntityContext : DbContext
         // #------#
         modelBuilder.Entity<Team>()
             .HasKey(c => c.id);
+
+        modelBuilder.Entity<UserTeam>()
+            .HasKey(ut => new { ut.user_id, ut.team_id });
+            
+        modelBuilder.Entity<UserTeam>()
+            .HasOne(ut => ut.user)
+            .WithMany(u => u.user_team)
+            .HasForeignKey(ut => ut.user_id);
+
+        modelBuilder.Entity<UserTeam>()
+            .HasOne(ut => ut.team)
+            .WithMany(t => t.user_team)
+            .HasForeignKey(ut => ut.team_id);
+
+        modelBuilder.Entity<Challenge>()
+            .HasKey(c => c.id);
+
+        modelBuilder.Entity<Challenge>()
+            .HasOne(c => c.creator_team)
+            .WithMany(t => t.creator_challenge)
+            .HasForeignKey(c => c.creator_team_id);
+
+        modelBuilder.Entity<Challenge>()
+            .HasOne(c => c.target_team)
+            .WithMany(t => t.target_challenge)
+            .HasForeignKey(c => c.target_team_id);
+
+        modelBuilder.Entity<Subject>()
+            .HasKey(s => s.id);
+
+        modelBuilder.Entity<Wish>()
+            .HasKey(w => w.id);
+
+        modelBuilder.Entity<Wish>()
+            .HasOne(w => w.team)
+            .WithMany(t => t.wish)
+            .HasForeignKey(w => w.team_id);
+
+        modelBuilder.Entity<Wish>()
+            .HasOne(w => w.subject)
+            .WithMany(s => s.wish)
+            .HasForeignKey(w => w.subject_id);
+
+        modelBuilder.Entity<TeamSubject>()
+            .HasKey(ts => new { ts.subject_id, ts.team_id });
+
+        modelBuilder.Entity<TeamSubject>()
+            .HasOne(ts => ts.subject)
+            .WithMany(s => s.team_subject)
+            .HasForeignKey(ts => ts.subject_id);
+
+        modelBuilder.Entity<TeamSubject>()
+            .HasOne(ts => ts.team)
+            .WithMany(t => t.team_subject)
+            .HasForeignKey(ts => ts.team_id);
+
+        modelBuilder.Entity<Category>()
+            .HasKey(c => c.id);
+
+        modelBuilder.Entity<Subject>()
+            .HasOne(s => s.category)
+            .WithMany(c => c.subject)
+            .HasForeignKey(s => s.category_id);
     }
 }
