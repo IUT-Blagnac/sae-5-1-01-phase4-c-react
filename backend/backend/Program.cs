@@ -6,10 +6,9 @@ using Microsoft.IdentityModel.Tokens;
 
 var builder = WebApplication.CreateBuilder(args);
 
-
 builder.Configuration.AddEnvironmentVariables();
 
-var dbConnectionString = builder.Configuration.GetConnectionString("DatabaseConnection");
+var connectionString = builder.Configuration.GetConnectionString("DatabaseConnection");
 
 // Add services to the container.
 builder.Services.AddDbContext<EntityContext>(opt => 
