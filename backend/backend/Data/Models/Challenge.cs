@@ -2,8 +2,8 @@
 
 namespace backend.Data.Models
 {
-    [Table("sujet")]
-    public class Sujet
+    [Table("defi")]
+    public class Challenge
     {
     }
 }

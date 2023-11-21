@@ -2,8 +2,8 @@
 
 namespace backend.Data.Models
 {
-    [Table("voeu")]
-    public class Voeu
+    [Table("filiere")]
+    public class Sector
     {
     }
 }

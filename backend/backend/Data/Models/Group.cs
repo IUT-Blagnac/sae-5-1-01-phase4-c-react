@@ -2,8 +2,8 @@
 
 namespace backend.Data.Models
 {
-    [Table("equipe_sujet")]
-    public class EquipeSujet
+    [Table("groupe")]
+    public class Group
     {
     }
 }

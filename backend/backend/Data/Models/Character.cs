@@ -2,8 +2,8 @@
 
 namespace backend.Data.Models
 {
-    [Table("qualite_personnage")]
-    public class QualitePersonnage
+    [Table("personnage")]
+    public class Character
     {
     }
 }

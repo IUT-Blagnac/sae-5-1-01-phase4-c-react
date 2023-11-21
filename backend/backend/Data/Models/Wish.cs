@@ -2,8 +2,8 @@
 
 namespace backend.Data.Models
 {
-    [Table("defi")]
-    public class Defi
+    [Table("voeu")]
+    public class Wish
     {
     }
 }

@@ -9,6 +9,7 @@ public class EntityContext : DbContext
 {
     public DbSet<User> Users { get; set; }
     public DbSet<RoleUser> RoleUsers { get; set; }
+    public DbSet<Team> Equipes { get; set; }
     
     protected readonly IConfiguration _configuration;
     private readonly PasswordHasher<User> _passwordHasher;
@@ -74,6 +75,7 @@ public class EntityContext : DbContext
         // #-----------#
         modelBuilder.Entity<RoleUser>()
             .HasKey(ru => ru.id);
+        
         modelBuilder.Entity<RoleUser>()
             .Property(ru => ru.id)
             .ValueGeneratedOnAdd();
@@ -82,5 +84,8 @@ public class EntityContext : DbContext
             .HasOne(u => u.role_user)
             .WithMany(r => r.users)
             .HasForeignKey(u => u.role_id);
+
+        modelBuilder.Entity<Team>()
+            .HasKey(c => c.id);
     }
 }

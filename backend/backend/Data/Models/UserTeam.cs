@@ -3,7 +3,9 @@
 namespace backend.Data.Models
 {
     [Table("user_equipe")]
-    public class UserEquipe
+    public class UserTeam
     {
+        public Guid user_id { get; set; }
+        public Guid E
     }
 }
