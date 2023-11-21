@@ -1,18 +1,18 @@
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import SignInSide from "./pages/Login";
-import Main from "./pages/Main";
-import { CustomThemeProvider } from "./components/Header/ThemeContext";
+import Dashboard from "./pages/Dashboard";
+import { URLs } from "./assets/enums/URLs.enum";
+import CreateSAE from "./pages/Admin/CreateSAE";
 
 function App() {
   return (
-    <CustomThemeProvider>
-      <Router>
-        <Routes>
-          <Route path="/" Component={SignInSide} />
-          <Route path="/dashboard" Component={Main} />
-        </Routes>
-      </Router>
-    </CustomThemeProvider>
+    <Router>
+      <Routes>
+        <Route path={URLs.BASE} Component={SignInSide} />
+        <Route path={URLs.DASHBOARD} Component={Dashboard} />
+        <Route path={URLs.CREATE_SAE} Component={CreateSAE} />
+      </Routes>
+    </Router>
   );
 }
 
