@@ -1,4 +1,6 @@
 ﻿using backend.Data.Models;
+using backend.FormModels;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 namespace backend.Data;
@@ -9,10 +11,50 @@ public class EntityContext : DbContext
     public DbSet<RoleUser> RoleUsers { get; set; }
     
     protected readonly IConfiguration _configuration;
+    private readonly PasswordHasher<User> _passwordHasher;
 
     public EntityContext(IConfiguration configuration)
     {
         _configuration = configuration;
+        _passwordHasher = new PasswordHasher<User>();
+    }
+
+    public void InitializeDefaultData()
+    {
+        //DEFAULT ROLES
+
+        var defaultRoles = new List<RoleUser>
+        {
+            new() { name = "Student" },
+            new() { name = "Teacher" },
+            new() { name = "Admin" },
+        };
+
+        foreach(var role in defaultRoles)
+        {
+            if (!RoleUsers.Where(c => c.name == role.name).Any())
+            {
+                RoleUsers.Add(role);
+            }
+        }
+
+        //DEFAULT ADMIN USER
+
+        if (!Users.Where(c => c.email == "admin@superadmin.com").Any())
+        {
+            var defaultAdmin = new User
+            {
+                email = "admin@superadmin.com",
+                role_user = RoleUsers.Where(c => c.name == "Admin").FirstOrDefault(),
+                first_name = "Admin",
+                last_name = "SuperAdmin",
+            };
+
+            defaultAdmin.password = _passwordHasher.HashPassword(defaultAdmin, "superadminpassword");
+            Users.Add(defaultAdmin);
+        }
+
+        SaveChanges();
     }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)

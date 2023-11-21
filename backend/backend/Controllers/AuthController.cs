@@ -7,6 +7,7 @@ using backend.FormModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Server.IIS.Core;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 
@@ -56,6 +57,12 @@ public class AuthController: ControllerBase
             return StatusCode(409, new { message = "User already exits" });
         }
 
+        var defaultRole = _context.RoleUsers.Where(c => c.name == "Student").FirstOrDefault();
+        if (defaultRole == null)
+        {
+            return StatusCode(500, new { Message = "Internal server error" });
+        }
+
         var hashedPassword = _passwordHasher.HashPassword(userRegister,userRegister.Password);
 
         var userItem = new User
@@ -64,7 +71,8 @@ public class AuthController: ControllerBase
             email = userRegister.Email,
             password = hashedPassword,
             first_name = userRegister.FirstName,
-            last_name = userRegister.LastName
+            last_name = userRegister.LastName,
+            role_user = defaultRole
         };
 
         _context.Users.Add(userItem);
