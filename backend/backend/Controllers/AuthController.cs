@@ -63,6 +63,11 @@ public class AuthController: ControllerBase
             return StatusCode(500, new { Message = "Internal server error" });
         }
 
+        if (userRegister.Password.Length < 8)
+        {
+            return StatusCode(409, new { message = "Password is too short" });
+        }
+
         var hashedPassword = _passwordHasher.HashPassword(userRegister,userRegister.Password);
 
         var userItem = new User
@@ -93,6 +98,10 @@ public class AuthController: ControllerBase
     {
         var user = _context.Users.FirstOrDefault(x => x.email == userLogin.Email);
 
+        if (user == null)
+        {
+            return null;
+        }
         var passwordVerification = _passwordHasher.VerifyHashedPassword(userLogin, user.password, userLogin.Password);
 
         switch (passwordVerification)
