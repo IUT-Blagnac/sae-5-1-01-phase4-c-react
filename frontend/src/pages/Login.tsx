@@ -1,20 +1,28 @@
 import * as React from "react";
-import Avatar from "@mui/material/Avatar";
-import Button from "@mui/material/Button";
-import CssBaseline from "@mui/material/CssBaseline";
-import TextField from "@mui/material/TextField";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import Checkbox from "@mui/material/Checkbox";
-import Link from "@mui/material/Link";
-import Paper from "@mui/material/Paper";
-import Box from "@mui/material/Box";
-import Grid from "@mui/material/Grid";
+import {
+  Button,
+  Avatar,
+  CssBaseline,
+  TextField,
+  Checkbox,
+  Link,
+  Paper,
+  Box,
+  Grid,
+  FormControlLabel,
+} from "@mui/material";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 
 import loginImage from "../assets/img/login.jpg";
+import Copyright from "../components/Copyright";
 
 export default function SignInSide() {
+  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    window.location.href = "/main/";
+  };
+
   return (
     <Grid container component="main" sx={{ height: "100vh" }}>
       <CssBaseline />
@@ -51,15 +59,20 @@ export default function SignInSide() {
             CiReact SAE
           </Typography>
           <Typography component="h2" variant="h5">
-            Sign in
+            Se connecter
           </Typography>
-          <Box component="form" noValidate sx={{ mt: 1 }}>
+          <Box
+            component="form"
+            noValidate
+            sx={{ mt: 1 }}
+            onSubmit={handleSubmit}
+          >
             <TextField
               margin="normal"
               required
               fullWidth
               id="email"
-              label="Email Address"
+              label="Adresse Email"
               name="email"
               autoComplete="email"
               autoFocus
@@ -69,14 +82,14 @@ export default function SignInSide() {
               required
               fullWidth
               name="password"
-              label="Password"
+              label="Mot de passe"
               type="password"
               id="password"
               autoComplete="current-password"
             />
             <FormControlLabel
               control={<Checkbox value="remember" color="primary" />}
-              label="Remember me"
+              label="Se souvenir de moi"
             />
             <Button
               type="submit"
@@ -84,20 +97,16 @@ export default function SignInSide() {
               variant="contained"
               sx={{ mt: 3, mb: 2 }}
             >
-              Sign In
+              Se connecter
             </Button>
             <Grid container>
               <Grid item xs>
                 <Link href="#" variant="body2">
-                  Forgot password?
-                </Link>
-              </Grid>
-              <Grid item>
-                <Link href="#" variant="body2">
-                  {"Don't have an account? Sign Up"}
+                  Mot de passe oublié ?
                 </Link>
               </Grid>
             </Grid>
+            <Copyright sx={{ mt: 5 }} />
           </Box>
         </Box>
       </Grid>
