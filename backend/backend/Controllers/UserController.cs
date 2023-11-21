@@ -18,15 +18,17 @@ public class UserController: ControllerBase
     }
     
     [HttpGet]
-    [Route("user")]
+    [Route("currentUser")]
     [Authorize]
     public IActionResult GetAuthenticatedUser()
     {
         var currentUser = GetCurrentUser();
 
+        var role = _context.RoleUsers.FirstOrDefault(x => x.id == currentUser.role_id);
+        
         if (currentUser != null)
         {
-            return Ok($"Hi you are {currentUser.first_name}");
+            return new OkObjectResult( new { email = currentUser.email, firstname = currentUser.first_name, lastname = currentUser.last_name, role = role.name});
         }
 
         return Unauthorized();
