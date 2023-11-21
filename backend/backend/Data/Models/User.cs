@@ -17,4 +17,7 @@ public class User
     
     public RoleUser role_user { get; set; }
 
+    public int? id_groupe { get; set; }
+    public Group? group { get; set; }
+
 }

@@ -80,11 +80,58 @@ public class EntityContext : DbContext
             .Property(ru => ru.id)
             .ValueGeneratedOnAdd();
 
+        // #------#
+        // # User #
+        // #------#
+        modelBuilder.Entity<User>()
+            .HasKey(u => u.id);
+
         modelBuilder.Entity<User>()
             .HasOne(u => u.role_user)
             .WithMany(r => r.users)
             .HasForeignKey(u => u.role_id);
 
+        modelBuilder.Entity<User>()
+            .HasOne(u => u.group)
+            .WithMany(g => g.users)
+            .HasForeignKey(u => u.id_groupe);
+
+        // #-------#
+        // # Group #
+        // #-------#
+        modelBuilder.Entity<Group>()
+            .HasKey(u => u.id);
+
+        modelBuilder.Entity<Group>()
+            .HasOne(g => g.group_parent)
+            .WithMany(g => g.groups_childs)
+            .HasForeignKey(g => g.id_groupe_parent);
+
+        modelBuilder.Entity<Group>()
+            .HasOne(g => g.prom)
+            .WithMany(p => p.groups)
+            .HasForeignKey(g => g.id_prom);
+
+        // #------#
+        // # Prom #
+        // #------#
+        modelBuilder.Entity<Prom>()
+            .HasKey(u => u.id);
+
+        // #-----#
+        // # Sae #
+        // #-----#
+        modelBuilder.Entity<Sae>()
+            .HasKey(u => u.id);
+
+        modelBuilder.Entity<Sae>()
+            .HasOne(s => s.prom)
+            .WithMany(p => p.saes)
+            .HasForeignKey(s => s.id_prom);
+
+        // #------#
+        // # Team #
+        // #------#
         modelBuilder.Entity<Team>()
             .HasKey(c => c.id);
     }
