@@ -12,7 +12,7 @@ var connectionString = builder.Configuration.GetConnectionString("DatabaseConnec
 
 // Add services to the container.
 builder.Services.AddDbContext<EntityContext>(opt => 
-    opt.UseNpgsql(dbConnectionString));
+    opt.UseNpgsql(connectionString));
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
