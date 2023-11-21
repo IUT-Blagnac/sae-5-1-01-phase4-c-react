@@ -309,6 +309,21 @@ namespace backend.Migrations
                     b.ToTable("team_wish");
                 });
 
+            modelBuilder.Entity("backend.Data.Models.Team", b =>
+                {
+                    b.Property<Guid>("id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("name")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("id");
+
+                    b.ToTable("team");
+                });
+
             modelBuilder.Entity("backend.Data.Models.User", b =>
                 {
                     b.Property<Guid>("id")
