@@ -10,5 +10,6 @@ namespace backend.Data.Models
         public string description { get; set; }
         
         public List<Wish> wish { get; set; }
+        public List<TeamSubject> team_subject { get; set; }
     }
 }

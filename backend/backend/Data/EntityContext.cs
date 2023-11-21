@@ -13,6 +13,8 @@ public class EntityContext : DbContext
     public DbSet<UserTeam> UserTeams { get; set; }
     public DbSet<Challenge> Challenges { get; set; }
     public DbSet<Subject> Subjects { get; set; }
+    public DbSet<Wish> Wishes { get; set; }
+    public DbSet<TeamSubject> TeamSubjects { get; set; }
     
     protected readonly IConfiguration _configuration;
     private readonly PasswordHasher<User> _passwordHasher;
@@ -132,5 +134,18 @@ public class EntityContext : DbContext
             .HasOne(w => w.subject)
             .WithMany(s => s.wish)
             .HasForeignKey(w => w.subject_id);
+
+        modelBuilder.Entity<TeamSubject>()
+            .HasKey(ts => new { ts.subject_id, ts.team_id });
+
+        modelBuilder.Entity<TeamSubject>()
+            .HasOne(ts => ts.subject)
+            .WithMany(s => s.team_subject)
+            .HasForeignKey(ts => ts.subject_id);
+
+        modelBuilder.Entity<TeamSubject>()
+            .HasOne(ts => ts.team)
+            .WithMany(t => t.team_subject)
+            .HasForeignKey(ts => ts.team_id);
     }
 }
