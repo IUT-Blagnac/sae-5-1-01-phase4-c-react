@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import React from "react";
 import { CircularProgress } from "@mui/material";
+import { URLs } from "../assets/enums/URLs.enum";
 
 interface AuthCheckerProps {
   children: React.ReactNode;
@@ -25,6 +26,10 @@ const AuthChecker: React.FC<AuthCheckerProps> = ({ children }) => {
         if (resUser.status !== 200) {
           setIsUserAuthenticated(false);
         } else {
+          const data = await resUser.json();
+          console.log(data);
+
+          localStorage.setItem("statut", data.role);
           setIsUserAuthenticated(true);
         }
       } catch (error) {
@@ -45,9 +50,8 @@ const AuthChecker: React.FC<AuthCheckerProps> = ({ children }) => {
   }
 
   if (!isUserAuthenticated) {
-    // Redirection si l'utilisateur n'est pas authentifié
-    window.location.href = "/";
-    return null; // Pour éviter le rendu du contenu de AuthChecker
+    window.location.href = URLs.BASE;
+    return null;
   }
 
   return <>{children}</>;
