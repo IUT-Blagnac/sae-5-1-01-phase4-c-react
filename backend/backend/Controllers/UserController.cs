@@ -24,7 +24,7 @@ public class UserController: ControllerBase
     {
         var currentUser = GetCurrentUser();
 
-        var role = _context.RoleUsers.FirstOrDefault(x => x.id == currentUser.role_id);
+        var role = _context.RoleUsers.FirstOrDefault(x => x.id == currentUser.id_role);
         
         if (currentUser != null)
         {

@@ -2,11 +2,11 @@
 
 namespace backend.Data.Models
 {
-    [Table("user_equipe")]
+    [Table("user_team")]
     public class UserTeam
     {
-        public Guid user_id { get; set; }
-        public Guid team_id { get; set; }
+        public Guid id_user { get; set; }
+        public Guid id_team { get; set; }
         public string role { get; set; }
         
         public User user { get; set; }

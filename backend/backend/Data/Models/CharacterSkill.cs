@@ -15,8 +15,7 @@ namespace backend.Data.Models
         public int id_skill { get; set; }
         public Skill skill { get; set; }
 
-        [MinLength(1)]
-        [MaxLength(5)]
+        [Range(1, 5)]
         public int confidence_level { get; set; }
     }
 }

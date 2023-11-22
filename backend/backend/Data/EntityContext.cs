@@ -2,26 +2,21 @@
 using backend.FormModels;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using System.Runtime.InteropServices;
 
 namespace backend.Data;
 
 public class EntityContext : DbContext
 {
-    public DbSet<Category> Categories { get; set; }
-    public DbSet<Challenge> Challenges { get; set; }
-    public DbSet<Character> Characters { get; set; }
-    public DbSet<CharacterSkill> CharacterSkills { get; set; }
-    public DbSet<Group> Groups { get; set; }
-    public DbSet<Prom> Proms { get; set; }
-    public DbSet<RoleUser> RoleUsers { get; set; }
-    public DbSet<Sae> Saes { get; set; }
-    public DbSet<Skill> Skills { get; set; }
-    public DbSet<Subject> Subjects { get; set; }
-    public DbSet<Team> Teams { get; set; }
-    public DbSet<TeamSubject> TeamSubjects { get; set; }
     public DbSet<User> Users { get; set; }
+    public DbSet<RoleUser> RoleUsers { get; set; }
+    public DbSet<Team> Teams { get; set; }
     public DbSet<UserTeam> UserTeams { get; set; }
-    public DbSet<Wish> Wishes { get; set; }
+    public DbSet<Challenge> Challenges { get; set; }
+    public DbSet<Subject> Subjects { get; set; }
+    public DbSet<TeamWish> Wishes { get; set; }
+    public DbSet<TeamSubject> TeamSubjects { get; set; }
+    public DbSet<Category> Categories { get; set; }
     
     protected readonly IConfiguration _configuration;
     private readonly PasswordHasher<User> _passwordHasher;
@@ -101,12 +96,12 @@ public class EntityContext : DbContext
         modelBuilder.Entity<User>()
             .HasOne(u => u.role_user)
             .WithMany(r => r.users)
-            .HasForeignKey(u => u.role_id);
+            .HasForeignKey(u => u.id_role);
 
         modelBuilder.Entity<User>()
             .HasOne(u => u.group)
             .WithMany(g => g.users)
-            .HasForeignKey(u => u.id_groupe);
+            .HasForeignKey(u => u.id_group);
 
         // #-------#
         // # Group #
@@ -117,18 +112,7 @@ public class EntityContext : DbContext
         modelBuilder.Entity<Group>()
             .HasOne(g => g.group_parent)
             .WithMany(g => g.groups_childs)
-            .HasForeignKey(g => g.id_groupe_parent);
-
-        modelBuilder.Entity<Group>()
-            .HasOne(g => g.prom)
-            .WithMany(p => p.groups)
-            .HasForeignKey(g => g.id_prom);
-
-        // #------#
-        // # Prom #
-        // #------#
-        modelBuilder.Entity<Prom>()
-            .HasKey(u => u.id);
+            .HasForeignKey(g => g.id_group_parent);
 
         // #-----#
         // # Sae #
@@ -136,10 +120,31 @@ public class EntityContext : DbContext
         modelBuilder.Entity<Sae>()
             .HasKey(u => u.id);
 
-        modelBuilder.Entity<Sae>()
-            .HasOne(s => s.prom)
-            .WithMany(p => p.saes)
-            .HasForeignKey(s => s.id_prom);
+        // #-----------#
+        // # Sae Coach #
+        // #-----------#
+        modelBuilder.Entity<SaeCoach>()
+            .HasOne(c => c.user)
+            .WithMany(u => u.sae_coach)
+            .HasForeignKey(c => c.id_coach);
+
+        modelBuilder.Entity<SaeCoach>()
+            .HasOne(c => c.sae)
+            .WithMany(s => s.sae_coachs)
+            .HasForeignKey(c => c.id_sae);
+
+        // #-----------#
+        // # Sae Group #
+        // #-----------#
+        modelBuilder.Entity<SaeGroup>()
+            .HasOne(g => g.group)
+            .WithMany(g => g.sae_groups)
+            .HasForeignKey(g => g.id_group);
+
+        modelBuilder.Entity<SaeGroup>()
+            .HasOne(g => g.sae)
+            .WithMany(s => s.sae_groups)
+            .HasForeignKey(g => g.id_sae);
 
         // #------#
         // # Team #
@@ -148,17 +153,17 @@ public class EntityContext : DbContext
             .HasKey(c => c.id);
 
         modelBuilder.Entity<UserTeam>()
-            .HasKey(ut => new { ut.user_id, ut.team_id });
+            .HasKey(ut => new { ut.id_user, ut.id_team });
             
         modelBuilder.Entity<UserTeam>()
             .HasOne(ut => ut.user)
             .WithMany(u => u.user_team)
-            .HasForeignKey(ut => ut.user_id);
+            .HasForeignKey(ut => ut.id_user);
 
         modelBuilder.Entity<UserTeam>()
             .HasOne(ut => ut.team)
             .WithMany(t => t.user_team)
-            .HasForeignKey(ut => ut.team_id);
+            .HasForeignKey(ut => ut.id_team);
 
         modelBuilder.Entity<Challenge>()
             .HasKey(c => c.id);
@@ -176,18 +181,18 @@ public class EntityContext : DbContext
         modelBuilder.Entity<Subject>()
             .HasKey(s => s.id);
 
-        modelBuilder.Entity<Wish>()
+        modelBuilder.Entity<TeamWish>()
             .HasKey(w => w.id);
 
-        modelBuilder.Entity<Wish>()
+        modelBuilder.Entity<TeamWish>()
             .HasOne(w => w.team)
             .WithMany(t => t.wish)
-            .HasForeignKey(w => w.team_id);
+            .HasForeignKey(w => w.id_team);
 
-        modelBuilder.Entity<Wish>()
+        modelBuilder.Entity<TeamWish>()
             .HasOne(w => w.subject)
             .WithMany(s => s.wish)
-            .HasForeignKey(w => w.subject_id);
+            .HasForeignKey(w => w.id_subject);
 
         modelBuilder.Entity<TeamSubject>()
             .HasKey(ts => new { ts.subject_id, ts.team_id });
@@ -208,7 +213,12 @@ public class EntityContext : DbContext
         modelBuilder.Entity<Subject>()
             .HasOne(s => s.category)
             .WithMany(c => c.subject)
-            .HasForeignKey(s => s.category_id);
+            .HasForeignKey(s => s.id_category);
+
+        modelBuilder.Entity<Subject>()
+            .HasOne(s => s.sae)
+            .WithMany(c => c.subjects)
+            .HasForeignKey(s => s.id_sae);
 
         modelBuilder.Entity<CharacterSkill>()
             .HasOne(c => c.character)

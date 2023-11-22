@@ -121,7 +121,7 @@ public class AuthController: ControllerBase
         var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:Key"]));
         var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
 
-        var role = _context.RoleUsers.FirstOrDefault(x => x.id == user.role_id);
+        var role = _context.RoleUsers.FirstOrDefault(x => x.id == user.id_role);
         
         var claims = new[]
         {
