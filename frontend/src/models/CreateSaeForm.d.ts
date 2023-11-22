@@ -1,3 +1,5 @@
+import Topic from "./Topics";
+
 export default interface CreateSaeForm {
   name: string;
   description: string;
@@ -9,10 +11,4 @@ export default interface CreateSaeForm {
   maxTeamPerSubject: number;
   minTeamPerSubject: number;
   subjects: Topic[];
-}
-
-interface Topic {
-  name: string;
-  description: string;
-  category: string[];
 }

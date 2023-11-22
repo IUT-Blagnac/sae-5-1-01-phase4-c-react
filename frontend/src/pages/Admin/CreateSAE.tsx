@@ -62,7 +62,7 @@ export default function CreateSAE() {
     setSaeTeachers(value);
   };
 
-  const handleSubmit = () => {
+  const handleSubmitWithoutTopic = (): CreateSaeForm => {
     let form: CreateSaeForm = {
       name: saeName,
       description: saeDescription,
@@ -76,7 +76,7 @@ export default function CreateSAE() {
       subjects: [],
     };
 
-    console.log(form);
+    return form;
   };
 
   return (
@@ -240,7 +240,11 @@ export default function CreateSAE() {
                               renderValue={(selected) => (
                                 <Box sx={{ display: "flex", gap: "0.25rem" }}>
                                   {selected.map((selectedOption) => (
-                                    <Chip variant="soft" color="primary">
+                                    <Chip
+                                      variant="soft"
+                                      color="primary"
+                                      key={selectedOption.value}
+                                    >
                                       {selectedOption.label}
                                     </Chip>
                                   ))}
@@ -398,7 +402,11 @@ export default function CreateSAE() {
                               renderValue={(selected) => (
                                 <Box sx={{ display: "flex", gap: "0.25rem" }}>
                                   {selected.map((selectedOption) => (
-                                    <Chip variant="soft" color="primary">
+                                    <Chip
+                                      variant="soft"
+                                      color="primary"
+                                      key={selectedOption.value}
+                                    >
                                       {selectedOption.label}
                                     </Chip>
                                   ))}
@@ -428,7 +436,7 @@ export default function CreateSAE() {
                     </Stack>
                   </Card>
 
-                  <NewTopic submitSae={handleSubmit} />
+                  <NewTopic submitSae={handleSubmitWithoutTopic} />
                 </Stack>
               </Box>
             </Box>
