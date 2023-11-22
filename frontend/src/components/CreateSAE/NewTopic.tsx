@@ -16,11 +16,13 @@ import {
   Typography,
   Option,
 } from "@mui/joy";
+import CreateSaeForm from "../../models/CreateSaeForm";
+import Topic from "../../models/Topics";
 
 const MAX_DESCRIPTION_LENGTH = 400;
 
 interface NewTopicProps {
-  submitSae: () => void;
+  submitSae: () => CreateSaeForm;
 }
 
 export default function NewTopic({ submitSae }: NewTopicProps) {
@@ -48,6 +50,36 @@ export default function NewTopic({ submitSae }: NewTopicProps) {
     setTopics((prevTopics) =>
       prevTopics.filter((topic) => topic.id !== idToDelete)
     );
+  };
+
+  const handleChangeCategories = (
+    event: React.SyntheticEvent | null,
+    newValue: Array<string> | null
+  ) => {
+    setTopics((prevTopics) =>
+      prevTopics.map((prevTopic) =>
+        prevTopic.id === topics.length
+          ? { ...prevTopic, selectedCategories: newValue ?? [] }
+          : prevTopic
+      )
+    );
+  };
+
+  const handleSubmitSae = () => {
+    let formInputs: CreateSaeForm = submitSae();
+    let formTopics: Topic[] = [];
+
+    topics.forEach((topic) => {
+      formTopics.push({
+        name: topic.titleText,
+        description: topic.descriptionText,
+        categories: topic.selectedCategories,
+      });
+    });
+
+    formInputs.subjects = formTopics;
+
+    console.log(formInputs);
   };
 
   return (
@@ -79,7 +111,13 @@ export default function NewTopic({ submitSae }: NewTopicProps) {
                 placeholder="Insérer nom du Sujet"
                 value={topic.titleText}
                 onChange={(e) => {
-                  // ... votre logique existante pour mettre à jour le titre
+                  setTopics((prevTopics) =>
+                    prevTopics.map((prevTopic) =>
+                      prevTopic.id === topic.id
+                        ? { ...prevTopic, titleText: e.target.value }
+                        : prevTopic
+                    )
+                  );
                 }}
               />
             </FormControl>
@@ -94,7 +132,13 @@ export default function NewTopic({ submitSae }: NewTopicProps) {
               placeholder="Entrer la description du sujet"
               value={topic.descriptionText}
               onChange={(e) => {
-                // ... votre logique existante pour mettre à jour la description
+                setTopics((prevTopics) =>
+                  prevTopics.map((prevTopic) =>
+                    prevTopic.id === topic.id
+                      ? { ...prevTopic, descriptionText: e.target.value }
+                      : prevTopic
+                  )
+                );
               }}
             />
             <FormHelperText sx={{ mt: 0.75, fontSize: "xs" }}>
@@ -110,6 +154,7 @@ export default function NewTopic({ submitSae }: NewTopicProps) {
               <Select
                 multiple
                 value={topic.selectedCategories}
+                onChange={handleChangeCategories}
                 sx={{
                   minWidth: "15rem",
                 }}
@@ -153,7 +198,7 @@ export default function NewTopic({ submitSae }: NewTopicProps) {
                   size="sm"
                   variant="solid"
                   color="success"
-                  onClick={submitSae}
+                  onClick={handleSubmitSae}
                 >
                   Créer SAE
                 </Button>
