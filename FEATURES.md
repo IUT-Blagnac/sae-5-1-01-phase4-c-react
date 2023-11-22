@@ -27,6 +27,8 @@
   "teachers": ["Teacher 1", "Teacher 2"],
   "minTeamSize": 2,
   "maxTeamSize": 2,
+  "maxTeamPerSubject": 4,
+  "minTeamPerSubject": 2,
   "subjects": [
     {
       "name": "Sujet 1",
