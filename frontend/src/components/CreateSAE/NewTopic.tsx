@@ -19,7 +19,11 @@ import {
 
 const MAX_DESCRIPTION_LENGTH = 400;
 
-export default function NewTopic() {
+interface NewTopicProps {
+  submitSae: () => void;
+}
+
+export default function NewTopic({ submitSae }: NewTopicProps) {
   const [topics, setTopics] = useState([
     {
       id: 1,
@@ -145,7 +149,12 @@ export default function NewTopic() {
                 Ajouter Sujet
               </Button>
               {topic.id === topics.length && (
-                <Button size="sm" variant="solid" color="success">
+                <Button
+                  size="sm"
+                  variant="solid"
+                  color="success"
+                  onClick={submitSae}
+                >
                   Créer SAE
                 </Button>
               )}

@@ -21,17 +21,62 @@ import Sidebar from "../../components/SideBar";
 
 import { useState } from "react";
 import NewTopic from "../../components/CreateSAE/NewTopic";
+import CreateSaeForm from "../../models/CreateSaeForm";
 
 export default function CreateSAE() {
   const [inputText, setInputText] = useState<string>("");
+  const [saeName, setSaeName] = useState<string>("");
+  const [saeDescription, setSaeDescription] = useState<string>("");
+  const [saeGroups, setSaeGroups] = useState<string[]>([]);
+  const [saeSkills, setSaeSkills] = useState<string[]>([]);
+  const [saeMinTeamPerSubject, setSaeMinTeamPerSubject] = useState<number>(0);
+  const [saeMaxTeamPerSubject, setSaeMaxTeamPerSubject] = useState<number>(0);
+  const [saeMinTeamSize, setSaeMinTeamSize] = useState<number>(0);
+  const [saeMaxTeamSize, setSaeMaxTeamSize] = useState<number>(0);
+  const [saeTeachers, setSaeTeachers] = useState<string[]>([]);
+  const [saeSubjects, setSaeSubjects] = useState<string[]>([]);
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setInputText(event.target.value);
+    setSaeSkills(event.target.value.split(","));
   };
 
   const handleInputBlur = () => {
     const words = inputText.split(",");
     setInputText(words.join(","));
+  };
+
+  const handleChangeSaeGroup = (
+    event: React.SyntheticEvent | null,
+    newValue: Array<string> | null
+  ) => {
+    let value = newValue as string[];
+    setSaeGroups(value);
+  };
+
+  const handleChangeSaeTeacher = (
+    event: React.SyntheticEvent | null,
+    newValue: Array<string> | null
+  ) => {
+    let value = newValue as string[];
+    setSaeTeachers(value);
+  };
+
+  const handleSubmit = () => {
+    let form: CreateSaeForm = {
+      name: saeName,
+      description: saeDescription,
+      groups: saeGroups,
+      skills: saeSkills,
+      minTeamPerSubject: saeMinTeamPerSubject,
+      maxTeamPerSubject: saeMaxTeamPerSubject,
+      minTeamSize: saeMinTeamSize,
+      maxTeamSize: saeMaxTeamSize,
+      teachers: saeTeachers,
+      subjects: [],
+    };
+
+    console.log(form);
   };
 
   return (
@@ -127,11 +172,6 @@ export default function CreateSAE() {
                     </Box>
                     <Divider />
 
-                    {/** ############### */}
-                    {/** ############### */}
-                    {/** @CARTE_LG_SREEN */}
-                    {/** ############### */}
-                    {/** ############### */}
                     <Stack
                       direction={{ xs: "column", md: "row" }}
                       spacing={3}
@@ -155,6 +195,10 @@ export default function CreateSAE() {
                             <Input
                               size="sm"
                               placeholder="Insérer nom de la SAE"
+                              value={saeName}
+                              onChange={(e) => {
+                                setSaeName(e.target.value);
+                              }}
                             />
                           </FormControl>
                         </Stack>
@@ -176,6 +220,10 @@ export default function CreateSAE() {
                             <Textarea
                               minRows={4}
                               placeholder="Décrivez la SAE en quelques mots, rajoutez des liens vers des ressources externes si besoin"
+                              value={saeDescription}
+                              onChange={(e) => {
+                                setSaeDescription(e.target.value);
+                              }}
                             ></Textarea>
                           </FormControl>
                         </Stack>
@@ -208,6 +256,8 @@ export default function CreateSAE() {
                                   },
                                 },
                               }}
+                              value={saeGroups}
+                              onChange={handleChangeSaeGroup}
                             >
                               <Option value="3A">3.A</Option>
                               <Option value="3B">3.B</Option>
@@ -278,13 +328,23 @@ export default function CreateSAE() {
                         >
                           <FormControl sx={{ flexGrow: 1 }}>
                             <FormLabel>Min. Étudiant/Groupe</FormLabel>
-                            <Input type="number" />
+                            <Input
+                              type="number"
+                              value={saeMinTeamSize}
+                              onChange={(e) => {
+                                setSaeMinTeamSize(parseInt(e.target.value));
+                              }}
+                            />
                           </FormControl>
                           <FormControl sx={{ flexGrow: 1 }}>
                             <FormLabel>Max. Étudiant/Groupe</FormLabel>
                             <Input
                               placeholder="Laisser vide pour illimité"
                               type="number"
+                              value={saeMaxTeamSize}
+                              onChange={(e) => {
+                                setSaeMaxTeamSize(parseInt(e.target.value));
+                              }}
                             />
                           </FormControl>
                         </Stack>
@@ -298,13 +358,27 @@ export default function CreateSAE() {
                         >
                           <FormControl sx={{ flexGrow: 1 }}>
                             <FormLabel>Min. Groupe/Sujet</FormLabel>
-                            <Input type="number" />
+                            <Input
+                              type="number"
+                              value={saeMinTeamPerSubject}
+                              onChange={(e) => {
+                                setSaeMinTeamPerSubject(
+                                  parseInt(e.target.value)
+                                );
+                              }}
+                            />
                           </FormControl>
                           <FormControl sx={{ flexGrow: 1 }}>
                             <FormLabel>Max. Groupe/Sujet</FormLabel>
                             <Input
                               placeholder="Laisser vide pour illimité"
                               type="number"
+                              value={saeMaxTeamPerSubject}
+                              onChange={(e) => {
+                                setSaeMaxTeamPerSubject(
+                                  parseInt(e.target.value)
+                                );
+                              }}
                             />
                           </FormControl>
                         </Stack>
@@ -340,6 +414,8 @@ export default function CreateSAE() {
                                   },
                                 },
                               }}
+                              value={saeTeachers}
+                              onChange={handleChangeSaeTeacher}
                             >
                               <Option value="EP">Esther Pendaries</Option>
                               <Option value="PSE">Pablo Seban</Option>
@@ -352,7 +428,7 @@ export default function CreateSAE() {
                     </Stack>
                   </Card>
 
-                  <NewTopic />
+                  <NewTopic submitSae={handleSubmit} />
                 </Stack>
               </Box>
             </Box>
