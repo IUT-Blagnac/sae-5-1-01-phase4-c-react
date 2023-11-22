@@ -15,7 +15,7 @@ public class User
 
     public int id_role { get; set; }
     
-    public RoleUser role_user { get; set; }
+    public Role role_user { get; set; }
     public List<UserTeam> user_team { get; set; }
 
     public int? id_group { get; set; }

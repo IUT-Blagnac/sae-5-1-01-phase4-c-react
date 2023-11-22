@@ -13,6 +13,7 @@ namespace backend.Data.Models
         public int? min_group_per_subject { get; set; }
         public int? max_group_per_subject { get; set; }
 
+        public List<Character> characters { get; set; }
         public List<SaeGroup> sae_groups { get; set; }
 
         public List<SaeCoach> sae_coachs { get; set; }

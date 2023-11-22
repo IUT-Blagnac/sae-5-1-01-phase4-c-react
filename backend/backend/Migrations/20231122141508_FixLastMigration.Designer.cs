@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using backend.Data;
@@ -11,9 +12,11 @@ using backend.Data;
 namespace backend.Migrations
 {
     [DbContext(typeof(EntityContext))]
-    partial class EntityContextModelSnapshot : ModelSnapshot
+    [Migration("20231122141508_FixLastMigration")]
+    partial class FixLastMigration
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -93,16 +96,22 @@ namespace backend.Migrations
 
             modelBuilder.Entity("backend.Data.Models.CharacterSkill", b =>
                 {
+                    b.Property<Guid>("id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<int>("confidence_level")
+                        .HasColumnType("integer");
+
                     b.Property<Guid>("id_character")
                         .HasColumnType("uuid");
 
                     b.Property<int>("id_skill")
                         .HasColumnType("integer");
 
-                    b.Property<int>("confidence_level")
-                        .HasColumnType("integer");
+                    b.HasKey("id");
 
-                    b.HasKey("id_character", "id_skill");
+                    b.HasIndex("id_character");
 
                     b.HasIndex("id_skill");
 
@@ -134,7 +143,7 @@ namespace backend.Migrations
                     b.ToTable("group");
                 });
 
-            modelBuilder.Entity("backend.Data.Models.Role", b =>
+            modelBuilder.Entity("backend.Data.Models.RoleUser", b =>
                 {
                     b.Property<int>("id")
                         .ValueGeneratedOnAdd()
@@ -148,7 +157,7 @@ namespace backend.Migrations
 
                     b.HasKey("id");
 
-                    b.ToTable("role");
+                    b.ToTable("role_user");
                 });
 
             modelBuilder.Entity("backend.Data.Models.Sae", b =>
@@ -186,30 +195,42 @@ namespace backend.Migrations
 
             modelBuilder.Entity("backend.Data.Models.SaeCoach", b =>
                 {
-                    b.Property<int>("id_sae")
-                        .HasColumnType("integer");
+                    b.Property<Guid>("id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
 
                     b.Property<Guid>("id_coach")
                         .HasColumnType("uuid");
 
-                    b.HasKey("id_sae", "id_coach");
+                    b.Property<int>("id_sae")
+                        .HasColumnType("integer");
+
+                    b.HasKey("id");
 
                     b.HasIndex("id_coach");
+
+                    b.HasIndex("id_sae");
 
                     b.ToTable("sae_coach");
                 });
 
             modelBuilder.Entity("backend.Data.Models.SaeGroup", b =>
                 {
-                    b.Property<int>("id_sae")
-                        .HasColumnType("integer");
+                    b.Property<Guid>("id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
 
                     b.Property<int>("id_group")
                         .HasColumnType("integer");
 
-                    b.HasKey("id_sae", "id_group");
+                    b.Property<int>("id_sae")
+                        .HasColumnType("integer");
+
+                    b.HasKey("id");
 
                     b.HasIndex("id_group");
+
+                    b.HasIndex("id_sae");
 
                     b.ToTable("sae_group");
                 });
@@ -281,30 +302,39 @@ namespace backend.Migrations
 
             modelBuilder.Entity("backend.Data.Models.TeamSubject", b =>
                 {
-                    b.Property<Guid>("id_team")
+                    b.Property<Guid>("subject_id")
                         .HasColumnType("uuid");
 
-                    b.Property<Guid>("id_subject")
+                    b.Property<Guid>("team_id")
                         .HasColumnType("uuid");
 
-                    b.HasKey("id_team", "id_subject");
+                    b.Property<Guid>("id")
+                        .HasColumnType("uuid");
 
-                    b.HasIndex("id_subject");
+                    b.HasKey("subject_id", "team_id");
+
+                    b.HasIndex("team_id");
 
                     b.ToTable("team_subject");
                 });
 
             modelBuilder.Entity("backend.Data.Models.TeamWish", b =>
                 {
-                    b.Property<Guid>("id_team")
+                    b.Property<Guid>("id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
                     b.Property<Guid>("id_subject")
                         .HasColumnType("uuid");
 
-                    b.HasKey("id_team", "id_subject");
+                    b.Property<Guid>("id_team")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("id");
 
                     b.HasIndex("id_subject");
+
+                    b.HasIndex("id_team");
 
                     b.ToTable("team_wish");
                 });
@@ -492,13 +522,13 @@ namespace backend.Migrations
                 {
                     b.HasOne("backend.Data.Models.Subject", "subject")
                         .WithMany("team_subject")
-                        .HasForeignKey("id_subject")
+                        .HasForeignKey("subject_id")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("backend.Data.Models.Team", "team")
                         .WithMany("team_subject")
-                        .HasForeignKey("id_team")
+                        .HasForeignKey("team_id")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -532,7 +562,7 @@ namespace backend.Migrations
                         .WithMany("users")
                         .HasForeignKey("id_group");
 
-                    b.HasOne("backend.Data.Models.Role", "role_user")
+                    b.HasOne("backend.Data.Models.RoleUser", "role_user")
                         .WithMany("users")
                         .HasForeignKey("id_role")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -581,7 +611,7 @@ namespace backend.Migrations
                     b.Navigation("users");
                 });
 
-            modelBuilder.Entity("backend.Data.Models.Role", b =>
+            modelBuilder.Entity("backend.Data.Models.RoleUser", b =>
                 {
                     b.Navigation("users");
                 });

@@ -9,7 +9,7 @@ namespace backend.Data;
 public class EntityContext : DbContext
 {
     public DbSet<User> Users { get; set; }
-    public DbSet<RoleUser> RoleUsers { get; set; }
+    public DbSet<Role> RoleUsers { get; set; }
     public DbSet<Team> Teams { get; set; }
     public DbSet<UserTeam> UserTeams { get; set; }
     public DbSet<Challenge> Challenges { get; set; }
@@ -31,7 +31,7 @@ public class EntityContext : DbContext
     {
         //DEFAULT ROLES
 
-        var defaultRoles = new List<RoleUser>
+        var defaultRoles = new List<Role>
         {
             new() { name = "Student" },
             new() { name = "Teacher" },
@@ -80,10 +80,10 @@ public class EntityContext : DbContext
         // #-----------#
         // # Role User #
         // #-----------#
-        modelBuilder.Entity<RoleUser>()
+        modelBuilder.Entity<Role>()
             .HasKey(ru => ru.id);
         
-        modelBuilder.Entity<RoleUser>()
+        modelBuilder.Entity<Role>()
             .Property(ru => ru.id)
             .ValueGeneratedOnAdd();
 
@@ -124,6 +124,9 @@ public class EntityContext : DbContext
         // # Sae Coach #
         // #-----------#
         modelBuilder.Entity<SaeCoach>()
+            .HasKey(ut => new { ut.id_sae, ut.id_coach});
+
+        modelBuilder.Entity<SaeCoach>()
             .HasOne(c => c.user)
             .WithMany(u => u.sae_coach)
             .HasForeignKey(c => c.id_coach);
@@ -136,6 +139,9 @@ public class EntityContext : DbContext
         // #-----------#
         // # Sae Group #
         // #-----------#
+        modelBuilder.Entity<SaeGroup>()
+            .HasKey(ut => new { ut.id_sae, ut.id_group });
+
         modelBuilder.Entity<SaeGroup>()
             .HasOne(g => g.group)
             .WithMany(g => g.sae_groups)
@@ -182,7 +188,7 @@ public class EntityContext : DbContext
             .HasKey(s => s.id);
 
         modelBuilder.Entity<TeamWish>()
-            .HasKey(w => w.id);
+            .HasKey(ts => new { ts.id_team, ts.id_subject });
 
         modelBuilder.Entity<TeamWish>()
             .HasOne(w => w.team)
@@ -195,17 +201,17 @@ public class EntityContext : DbContext
             .HasForeignKey(w => w.id_subject);
 
         modelBuilder.Entity<TeamSubject>()
-            .HasKey(ts => new { ts.subject_id, ts.team_id });
+            .HasKey(ts => new { ts.id_team, ts.id_subject });
 
         modelBuilder.Entity<TeamSubject>()
             .HasOne(ts => ts.subject)
             .WithMany(s => s.team_subject)
-            .HasForeignKey(ts => ts.subject_id);
+            .HasForeignKey(ts => ts.id_subject);
 
         modelBuilder.Entity<TeamSubject>()
             .HasOne(ts => ts.team)
             .WithMany(t => t.team_subject)
-            .HasForeignKey(ts => ts.team_id);
+            .HasForeignKey(ts => ts.id_team);
 
         modelBuilder.Entity<Category>()
             .HasKey(c => c.id);
@@ -221,6 +227,9 @@ public class EntityContext : DbContext
             .HasForeignKey(s => s.id_sae);
 
         modelBuilder.Entity<CharacterSkill>()
+            .HasKey(ts => new { ts.id_character, ts.id_skill });
+
+        modelBuilder.Entity<CharacterSkill>()
             .HasOne(c => c.character)
             .WithMany(c => c.character_skills)
             .HasForeignKey(c => c.id_character);
@@ -234,5 +243,10 @@ public class EntityContext : DbContext
             .HasOne(c => c.user)
             .WithMany(u => u.characters)
             .HasForeignKey(c => c.id_user);
+
+        modelBuilder.Entity<Character>()
+            .HasOne(c => c.sae)
+            .WithMany(u => u.characters)
+            .HasForeignKey(c => c.id_sae);
     }
 }

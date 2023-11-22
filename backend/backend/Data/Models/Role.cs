@@ -3,8 +3,8 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace backend.Data.Models;
 
-[Table("role_user")]
-public class RoleUser
+[Table("role")]
+public class Role
 {
     public int id { get; set; }
     public string name { get; set; }
