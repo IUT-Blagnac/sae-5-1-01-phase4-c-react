@@ -7,6 +7,7 @@ namespace backend.Data.Models
     {
         public Guid id { get; set; }
         public string name { get; set; }
+        public string color { get; set; }
         
         public List<UserTeam> user_team { get; set; }
         public List<Challenge> creator_challenge { get; set; }

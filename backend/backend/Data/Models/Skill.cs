@@ -7,7 +7,7 @@ namespace backend.Data.Models
     public class Skill
     {
         [Key]
-        public int id_skill { get; set; }
+        public int id { get; set; }
         public string name { get; set; }
 
         public List<CharacterSkill> character_skills { get; set; }

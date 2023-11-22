@@ -7,7 +7,7 @@ namespace backend.Data.Models
     public class CharacterSkill
     {
         [Key]
-        public Guid id_character_skill { get; set; }
+        public Guid id { get; set; }
 
         public Guid id_character { get; set; }
         public Character character { get; set; }
