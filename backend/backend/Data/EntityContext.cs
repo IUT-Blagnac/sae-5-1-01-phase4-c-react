@@ -74,9 +74,6 @@ public class EntityContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        modelBuilder.Entity<User>()
-            .HasKey(c => c.id);
-
         // #-----------#
         // # Role User #
         // #-----------#
@@ -158,6 +155,9 @@ public class EntityContext : DbContext
         modelBuilder.Entity<Team>()
             .HasKey(c => c.id);
 
+        // #----------#
+        // # UserTeam #
+        // #----------#
         modelBuilder.Entity<UserTeam>()
             .HasKey(ut => new { ut.id_user, ut.id_team });
             
@@ -171,6 +171,9 @@ public class EntityContext : DbContext
             .WithMany(t => t.user_team)
             .HasForeignKey(ut => ut.id_team);
 
+        // #-----------#
+        // # Challenge #
+        // #-----------#
         modelBuilder.Entity<Challenge>()
             .HasKey(c => c.id);
 
@@ -184,9 +187,15 @@ public class EntityContext : DbContext
             .WithMany(t => t.target_challenge)
             .HasForeignKey(c => c.target_team_id);
 
+        // #---------#
+        // # Subject #
+        // #---------#
         modelBuilder.Entity<Subject>()
             .HasKey(s => s.id);
 
+        // #----------#
+        // # Teamwish #
+        // #----------#
         modelBuilder.Entity<TeamWish>()
             .HasKey(ts => new { ts.id_team, ts.id_subject });
 
@@ -200,6 +209,9 @@ public class EntityContext : DbContext
             .WithMany(s => s.wish)
             .HasForeignKey(w => w.id_subject);
 
+        // #-------------#
+        // # TeamSubject #
+        // #-------------#
         modelBuilder.Entity<TeamSubject>()
             .HasKey(ts => new { ts.id_team, ts.id_subject });
 
@@ -213,9 +225,15 @@ public class EntityContext : DbContext
             .WithMany(t => t.team_subject)
             .HasForeignKey(ts => ts.id_team);
 
+        // #----------#
+        // # Category #
+        // #----------#
         modelBuilder.Entity<Category>()
             .HasKey(c => c.id);
 
+        // #---------#
+        // # Subject #
+        // #---------#
         modelBuilder.Entity<Subject>()
             .HasOne(s => s.category)
             .WithMany(c => c.subject)
@@ -226,6 +244,9 @@ public class EntityContext : DbContext
             .WithMany(c => c.subjects)
             .HasForeignKey(s => s.id_sae);
 
+        // #----------------#
+        // # CharacterSkill #
+        // #----------------#
         modelBuilder.Entity<CharacterSkill>()
             .HasKey(ts => new { ts.id_character, ts.id_skill });
 
@@ -239,6 +260,9 @@ public class EntityContext : DbContext
             .WithMany(s => s.character_skills)
             .HasForeignKey(c => c.id_skill);
 
+        // #-----------#
+        // # Character #
+        // #-----------#
         modelBuilder.Entity<Character>()
             .HasOne(c => c.user)
             .WithMany(u => u.characters)
