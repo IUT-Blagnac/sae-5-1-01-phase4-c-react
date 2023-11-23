@@ -1,13 +1,12 @@
-import { useEffect, useState } from "react";
-import React from "react";
+import { useEffect, useState, FC } from "react";
 import { CircularProgress } from "@mui/material";
 import { URLs } from "../assets/enums/URLs.enum";
 
-interface AuthCheckerProps {
+export interface AuthCheckerProps {
   children: React.ReactNode;
 }
 
-const AuthChecker: React.FC<AuthCheckerProps> = ({ children }) => {
+const AuthChecker: FC<AuthCheckerProps> = ({ children }) => {
   const [isUserAuthenticated, setIsUserAuthenticated] = useState<
     boolean | null
   >(null);

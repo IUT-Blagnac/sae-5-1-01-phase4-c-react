@@ -1,6 +1,7 @@
-import { useEffect, useState } from "react";
-import React from "react";
+import { useEffect, useState, FC } from "react";
 import { CircularProgress } from "@mui/material";
+
+// Enums
 import { URLs } from "../assets/enums/URLs.enum";
 import { Status } from "../assets/enums/Status.enum";
 
@@ -8,7 +9,7 @@ interface AuthCheckerProps {
   children: React.ReactNode;
 }
 
-const AdminOnly: React.FC<AuthCheckerProps> = ({ children }) => {
+const AdminOnly: FC<AuthCheckerProps> = ({ children }) => {
   const [isUserAdmin, setIsUserAdmin] = useState<boolean | null>(null);
 
   useEffect(() => {
