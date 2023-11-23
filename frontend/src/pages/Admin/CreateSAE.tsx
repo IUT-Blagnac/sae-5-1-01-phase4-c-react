@@ -435,7 +435,6 @@ export default function CreateSAE() {
                       </Stack>
                     </Stack>
                   </Card>
-
                   <NewTopic submitSae={handleSubmitWithoutTopic} />
                 </Stack>
               </Box>
