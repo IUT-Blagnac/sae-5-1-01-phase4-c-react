@@ -3,11 +3,63 @@ import Table from "@mui/joy/Table";
 
 // Icons import
 import FolderRoundedIcon from "@mui/icons-material/FolderRounded";
-import { Box, Button } from "@mui/joy";
-
-// custom
+import { Box, Button, CircularProgress } from "@mui/joy";
+import { useEffect, useState } from "react";
+import Sae from "../../models/Sae";
+import FetchData from "../../assets/temp/FetchData";
+import { SAEStatus } from "../../assets/enums/SAEStatus.enum";
 
 function AdminDashboard() {
+  const [loading, setLoading] = useState(true);
+  const [saes, setSaes] = useState<Sae[]>([]);
+
+  useEffect(() => {
+    FetchData.fetchSae().then((data) => {
+      setSaes(data);
+      setLoading(false);
+    });
+  });
+
+  const sendRightPageFromStatus = (sae: Sae) => {
+    const statut = sae.statut;
+    switch (statut) {
+      case SAEStatus.LAUNCHED:
+        return (window.location.href = `sae/${sae.id}/manage`);
+      case SAEStatus.PENDING_USERS:
+        return "Publié";
+      case SAEStatus.PENDING_WISHES:
+        return "Archivé";
+      case SAEStatus.LAUNCHED_OPEN_FOR_ALTERNANTS:
+        return "Archivé";
+      case SAEStatus.CLOSED:
+        return "Archivé";
+    }
+  };
+
+  if (loading) {
+    return (
+      <Box>
+        <Box
+          sx={{
+            display: "flex",
+            alignItems: "center",
+            py: 1,
+            pl: { xs: 1, sm: 2 },
+            pr: { xs: 1, sm: 1 },
+          }}
+        >
+          <CircularProgress
+            sx={{
+              "--CircularProgress-size": "80px",
+            }}
+          >
+            Load
+          </CircularProgress>
+        </Box>
+      </Box>
+    );
+  }
+
   return (
     <Box>
       <Box
@@ -61,60 +113,40 @@ function AdminDashboard() {
             </tr>
           </thead>
           <tbody>
-            <tr
-              onClick={() => {
-                console.log("sae-koh-lanta");
-              }}
-            >
-              <td>
-                <Typography
-                  level="title-sm"
-                  startDecorator={<FolderRoundedIcon color="primary" />}
-                  sx={{ alignItems: "flex-start" }}
-                >
-                  Koh-Lanta
-                </Typography>
-              </td>
-              <td>
-                <Typography level="body-sm">Useless</Typography>
-              </td>
-              <td>
-                <Typography level="body-sm">5</Typography>
-              </td>
-              <td>
-                <Typography level="body-sm">36</Typography>
-              </td>
-              <td>
-                <Button variant="outlined" color="primary" size="sm">
-                  Évoluer
-                </Button>
-              </td>
-            </tr>
-            <tr>
-              <td>
-                <Typography
-                  level="title-sm"
-                  startDecorator={<FolderRoundedIcon color="primary" />}
-                  sx={{ alignItems: "flex-start" }}
-                >
-                  Slave-Narratives
-                </Typography>
-              </td>
-              <td>
-                <Typography level="body-sm">Say no to slavery</Typography>
-              </td>
-              <td>
-                <Typography level="body-sm">7</Typography>
-              </td>
-              <td>
-                <Typography level="body-sm">21</Typography>
-              </td>
-              <td>
-                <Button variant="outlined" color="primary" size="sm">
-                  Évoluer
-                </Button>
-              </td>
-            </tr>
+            {saes.map((sae) => (
+              <tr key={sae.id}>
+                <td>
+                  <Typography
+                    level="title-sm"
+                    startDecorator={<FolderRoundedIcon color="primary" />}
+                    sx={{ alignItems: "flex-start" }}
+                  >
+                    {sae.name}
+                  </Typography>
+                </td>
+                <td>
+                  <Typography level="body-sm">{sae.description}</Typography>
+                </td>
+                <td>
+                  <Typography level="body-sm">{10}</Typography>
+                </td>
+                <td>
+                  <Typography level="body-sm">{2}</Typography>
+                </td>
+                <td>
+                  <Button
+                    variant="outlined"
+                    color="primary"
+                    size="sm"
+                    onClick={() => {
+                      sendRightPageFromStatus(sae);
+                    }}
+                  >
+                    Évoluer
+                  </Button>
+                </td>
+              </tr>
+            ))}
           </tbody>
         </Table>
       </Box>
