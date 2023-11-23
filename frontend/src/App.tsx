@@ -2,8 +2,13 @@ import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import { URLs } from "./assets/enums/URLs.enum";
 
 import SignInSide from "./pages/Login";
-import Main from "./pages/Main";
-import { CustomThemeProvider } from "./components/Header/ThemeContext";
+import Support from "./pages/Common/Support/Support";
+import Dashboard from "./pages/Common/Dashboard/Dashboard";
+import NotFoundPage from "./pages/404";
+import ImportUser from "./pages/Admin/ImportUser/ImportUser";
+import CreateSAE from "./pages/Admin/CreateSAE/CreateSAE";
+import ConsultSAE from "./pages/Admin/ConsultSAE/ConsultSAE";
+import Skill from "./pages/Student/Skill";
 
 function App() {
   return (
