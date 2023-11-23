@@ -17,12 +17,15 @@ import AdminTabs from "./Tabs/AdminTabs";
 import { Status } from "../assets/enums/Status.enum";
 import StudentTabs from "./Tabs/StudentTabs";
 import { Button } from "@mui/joy";
+import { URLs } from "../assets/enums/URLs.enum";
 
 export default function Sidebar() {
   const handleSignOut = () => {
     localStorage.clear();
     window.location.href = "/";
   };
+
+  const currentURL = window.location.pathname;
 
   return (
     <Sheet
@@ -111,7 +114,12 @@ export default function Sidebar() {
           }}
         >
           <ListItem>
-            <ListItemButton>
+            <ListItemButton
+              onClick={() => {
+                window.location.href = URLs.SUPPORT;
+              }}
+              selected={currentURL === URLs.SUPPORT}
+            >
               <SupportRoundedIcon />
               Support
             </ListItemButton>
