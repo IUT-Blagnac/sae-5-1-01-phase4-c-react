@@ -2,6 +2,7 @@
 using backend.Data;
 using backend.Data.Models;
 using backend.Services.Class;
+using backend.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -12,10 +13,12 @@ namespace backend.Controllers;
 public class UserController: ControllerBase
 {
     private readonly EntityContext _context;
+    private readonly IUserService _userService;
 
-    public UserController(EntityContext context)
+    public UserController(EntityContext context, IUserService userService)
     {
         _context = context;
+        _userService = userService;
     }
     
     [HttpGet]
@@ -23,7 +26,7 @@ public class UserController: ControllerBase
     [Authorize]
     public IActionResult GetAuthenticatedUser()
     {
-        var currentUser = new UserService(_context).GetCurrentUser(HttpContext);
+        var currentUser = _userService.GetCurrentUser(HttpContext);
 
         if (currentUser is not null)
         {
