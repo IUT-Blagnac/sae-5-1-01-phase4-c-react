@@ -17,6 +17,7 @@ public class EntityContext : DbContext
     public DbSet<TeamWish> Wishes { get; set; }
     public DbSet<TeamSubject> TeamSubjects { get; set; }
     public DbSet<Category> Categories { get; set; }
+    public DbSet<Skill> Skills { get; set; }
     
     protected readonly IConfiguration _configuration;
     private readonly PasswordHasher<User> _passwordHasher;

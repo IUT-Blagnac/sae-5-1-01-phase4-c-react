@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using backend.Data;
@@ -11,9 +12,11 @@ using backend.Data;
 namespace backend.Migrations
 {
     [DbContext(typeof(EntityContext))]
-    partial class EntityContextModelSnapshot : ModelSnapshot
+    [Migration("20231124092845_RemoveSkill")]
+    partial class RemoveSkill
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -89,24 +92,6 @@ namespace backend.Migrations
                     b.HasIndex("id_user");
 
                     b.ToTable("character");
-                });
-
-            modelBuilder.Entity("backend.Data.Models.CharacterSkill", b =>
-                {
-                    b.Property<Guid>("id_character")
-                        .HasColumnType("uuid");
-
-                    b.Property<Guid>("id_skill")
-                        .HasColumnType("uuid");
-
-                    b.Property<int>("confidence_level")
-                        .HasColumnType("integer");
-
-                    b.HasKey("id_character", "id_skill");
-
-                    b.HasIndex("id_skill");
-
-                    b.ToTable("character_skill");
                 });
 
             modelBuilder.Entity("backend.Data.Models.Group", b =>
@@ -212,21 +197,6 @@ namespace backend.Migrations
                     b.HasIndex("id_group");
 
                     b.ToTable("sae_group");
-                });
-
-            modelBuilder.Entity("backend.Data.Models.Skill", b =>
-                {
-                    b.Property<Guid>("id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
-
-                    b.Property<string>("name")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.HasKey("id");
-
-                    b.ToTable("skill");
                 });
 
             modelBuilder.Entity("backend.Data.Models.Subject", b =>
@@ -401,25 +371,6 @@ namespace backend.Migrations
                     b.Navigation("user");
                 });
 
-            modelBuilder.Entity("backend.Data.Models.CharacterSkill", b =>
-                {
-                    b.HasOne("backend.Data.Models.Character", "character")
-                        .WithMany("character_skills")
-                        .HasForeignKey("id_character")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("backend.Data.Models.Skill", "skill")
-                        .WithMany("character_skills")
-                        .HasForeignKey("id_skill")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("character");
-
-                    b.Navigation("skill");
-                });
-
             modelBuilder.Entity("backend.Data.Models.Group", b =>
                 {
                     b.HasOne("backend.Data.Models.Group", "group_parent")
@@ -565,11 +516,6 @@ namespace backend.Migrations
                     b.Navigation("subject");
                 });
 
-            modelBuilder.Entity("backend.Data.Models.Character", b =>
-                {
-                    b.Navigation("character_skills");
-                });
-
             modelBuilder.Entity("backend.Data.Models.Group", b =>
                 {
                     b.Navigation("groups_childs");
@@ -593,11 +539,6 @@ namespace backend.Migrations
                     b.Navigation("sae_groups");
 
                     b.Navigation("subjects");
-                });
-
-            modelBuilder.Entity("backend.Data.Models.Skill", b =>
-                {
-                    b.Navigation("character_skills");
                 });
 
             modelBuilder.Entity("backend.Data.Models.Subject", b =>
