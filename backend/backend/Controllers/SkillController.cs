@@ -52,7 +52,7 @@ public class SkillController: ControllerBase
             });
     }
 
-    [HttpDelete]
+    [HttpDelete("{id}")]
     [Authorize]
     public async Task<IActionResult> RemoveSkill(Guid id)
     {
