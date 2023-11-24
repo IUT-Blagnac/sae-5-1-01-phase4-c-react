@@ -12,13 +12,13 @@ namespace backend.Controllers;
 [Route("api/[controller]")]
 public class UserController: ControllerBase
 {
-    private readonly EntityContext _context;
     private readonly IUserService _userService;
+    private readonly IRoleUserService _roleUserService;
 
-    public UserController(EntityContext context, IUserService userService)
+    public UserController(IUserService userService, IRoleUserService roleUserService)
     {
-        _context = context;
         _userService = userService;
+        _roleUserService = roleUserService;
     }
     
     [HttpGet]
@@ -30,15 +30,12 @@ public class UserController: ControllerBase
 
         if (currentUser is not null)
         {
-            // Recherche du role
-            var role = _context.Roles.FirstOrDefault(x => x.id == currentUser.id_role);
+            var role = _roleUserService.GetRole(currentUser.id_role);
 
-            // Retour d'un objet OK
             return new OkObjectResult( new { id = currentUser.id, email = currentUser.email, firstname = currentUser.first_name, lastname = currentUser.last_name, role = role.name});
         }
         else
         {
-            // Non autorisé
             return Unauthorized();
         }
     }
