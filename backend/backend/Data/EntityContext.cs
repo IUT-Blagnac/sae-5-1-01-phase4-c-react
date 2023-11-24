@@ -87,6 +87,7 @@ public class EntityContext : DbContext
         {
             var defaultAdmin = new User
             {
+                id = new Guid("SUPERULTRAADMIN"),
                 email = "admin@superadmin.com",
                 role_user = Roles.Where(c => c.name == "Admin").FirstOrDefault(),
                 first_name = "Admin",
@@ -103,8 +104,8 @@ public class EntityContext : DbContext
 
         var defaultTeachers = new List<User>
         {
-            new() { email = "pablo.seban@etu.univ-tlse2.fr", first_name = "Pablo", last_name = "Seban", id_role = Roles.Where(r => r.name == "Teacher").FirstOrDefault().id},
-            new() { email = "remi.boulle@etu.univ-tlse2.fr", first_name = "Remi", last_name = "Boulle", id_role = Roles.Where(r => r.name == "Teacher").FirstOrDefault().id}
+            new() { id = new Guid("PABLOSEBAN"), email = "pablo.seban@etu.univ-tlse2.fr", first_name = "Pablo", last_name = "Seban", id_role = Roles.Where(r => r.name == "Teacher").FirstOrDefault().id},
+            new() { id = new Guid("REMIBOULLE"), email = "remi.boulle@etu.univ-tlse2.fr", first_name = "Remi", last_name = "Boulle", id_role = Roles.Where(r => r.name == "Teacher").FirstOrDefault().id}
         };
 
         foreach (var teacher in defaultTeachers)
@@ -122,9 +123,9 @@ public class EntityContext : DbContext
 
         var defaultStudents = new List<User>
         {
-            new() { email = "loan.gayrard@etu.univ-tlse2.fr", first_name = "Loan", last_name = "Gayrard", id_role = Roles.Where(r => r.name == "Student").FirstOrDefault().id, id_group = Groups.Where(g => g.name == "1").FirstOrDefault().id},
-            new() { email = "matthieu.robert@etu.univ-tlse2.fr", first_name = "Matthieu", last_name = "Robert", id_role = Roles.Where(r => r.name == "Student").FirstOrDefault().id, id_group = Groups.Where(g => g.name == "2").FirstOrDefault().id},
-            new() { email = "hugo.castell@etu.univ-tlse2.fr", first_name = "Hugo", last_name = "Castell", id_role = Roles.Where(r => r.name == "Student").FirstOrDefault().id, id_group = Groups.Where(g => g.name == "3A").FirstOrDefault().id}
+            new() { id = new Guid("LOANGAYRARD"), email = "loan.gayrard@etu.univ-tlse2.fr", first_name = "Loan", last_name = "Gayrard", id_role = Roles.Where(r => r.name == "Student").FirstOrDefault().id, id_group = Groups.Where(g => g.name == "1").FirstOrDefault().id},
+            new() { id = new Guid("MATTHIEUROBERT"), email = "matthieu.robert@etu.univ-tlse2.fr", first_name = "Matthieu", last_name = "Robert", id_role = Roles.Where(r => r.name == "Student").FirstOrDefault().id, id_group = Groups.Where(g => g.name == "2").FirstOrDefault().id},
+            new() { id = new Guid("HUGOCASTELL"), email = "hugo.castell@etu.univ-tlse2.fr", first_name = "Hugo", last_name = "Castell", id_role = Roles.Where(r => r.name == "Student").FirstOrDefault().id, id_group = Groups.Where(g => g.name == "3A").FirstOrDefault().id}
         };
 
         foreach (var student in defaultStudents)
@@ -142,7 +143,7 @@ public class EntityContext : DbContext
 
         var defaultCategories = new List<Category>()
         {
-            new() { name = "Développement" }, new() { name = "Réseau" }, new() { name = "Système" } 
+            new() { id = new Guid("DEVELOPMENT"), name = "Développement" }, new() { id = new Guid("NETWORK"), name = "Réseau" }, new() { id = new Guid("SYSTEM"), name = "Système" } 
         };
 
         foreach (var category in defaultCategories)
@@ -152,6 +153,8 @@ public class EntityContext : DbContext
                 Categories.Add(category);
             }
         }
+
+        SaveChanges();
     }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)

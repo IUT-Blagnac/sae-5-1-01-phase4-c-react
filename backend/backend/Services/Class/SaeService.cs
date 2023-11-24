@@ -52,6 +52,28 @@ namespace backend.Services.Class
                 });
             }
 
+            foreach(SubjectForm subject in saeForm.subjects)
+            {
+                Guid subjectId = Guid.NewGuid();
+
+                _context.Subjects.Add(new Subject
+                {
+                    id = subjectId,
+                    name = subject.name,
+                    description = subject.description,
+                    id_sae = idSae
+                });
+
+                foreach (Guid categoryId in subject.categoriesId)
+                {
+                    _context.SubjectCategories.Add(new SubjectCategory
+                    {
+                        id_category = categoryId,
+                        id_subject = subjectId
+                    });
+                }
+            }
+
             _context.SaveChanges();
         }
     }

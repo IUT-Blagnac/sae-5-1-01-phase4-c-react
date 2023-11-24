@@ -12,6 +12,6 @@ namespace backend.FormModels
         public int? min_groups_per_subject { get; set; }
         public int? max_groups_per_subject { get; set; }
         public List<Guid> id_coachs { get; set; }
-        public List<Subject> subjects { get; set; }
+        public List<SubjectForm> subjects { get; set; }
     }
 }

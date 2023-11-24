@@ -9,6 +9,7 @@ namespace backend.Data.Models
         public Guid id { get; set; }
         public string name { get; set; }
 
+        [JsonIgnore]
         public List<SubjectCategory> subject_category { get; set; }
     }
 }
