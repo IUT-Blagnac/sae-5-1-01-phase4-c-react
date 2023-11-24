@@ -241,9 +241,6 @@ namespace backend.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<Guid>("id_category")
-                        .HasColumnType("uuid");
-
                     b.Property<Guid>("id_sae")
                         .HasColumnType("uuid");
 
@@ -253,11 +250,24 @@ namespace backend.Migrations
 
                     b.HasKey("id");
 
-                    b.HasIndex("id_category");
-
                     b.HasIndex("id_sae");
 
                     b.ToTable("subject");
+                });
+
+            modelBuilder.Entity("backend.Data.Models.SubjectCategory", b =>
+                {
+                    b.Property<Guid>("id_subject")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("id_category")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("id_subject", "id_category");
+
+                    b.HasIndex("id_category");
+
+                    b.ToTable("subject_category");
                 });
 
             modelBuilder.Entity("backend.Data.Models.Team", b =>
@@ -471,21 +481,32 @@ namespace backend.Migrations
 
             modelBuilder.Entity("backend.Data.Models.Subject", b =>
                 {
-                    b.HasOne("backend.Data.Models.Category", "category")
-                        .WithMany("subject")
-                        .HasForeignKey("id_category")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("backend.Data.Models.Sae", "sae")
                         .WithMany("subjects")
                         .HasForeignKey("id_sae")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.Navigation("sae");
+                });
+
+            modelBuilder.Entity("backend.Data.Models.SubjectCategory", b =>
+                {
+                    b.HasOne("backend.Data.Models.Category", "category")
+                        .WithMany("subject_category")
+                        .HasForeignKey("id_category")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("backend.Data.Models.Subject", "subject")
+                        .WithMany("subject_category")
+                        .HasForeignKey("id_subject")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.Navigation("category");
 
-                    b.Navigation("sae");
+                    b.Navigation("subject");
                 });
 
             modelBuilder.Entity("backend.Data.Models.TeamSubject", b =>
@@ -564,7 +585,7 @@ namespace backend.Migrations
 
             modelBuilder.Entity("backend.Data.Models.Category", b =>
                 {
-                    b.Navigation("subject");
+                    b.Navigation("subject_category");
                 });
 
             modelBuilder.Entity("backend.Data.Models.Character", b =>
@@ -604,6 +625,8 @@ namespace backend.Migrations
 
             modelBuilder.Entity("backend.Data.Models.Subject", b =>
                 {
+                    b.Navigation("subject_category");
+
                     b.Navigation("team_subject");
 
                     b.Navigation("wish");

@@ -158,18 +158,11 @@ namespace backend.Migrations
                     id = table.Column<Guid>(type: "uuid", nullable: false),
                     name = table.Column<string>(type: "text", nullable: false),
                     description = table.Column<string>(type: "text", nullable: false),
-                    id_category = table.Column<Guid>(type: "uuid", nullable: false),
                     id_sae = table.Column<Guid>(type: "uuid", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_subject", x => x.id);
-                    table.ForeignKey(
-                        name: "FK_subject_category_id_category",
-                        column: x => x.id_category,
-                        principalTable: "category",
-                        principalColumn: "id",
-                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_subject_sae_id_sae",
                         column: x => x.id_sae,
@@ -277,6 +270,30 @@ namespace backend.Migrations
                         name: "FK_user_team_user_id_user",
                         column: x => x.id_user,
                         principalTable: "user",
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "subject_category",
+                columns: table => new
+                {
+                    id_subject = table.Column<Guid>(type: "uuid", nullable: false),
+                    id_category = table.Column<Guid>(type: "uuid", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_subject_category", x => new { x.id_subject, x.id_category });
+                    table.ForeignKey(
+                        name: "FK_subject_category_category_id_category",
+                        column: x => x.id_category,
+                        principalTable: "category",
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_subject_category_subject_id_subject",
+                        column: x => x.id_subject,
+                        principalTable: "subject",
                         principalColumn: "id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -395,14 +412,14 @@ namespace backend.Migrations
                 column: "id_group");
 
             migrationBuilder.CreateIndex(
-                name: "IX_subject_id_category",
-                table: "subject",
-                column: "id_category");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_subject_id_sae",
                 table: "subject",
                 column: "id_sae");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_subject_category_id_category",
+                table: "subject_category",
+                column: "id_category");
 
             migrationBuilder.CreateIndex(
                 name: "IX_team_subject_id_subject",
@@ -446,6 +463,9 @@ namespace backend.Migrations
                 name: "sae_group");
 
             migrationBuilder.DropTable(
+                name: "subject_category");
+
+            migrationBuilder.DropTable(
                 name: "team_subject");
 
             migrationBuilder.DropTable(
@@ -461,6 +481,9 @@ namespace backend.Migrations
                 name: "skill");
 
             migrationBuilder.DropTable(
+                name: "category");
+
+            migrationBuilder.DropTable(
                 name: "subject");
 
             migrationBuilder.DropTable(
@@ -468,9 +491,6 @@ namespace backend.Migrations
 
             migrationBuilder.DropTable(
                 name: "user");
-
-            migrationBuilder.DropTable(
-                name: "category");
 
             migrationBuilder.DropTable(
                 name: "sae");

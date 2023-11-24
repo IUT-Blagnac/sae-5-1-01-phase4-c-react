@@ -1,4 +1,6 @@
-﻿namespace backend.FormModels
+﻿using backend.Data.Models;
+
+namespace backend.FormModels
 {
     public class SaeForm
     {
@@ -10,5 +12,6 @@
         public int? min_groups_per_subject { get; set; }
         public int? max_groups_per_subject { get; set; }
         public List<Guid> id_coachs { get; set; }
+        public List<Subject> subjects { get; set; }
     }
 }

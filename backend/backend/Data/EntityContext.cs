@@ -19,6 +19,7 @@ public class EntityContext : DbContext
     public DbSet<SaeGroup> SaeGroups { get; set; }
     public DbSet<Skill> Skills { get; set; }
     public DbSet<Subject> Subjects { get; set; }
+    public DbSet<SubjectCategory> SubjectCategories { get; set; }
     public DbSet<Team> Teams { get; set; }
     public DbSet<TeamSubject> TeamSubjects { get; set; }
     public DbSet<TeamWish> TeamWishes { get; set; }
@@ -115,6 +116,8 @@ public class EntityContext : DbContext
             }
         }
 
+        SaveChanges();
+
         //DEFAULT USERS
 
         var defaultStudents = new List<User>
@@ -134,6 +137,21 @@ public class EntityContext : DbContext
         }
 
         SaveChanges();
+
+        //DEFAULT CATEGORIES
+
+        var defaultCategories = new List<Category>()
+        {
+            new() { name = "Développement" }, new() { name = "Réseau" }, new() { name = "Système" } 
+        };
+
+        foreach (var category in defaultCategories)
+        {
+            if (!Categories.Where(c => c.name == category.name).Any())
+            {
+                Categories.Add(category);
+            }
+        }
     }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
@@ -259,8 +277,14 @@ public class EntityContext : DbContext
         // #---------#
         // # Subject #
         // #---------#
+
         modelBuilder.Entity<Subject>()
             .HasKey(s => s.id);
+
+        modelBuilder.Entity<Subject>()
+            .HasOne(s => s.sae)
+            .WithMany(c => c.subjects)
+            .HasForeignKey(s => s.id_sae);
 
         // #----------#
         // # Teamwish #
@@ -300,18 +324,21 @@ public class EntityContext : DbContext
         modelBuilder.Entity<Category>()
             .HasKey(c => c.id);
 
-        // #---------#
-        // # Subject #
-        // #---------#
-        modelBuilder.Entity<Subject>()
-            .HasOne(s => s.category)
-            .WithMany(c => c.subject)
-            .HasForeignKey(s => s.id_category);
+        // #-----------------#
+        // # SubjectCategory #
+        // #-----------------#
+        modelBuilder.Entity<SubjectCategory>()
+            .HasKey(ts => new { ts.id_subject, ts.id_category});
 
-        modelBuilder.Entity<Subject>()
-            .HasOne(s => s.sae)
-            .WithMany(c => c.subjects)
-            .HasForeignKey(s => s.id_sae);
+        modelBuilder.Entity<SubjectCategory>()
+            .HasOne(c => c.subject)
+            .WithMany(s => s.subject_category)
+            .HasForeignKey(c => c.id_subject);
+
+        modelBuilder.Entity<SubjectCategory>()
+            .HasOne(c => c.category)
+            .WithMany(s => s.subject_category)
+            .HasForeignKey(c => c.id_category);
 
         // #----------------#
         // # CharacterSkill #
