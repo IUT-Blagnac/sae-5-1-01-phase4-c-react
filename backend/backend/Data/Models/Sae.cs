@@ -23,9 +23,10 @@ namespace backend.Data.Models
     }
     public enum State
     {
-        CREATING,
-        ATTRIBUTING,
+        PENDING_USERS,
+        PENDING_WISHES,
         LAUNCHED,
-        FINISHED
+        LAUNCHED_OPEN_FOR_INTERNSHIP,
+        CLOSED
     }
 }
