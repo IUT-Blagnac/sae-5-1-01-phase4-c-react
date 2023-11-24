@@ -19,8 +19,8 @@ public class TeamService: ITeamService
     {
 
         var query = (from u in _context.Users
-            join ut in _context.UserTeams on u.id equals ut.user_id
-            join t in _context.Teams on ut.team_id equals t.id
+            join ut in _context.UserTeams on u.id equals ut.id_user
+            join t in _context.Teams on ut.id_team equals t.id
             where u.id == userId
             select new Team()
             {
@@ -48,8 +48,8 @@ public class TeamService: ITeamService
 
         var userTeam = new UserTeam
         {
-            user_id = userId,
-            team_id = teamItem.id,
+            id_user = userId,
+            id_team = teamItem.id,
             role = "chef"
         };
         
@@ -62,7 +62,7 @@ public class TeamService: ITeamService
 
     public Team MoifyTeam(Guid id, TeamForm teamForm, Guid userId)
     {
-        var userTeam = _context.UserTeams.FirstOrDefault(x => x.team_id == id && x.user_id == userId);
+        var userTeam = _context.UserTeams.FirstOrDefault(x => x.id_team == id && x.id_user == userId);
 
         if (userTeam == null)
         {

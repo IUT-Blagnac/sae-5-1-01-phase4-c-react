@@ -13,7 +13,7 @@ namespace backend.Data.Models
         public List<Challenge> creator_challenge { get; set; }
         public List<Challenge> target_challenge { get; set; }
         
-        public List<Wish> wish { get; set; }
+        public List<TeamWish> wish { get; set; }
         public List<TeamSubject> team_subject { get; set; }
     }
 }
