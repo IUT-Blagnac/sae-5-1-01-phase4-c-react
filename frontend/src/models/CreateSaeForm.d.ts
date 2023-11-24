@@ -1,4 +1,4 @@
-import Topic from "./Topics";
+import Topic from "./Topic";
 
 export default interface CreateSaeForm {
   name: string;

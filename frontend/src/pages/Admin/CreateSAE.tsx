@@ -226,7 +226,7 @@ export default function CreateSAE() {
                     marginTop: "0.5rem",
                   }}
                 >
-                  {inputText != "" ? (
+                  {inputText !== "" ? (
                     inputText.split(",").map((word, index) => (
                       <Chip key={index} variant="outlined" color="primary">
                         {word.trim()}
