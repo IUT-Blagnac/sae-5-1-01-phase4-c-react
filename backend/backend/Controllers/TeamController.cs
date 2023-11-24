@@ -14,7 +14,7 @@ namespace backend.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
-public class TeamController: ControllerBase
+public class TeamController : ControllerBase
 {
     private readonly EntityContext _context;
     private readonly ITeamService _teamService;
@@ -29,7 +29,7 @@ public class TeamController: ControllerBase
     [Authorize]
     public ActionResult<List<Team>> GetTeams()
     {
-        var user = GetCurrentUser();
+        var user = new UserService(_context).GetCurrentUser(HttpContext);
 
         return _teamService.GetTeams(user.id);
     }
@@ -51,10 +51,10 @@ public class TeamController: ControllerBase
     [Authorize]
     public async Task<ActionResult<Team>> CreateTeam(TeamForm teamForm)
     {
-        var user = GetCurrentUser();
+        var user = new UserService(_context).GetCurrentUser(HttpContext);
 
         var teamItem = _teamService.CreateTeam(teamForm, user.id);
-        
+
         return CreatedAtAction(
             nameof(GetTeam),
             new { id = teamItem.id },
@@ -70,8 +70,8 @@ public class TeamController: ControllerBase
     [Authorize]
     public async Task<ActionResult<Team>> ModifyTeam(Guid id, TeamForm teamForm)
     {
-        var user = GetCurrentUser();
-        
+        var user = new UserService(_context).GetCurrentUser(HttpContext);
+
         try
         {
             var team = _teamService.MoifyTeam(id, teamForm, user.id);
@@ -80,24 +80,10 @@ public class TeamController: ControllerBase
                 return NotFound();
             }
             return team;
-        } catch (DbUpdateConcurrencyException)
+        }
+        catch (DbUpdateConcurrencyException)
         {
             return NotFound();
         }
-    }
-    
-    private User? GetCurrentUser()
-    {
-        var identity = HttpContext.User.Identity as ClaimsIdentity;
-
-        if (identity != null)
-        {
-            var userClaims = identity.Claims;
-            var email = userClaims.FirstOrDefault(x => x.Type == ClaimTypes.Email)?.Value;
-            
-            return _context.Users.FirstOrDefault(x => x.email == email);
-        }
-
-        return null;
     }
 }

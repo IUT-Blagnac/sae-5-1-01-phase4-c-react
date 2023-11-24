@@ -1,6 +1,7 @@
 ﻿using System.Security.Claims;
 using backend.Data;
 using backend.Data.Models;
+using backend.Services.Class;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -22,30 +23,20 @@ public class UserController: ControllerBase
     [Authorize]
     public IActionResult GetAuthenticatedUser()
     {
-        var currentUser = GetCurrentUser();
+        var currentUser = new UserService(_context).GetCurrentUser(HttpContext);
 
-        var role = _context.RoleUsers.FirstOrDefault(x => x.id == currentUser.id_role);
-        
-        if (currentUser != null)
+        if (currentUser is not null)
         {
+            // Recherche du role
+            var role = _context.RoleUsers.FirstOrDefault(x => x.id == currentUser.id_role);
+
+            // Retour d'un objet OK
             return new OkObjectResult( new { email = currentUser.email, firstname = currentUser.first_name, lastname = currentUser.last_name, role = role.name});
         }
-
-        return Unauthorized();
-    }
-
-    private User? GetCurrentUser()
-    {
-        var identity = HttpContext.User.Identity as ClaimsIdentity;
-
-        if (identity != null)
+        else
         {
-            var userClaims = identity.Claims;
-            var email = userClaims.FirstOrDefault(x => x.Type == ClaimTypes.Email)?.Value;
-            
-            return _context.Users.FirstOrDefault(x => x.email == email);
+            // Non autorisé
+            return Unauthorized();
         }
-
-        return null;
     }
 }
