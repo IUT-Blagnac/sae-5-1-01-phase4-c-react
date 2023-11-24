@@ -16,13 +16,11 @@ namespace backend.Controllers;
 [Route("api/[controller]")]
 public class TeamController : ControllerBase
 {
-    private readonly EntityContext _context;
     private readonly ITeamService _teamService;
     private readonly IUserService _userService;
 
-    public TeamController(EntityContext context, ITeamService teamService, IUserService userService)
+    public TeamController(ITeamService teamService, IUserService userService)
     {
-        _context = context;
         _teamService = teamService;
         _userService = userService;
     }
