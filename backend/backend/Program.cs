@@ -24,6 +24,7 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddScoped<ITeamService, TeamService>();
 builder.Services.AddScoped<IUserTeamService, UserTeamService>();
 builder.Services.AddScoped<ISkillService, SkillService>();
+builder.Services.AddScoped<IChallengeservice, ChallengeService>();
 
 //JWT Authentication
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>

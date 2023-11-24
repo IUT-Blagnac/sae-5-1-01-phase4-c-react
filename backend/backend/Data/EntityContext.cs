@@ -18,6 +18,8 @@ public class EntityContext : DbContext
     public DbSet<TeamSubject> TeamSubjects { get; set; }
     public DbSet<Category> Categories { get; set; }
     public DbSet<Skill> Skills { get; set; }
+    public DbSet<CharacterSkill> CharacterSkills { get; set; }
+    public DbSet<Character> Characters { get; set; }
     
     protected readonly IConfiguration _configuration;
     private readonly PasswordHasher<User> _passwordHasher;
