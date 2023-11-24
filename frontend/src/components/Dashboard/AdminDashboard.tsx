@@ -29,7 +29,7 @@ function AdminDashboard() {
         return "Publié";
       case SAEStatus.PENDING_WISHES:
         return "Archivé";
-      case SAEStatus.LAUNCHED_OPEN_FOR_ALTERNANTS:
+      case SAEStatus.LAUNCHED_OPEN_FOR_INTERNSHIP:
         return "Archivé";
       case SAEStatus.CLOSED:
         return "Archivé";
