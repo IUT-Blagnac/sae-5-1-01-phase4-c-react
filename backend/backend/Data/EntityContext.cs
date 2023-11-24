@@ -45,11 +45,36 @@ public class EntityContext : DbContext
             new() { name = "Admin" },
         };
 
-        foreach(var role in defaultRoles)
+        foreach (var role in defaultRoles)
         {
             if (!Roles.Where(c => c.name == role.name).Any())
             {
                 Roles.Add(role);
+            }
+        }
+
+        SaveChanges();
+
+        //DEFAULT GROUPS
+
+        var defaultGroups = new List<Group>
+        {
+            new() { name = "1", is_apprenticeship = false },
+            new() { name = "2", is_apprenticeship = false },
+            new() { name = "3", is_apprenticeship = true },
+            new() { name = "3A", is_apprenticeship = true },
+            new() { name = "3B", is_apprenticeship = true },
+        };
+
+        foreach(var group in defaultGroups)
+        {
+            if (!Groups.Where(c => c.name == group.name).Any())
+            {
+                if (group.name == "3A" || group.name == "3B")
+                {
+                    group.group_parent = Groups.Where(c => c.name == "3").FirstOrDefault();
+                }
+                Groups.Add(group);
             }
         }
 
@@ -69,6 +94,43 @@ public class EntityContext : DbContext
 
             defaultAdmin.password = _passwordHasher.HashPassword(defaultAdmin, "isfqzA8@&Ne@y9Ls@9CK");
             Users.Add(defaultAdmin);
+        }
+
+        SaveChanges();
+
+        //DEFAULT TEACHERS
+
+        var defaultTeachers = new List<User>
+        {
+            new() { email = "pablo.seban@etu.univ-tlse2.fr", first_name = "Pablo", last_name = "Seban", id_role = Roles.Where(r => r.name == "Teacher").FirstOrDefault().id},
+            new() { email = "remi.boulle@etu.univ-tlse2.fr", first_name = "Remi", last_name = "Boulle", id_role = Roles.Where(r => r.name == "Teacher").FirstOrDefault().id}
+        };
+
+        foreach (var teacher in defaultTeachers)
+        {
+            if (!Users.Where(c => c.email == teacher.email).Any())
+            {
+                teacher.password = _passwordHasher.HashPassword(teacher, "d4GRPdJ&c8kdMQtSP?S5");
+                Users.Add(teacher);
+            }
+        }
+
+        //DEFAULT USERS
+
+        var defaultStudents = new List<User>
+        {
+            new() { email = "loan.gayrard@etu.univ-tlse2.fr", first_name = "Loan", last_name = "Gayrard", id_role = Roles.Where(r => r.name == "Student").FirstOrDefault().id, id_group = Groups.Where(g => g.name == "1").FirstOrDefault().id},
+            new() { email = "matthieu.robert@etu.univ-tlse2.fr", first_name = "Matthieu", last_name = "Robert", id_role = Roles.Where(r => r.name == "Student").FirstOrDefault().id, id_group = Groups.Where(g => g.name == "2").FirstOrDefault().id},
+            new() { email = "hugo.castell@etu.univ-tlse2.fr", first_name = "Hugo", last_name = "Castell", id_role = Roles.Where(r => r.name == "Student").FirstOrDefault().id, id_group = Groups.Where(g => g.name == "3A").FirstOrDefault().id}
+        };
+
+        foreach (var student in defaultStudents)
+        {
+            if (!Users.Where(c => c.email == student.email).Any())
+            {
+                student.password = _passwordHasher.HashPassword(student, "6@ANdqS$x@er&76khmkJ");
+                Users.Add(student);
+            }
         }
 
         SaveChanges();
