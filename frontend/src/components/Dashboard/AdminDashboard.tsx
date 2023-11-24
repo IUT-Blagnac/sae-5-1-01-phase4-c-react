@@ -24,7 +24,7 @@ function AdminDashboard() {
     const statut = sae.statut;
     switch (statut) {
       case SAEStatus.LAUNCHED:
-        return (window.location.href = `sae/${sae.id}/manage`);
+        return (window.location.href = `sae/${sae.id}`);
       case SAEStatus.PENDING_USERS:
         return "Publié";
       case SAEStatus.PENDING_WISHES:
