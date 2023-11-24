@@ -55,7 +55,7 @@ public class ChallengeService: IChallengeservice
             }).ToList();
     }
 
-    public Challenge AddChallenge(ChallengeForm challengeForm, Guid creatorTeamId)
+    public Challenge AddChallenge(ChallengeForm challengeForm)
     {
         var challenge = new Challenge
         {
@@ -63,12 +63,12 @@ public class ChallengeService: IChallengeservice
             name = challengeForm.name,
             description = challengeForm.description,
             target_team_id = challengeForm.target_team_id,
-            creator_team_id = creatorTeamId,
+            creator_team_id = challengeForm.creator_team_id,
             completed = false
         };
 
         _context.Challenges.Add(challenge);
-        _context.SaveChangesAsync();
+        _context.SaveChanges();
 
         return challenge;
     }
@@ -77,11 +77,16 @@ public class ChallengeService: IChallengeservice
     {
         var challenge = _context.Challenges.FirstOrDefault(x => x.id == id);
 
-        challenge.completed = false;
+        if (challenge == null)
+        {
+            return null;
+        }
+        
+        challenge.completed = true;
 
         try
         {
-            _context.SaveChangesAsync();
+            _context.SaveChanges();
         }
         catch (DbUpdateConcurrencyException e)
         {

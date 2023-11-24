@@ -16,6 +16,6 @@ public class RoleUserService : IRoleUserService
 
     public Role? GetRole(int idRole)
     {
-        return _context.RoleUsers.FirstOrDefault(roleuser => roleuser.id == idRole);
+        return _context.Roles.FirstOrDefault(roleuser => roleuser.id == idRole);
     }
 }

@@ -26,6 +26,7 @@ builder.Services.AddScoped<IUserTeamService, UserTeamService>();
 builder.Services.AddScoped<ISkillService, SkillService>();
 builder.Services.AddScoped<IChallengeservice, ChallengeService>();
 builder.Services.AddScoped<ISaeService, SaeService>();
+builder.Services.AddScoped<IUserService, UserService>();
 
 //JWT Authentication
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>
