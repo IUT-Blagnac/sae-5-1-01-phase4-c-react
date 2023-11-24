@@ -20,8 +20,15 @@ namespace backend.Controllers
         [Authorize]
         public ActionResult AddSae(SaeForm saeForm)
         {
-            _saeService.CreateSae(saeForm);
-            return Ok();
+            try
+            {
+                _saeService.CreateSae(saeForm);
+                return Ok();
+            }
+            catch (Exception)
+            {
+                return BadRequest();
+            }
         }
     }
 }
