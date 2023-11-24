@@ -28,10 +28,10 @@ public class UserController: ControllerBase
         if (currentUser is not null)
         {
             // Recherche du role
-            var role = _context.RoleUsers.FirstOrDefault(x => x.id == currentUser.id_role);
+            var role = _context.Roles.FirstOrDefault(x => x.id == currentUser.id_role);
 
             // Retour d'un objet OK
-            return new OkObjectResult( new { email = currentUser.email, firstname = currentUser.first_name, lastname = currentUser.last_name, role = role.name});
+            return new OkObjectResult( new { id = currentUser.id, email = currentUser.email, firstname = currentUser.first_name, lastname = currentUser.last_name, role = role.name});
         }
         else
         {
