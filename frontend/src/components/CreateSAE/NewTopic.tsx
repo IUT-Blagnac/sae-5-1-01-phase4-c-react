@@ -17,7 +17,7 @@ import {
   Option,
 } from "@mui/joy";
 import CreateSaeForm from "../../models/CreateSaeForm";
-import Topic from "../../models/Topics";
+import Topic from "../../models/Topic";
 
 const MAX_DESCRIPTION_LENGTH = 400;
 
