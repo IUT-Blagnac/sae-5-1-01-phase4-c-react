@@ -18,18 +18,20 @@ public class TeamController : ControllerBase
 {
     private readonly EntityContext _context;
     private readonly ITeamService _teamService;
+    private readonly IUserService _userService;
 
-    public TeamController(EntityContext context, ITeamService teamService)
+    public TeamController(EntityContext context, ITeamService teamService, IUserService userService)
     {
         _context = context;
         _teamService = teamService;
+        _userService = userService;
     }
 
     [HttpGet]
     [Authorize]
     public ActionResult<List<Team>> GetTeams()
     {
-        var user = new UserService(_context).GetCurrentUser(HttpContext);
+        var user = _userService.GetCurrentUser(HttpContext);
 
         return _teamService.GetTeams(user.id);
     }
@@ -51,7 +53,7 @@ public class TeamController : ControllerBase
     [Authorize]
     public async Task<ActionResult<Team>> CreateTeam(TeamForm teamForm)
     {
-        var user = new UserService(_context).GetCurrentUser(HttpContext);
+        var user = _userService.GetCurrentUser(HttpContext);
 
         var teamItem = _teamService.CreateTeam(teamForm, user.id);
 
@@ -70,7 +72,7 @@ public class TeamController : ControllerBase
     [Authorize]
     public async Task<ActionResult<Team>> ModifyTeam(Guid id, TeamForm teamForm)
     {
-        var user = new UserService(_context).GetCurrentUser(HttpContext);
+        var user = _userService.GetCurrentUser(HttpContext);
 
         try
         {
