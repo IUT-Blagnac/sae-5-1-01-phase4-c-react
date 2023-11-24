@@ -101,10 +101,3 @@ public class TeamController: ControllerBase
         return null;
     }
 }
-
-public class TeamDto
-{
-    public Guid id;
-    public string name;
-    public string color;
-}

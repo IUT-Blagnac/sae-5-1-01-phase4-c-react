@@ -9,7 +9,7 @@ namespace backend.Data.Models
         public Guid id_character { get; set; }
         public Character character { get; set; }
 
-        public int id_skill { get; set; }
+        public Guid id_skill { get; set; }
         public Skill skill { get; set; }
 
         [Range(1, 5)]
