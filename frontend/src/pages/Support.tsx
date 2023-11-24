@@ -1,6 +1,8 @@
 import {
   Box,
+  Button,
   Card,
+  Checkbox,
   Chip,
   CssBaseline,
   CssVarsProvider,
@@ -15,12 +17,42 @@ import {
   Typography,
 } from "@mui/joy";
 
+import React from 'react';
+import ReactDOM from 'react-dom';
+import Slider from 'react-slick';
+import 'slick-carousel/slick/slick.css';
+import 'slick-carousel/slick/slick-theme.css';
 import { useState } from "react";
 import Sidebar from "../components/SideBar";
 import AuthChecker from "../middlewares/AuthChecker";
 import Header from "../components/Header";
+import Carrousel from "../components/Support/Carrousel";
+import { Label } from "@mui/icons-material";
 
 export default function Support() {
+  // Paramètre du carrousel
+  const settings = {
+    infinite: true,
+    slidesToShow: 3,
+    slidesToScroll: 3,
+    centerMode: true,
+    centerPadding: '0',
+  };
+
+  // Pour afficher le formulaire
+  const [afficherFormulaire, setAfficherFormulaire] = useState(false);
+
+  const handleClick = () => {
+    setAfficherFormulaire(true);
+  };
+
+  // Alerte quand le formulaire est soumis
+  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    alert("Merci pour votre retour, nous vous répondrons prochainement par mail.");
+    setAfficherFormulaire(false);
+  };
+
   return (
     <AuthChecker>
       <CssVarsProvider disableTransitionOnChange>
@@ -86,6 +118,26 @@ export default function Support() {
                   </Typography>
                 </Box>
               </Box>
+              <Card
+                color="primary"
+                variant="soft"
+                sx={{
+                  margin: "0 1% 0 1%",
+                }}
+              >
+                <Typography
+                  level="h3"
+                  sx={{
+                    mt: 1,
+                    mb: 2,
+                    ml: 3,
+                  }}
+                >
+                  FAQ
+                </Typography>
+                <Carrousel/>
+              </Card>
+            
 
               <Stack
                 spacing={4}
@@ -103,6 +155,43 @@ export default function Support() {
                   },
                 }}
               ></Stack>
+                <Card
+                  sx={{
+                    margin: "0 1% 0 1%",
+                  }}
+                >
+                  <Typography level="h3">
+                    Besoin d'aide?
+                  </Typography>
+                  {!afficherFormulaire && (
+                    <Button onClick={handleClick}>Contactez nous</Button>
+                  )}
+                  {afficherFormulaire && (
+                    <Box sx={{ mb: 1 }}>
+                      <form onSubmit={handleSubmit}>
+                        <Stack spacing={1}>
+                          Nom :
+                          <Input placeholder="Nom" required />
+                          Prénom :
+                          <Input placeholder="Prénom" required />
+                          Email :
+                          <Input type="email" placeholder="Email" required />
+                          <br/>
+                          Sujet :
+                          <Input placeholder="Sujet" required />
+                          <br/>
+                          Description :
+                          <Textarea minRows={2} placeholder="Description..." required />
+                          <br/>
+                          <Checkbox label="En soumettant ce formulaire, j'accepte que les informations saisies soient exploitées dans le cadre de la demande de contact qui peut en découler." required />
+                          <br/>
+                          <Button type="submit">Envoyer</Button>
+                        </Stack>
+                      </form>
+                    </Box>
+                  )}
+                </Card>
+              
             </Box>
           </Box>
         </Box>
