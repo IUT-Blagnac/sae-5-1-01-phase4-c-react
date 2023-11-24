@@ -52,10 +52,12 @@ public class ChallengeController: ControllerBase
         return challenge;
     }
 
+    /*
     [HttpPost]
     [Authorize]
     public async Task<ActionResult<Challenge>> CreateChallenge(ChallengeForm challengeForm)
     {
         
     }
+    */
 }

@@ -57,7 +57,7 @@ public class AuthController: ControllerBase
             return StatusCode(409, new { message = "User already exits" });
         }
 
-        var defaultRole = _context.RoleUsers.Where(c => c.name == "Student").FirstOrDefault();
+        var defaultRole = _context.Roles.Where(c => c.name == "Student").FirstOrDefault();
         if (defaultRole == null)
         {
             return StatusCode(500, new { Message = "Internal server error" });
@@ -121,7 +121,7 @@ public class AuthController: ControllerBase
         var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:Key"]));
         var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
 
-        var role = _context.RoleUsers.FirstOrDefault(x => x.id == user.id_role);
+        var role = _context.Roles.FirstOrDefault(x => x.id == user.id_role);
         
         var claims = new[]
         {
