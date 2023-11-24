@@ -33,7 +33,7 @@ const SAE_TWO: Sae = {
   id: "2",
   name: "Slaves Narratives",
   description: "Say no to slavery",
-  statut: SAEStatus.LAUNCHED_OPEN_FOR_ALTERNANTS,
+  statut: SAEStatus.PENDING_USERS,
   min_student_per_group: 1,
   max_student_per_group: 2,
   min_group_per_subject: 1,
