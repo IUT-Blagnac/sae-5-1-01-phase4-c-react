@@ -12,8 +12,8 @@ using backend.Data;
 namespace backend.Migrations
 {
     [DbContext(typeof(EntityContext))]
-    [Migration("20231124092845_RemoveSkill")]
-    partial class RemoveSkill
+    [Migration("20231124103825_InitialCreate")]
+    partial class InitialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -46,6 +46,9 @@ namespace backend.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
+                    b.Property<bool>("completed")
+                        .HasColumnType("boolean");
+
                     b.Property<Guid>("creator_team_id")
                         .HasColumnType("uuid");
 
@@ -75,8 +78,8 @@ namespace backend.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
-                    b.Property<int>("id_sae")
-                        .HasColumnType("integer");
+                    b.Property<Guid>("id_sae")
+                        .HasColumnType("uuid");
 
                     b.Property<Guid>("id_user")
                         .HasColumnType("uuid");
@@ -94,16 +97,32 @@ namespace backend.Migrations
                     b.ToTable("character");
                 });
 
+            modelBuilder.Entity("backend.Data.Models.CharacterSkill", b =>
+                {
+                    b.Property<Guid>("id_character")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("id_skill")
+                        .HasColumnType("uuid");
+
+                    b.Property<int>("confidence_level")
+                        .HasColumnType("integer");
+
+                    b.HasKey("id_character", "id_skill");
+
+                    b.HasIndex("id_skill");
+
+                    b.ToTable("character_skill");
+                });
+
             modelBuilder.Entity("backend.Data.Models.Group", b =>
                 {
-                    b.Property<int>("id")
+                    b.Property<Guid>("id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
+                        .HasColumnType("uuid");
 
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("id"));
-
-                    b.Property<int?>("id_group_parent")
-                        .HasColumnType("integer");
+                    b.Property<Guid?>("id_group_parent")
+                        .HasColumnType("uuid");
 
                     b.Property<bool>("is_apprenticeship")
                         .HasColumnType("boolean");
@@ -138,11 +157,9 @@ namespace backend.Migrations
 
             modelBuilder.Entity("backend.Data.Models.Sae", b =>
                 {
-                    b.Property<int>("id")
+                    b.Property<Guid>("id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("id"));
+                        .HasColumnType("uuid");
 
                     b.Property<string>("description")
                         .IsRequired()
@@ -164,6 +181,9 @@ namespace backend.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
+                    b.Property<int>("state")
+                        .HasColumnType("integer");
+
                     b.HasKey("id");
 
                     b.ToTable("sae");
@@ -171,8 +191,8 @@ namespace backend.Migrations
 
             modelBuilder.Entity("backend.Data.Models.SaeCoach", b =>
                 {
-                    b.Property<int>("id_sae")
-                        .HasColumnType("integer");
+                    b.Property<Guid>("id_sae")
+                        .HasColumnType("uuid");
 
                     b.Property<Guid>("id_coach")
                         .HasColumnType("uuid");
@@ -186,17 +206,32 @@ namespace backend.Migrations
 
             modelBuilder.Entity("backend.Data.Models.SaeGroup", b =>
                 {
-                    b.Property<int>("id_sae")
-                        .HasColumnType("integer");
+                    b.Property<Guid>("id_sae")
+                        .HasColumnType("uuid");
 
-                    b.Property<int>("id_group")
-                        .HasColumnType("integer");
+                    b.Property<Guid>("id_group")
+                        .HasColumnType("uuid");
 
                     b.HasKey("id_sae", "id_group");
 
                     b.HasIndex("id_group");
 
                     b.ToTable("sae_group");
+                });
+
+            modelBuilder.Entity("backend.Data.Models.Skill", b =>
+                {
+                    b.Property<Guid>("id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("name")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("id");
+
+                    b.ToTable("skill");
                 });
 
             modelBuilder.Entity("backend.Data.Models.Subject", b =>
@@ -212,8 +247,8 @@ namespace backend.Migrations
                     b.Property<Guid>("id_category")
                         .HasColumnType("uuid");
 
-                    b.Property<int>("id_sae")
-                        .HasColumnType("integer");
+                    b.Property<Guid>("id_sae")
+                        .HasColumnType("uuid");
 
                     b.Property<string>("name")
                         .IsRequired()
@@ -291,8 +326,8 @@ namespace backend.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<int?>("id_group")
-                        .HasColumnType("integer");
+                    b.Property<Guid?>("id_group")
+                        .HasColumnType("uuid");
 
                     b.Property<int>("id_role")
                         .HasColumnType("integer");
@@ -369,6 +404,25 @@ namespace backend.Migrations
                     b.Navigation("sae");
 
                     b.Navigation("user");
+                });
+
+            modelBuilder.Entity("backend.Data.Models.CharacterSkill", b =>
+                {
+                    b.HasOne("backend.Data.Models.Character", "character")
+                        .WithMany("character_skills")
+                        .HasForeignKey("id_character")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("backend.Data.Models.Skill", "skill")
+                        .WithMany("character_skills")
+                        .HasForeignKey("id_skill")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("character");
+
+                    b.Navigation("skill");
                 });
 
             modelBuilder.Entity("backend.Data.Models.Group", b =>
@@ -516,6 +570,11 @@ namespace backend.Migrations
                     b.Navigation("subject");
                 });
 
+            modelBuilder.Entity("backend.Data.Models.Character", b =>
+                {
+                    b.Navigation("character_skills");
+                });
+
             modelBuilder.Entity("backend.Data.Models.Group", b =>
                 {
                     b.Navigation("groups_childs");
@@ -539,6 +598,11 @@ namespace backend.Migrations
                     b.Navigation("sae_groups");
 
                     b.Navigation("subjects");
+                });
+
+            modelBuilder.Entity("backend.Data.Models.Skill", b =>
+                {
+                    b.Navigation("character_skills");
                 });
 
             modelBuilder.Entity("backend.Data.Models.Subject", b =>

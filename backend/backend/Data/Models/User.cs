@@ -18,7 +18,7 @@ public class User
     public Role role_user { get; set; }
     public List<UserTeam> user_team { get; set; }
 
-    public int? id_group { get; set; }
+    public Guid? id_group { get; set; }
     public Group? group { get; set; }
 
     public List<Character> characters { get; set; }

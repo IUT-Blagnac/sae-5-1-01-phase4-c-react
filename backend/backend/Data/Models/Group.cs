@@ -5,11 +5,11 @@ namespace backend.Data.Models
     [Table("group")]
     public class Group
     {
-        public int id { get; set; }
+        public Guid id { get; set; }
         public string name { get; set; }
         public bool is_apprenticeship { get; set; }
 
-        public int? id_group_parent { get; set; }
+        public Guid? id_group_parent { get; set; }
         public Group? group_parent { get; set; }
         public List<Group> groups_childs { get; set; }
 

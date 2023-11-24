@@ -43,6 +43,9 @@ namespace backend.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
+                    b.Property<bool>("completed")
+                        .HasColumnType("boolean");
+
                     b.Property<Guid>("creator_team_id")
                         .HasColumnType("uuid");
 
@@ -72,8 +75,8 @@ namespace backend.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
-                    b.Property<int>("id_sae")
-                        .HasColumnType("integer");
+                    b.Property<Guid>("id_sae")
+                        .HasColumnType("uuid");
 
                     b.Property<Guid>("id_user")
                         .HasColumnType("uuid");
@@ -111,14 +114,12 @@ namespace backend.Migrations
 
             modelBuilder.Entity("backend.Data.Models.Group", b =>
                 {
-                    b.Property<int>("id")
+                    b.Property<Guid>("id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
+                        .HasColumnType("uuid");
 
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("id"));
-
-                    b.Property<int?>("id_group_parent")
-                        .HasColumnType("integer");
+                    b.Property<Guid?>("id_group_parent")
+                        .HasColumnType("uuid");
 
                     b.Property<bool>("is_apprenticeship")
                         .HasColumnType("boolean");
@@ -153,11 +154,9 @@ namespace backend.Migrations
 
             modelBuilder.Entity("backend.Data.Models.Sae", b =>
                 {
-                    b.Property<int>("id")
+                    b.Property<Guid>("id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("id"));
+                        .HasColumnType("uuid");
 
                     b.Property<string>("description")
                         .IsRequired()
@@ -179,6 +178,9 @@ namespace backend.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
+                    b.Property<int>("state")
+                        .HasColumnType("integer");
+
                     b.HasKey("id");
 
                     b.ToTable("sae");
@@ -186,8 +188,8 @@ namespace backend.Migrations
 
             modelBuilder.Entity("backend.Data.Models.SaeCoach", b =>
                 {
-                    b.Property<int>("id_sae")
-                        .HasColumnType("integer");
+                    b.Property<Guid>("id_sae")
+                        .HasColumnType("uuid");
 
                     b.Property<Guid>("id_coach")
                         .HasColumnType("uuid");
@@ -201,11 +203,11 @@ namespace backend.Migrations
 
             modelBuilder.Entity("backend.Data.Models.SaeGroup", b =>
                 {
-                    b.Property<int>("id_sae")
-                        .HasColumnType("integer");
+                    b.Property<Guid>("id_sae")
+                        .HasColumnType("uuid");
 
-                    b.Property<int>("id_group")
-                        .HasColumnType("integer");
+                    b.Property<Guid>("id_group")
+                        .HasColumnType("uuid");
 
                     b.HasKey("id_sae", "id_group");
 
@@ -242,8 +244,8 @@ namespace backend.Migrations
                     b.Property<Guid>("id_category")
                         .HasColumnType("uuid");
 
-                    b.Property<int>("id_sae")
-                        .HasColumnType("integer");
+                    b.Property<Guid>("id_sae")
+                        .HasColumnType("uuid");
 
                     b.Property<string>("name")
                         .IsRequired()
@@ -321,8 +323,8 @@ namespace backend.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<int?>("id_group")
-                        .HasColumnType("integer");
+                    b.Property<Guid?>("id_group")
+                        .HasColumnType("uuid");
 
                     b.Property<int>("id_role")
                         .HasColumnType("integer");

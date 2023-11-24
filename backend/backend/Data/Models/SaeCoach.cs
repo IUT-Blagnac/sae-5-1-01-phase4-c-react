@@ -6,7 +6,7 @@ namespace backend.Data.Models
     [Table("sae_coach")]
     public class SaeCoach
     {
-        public int id_sae { get; set; }
+        public Guid id_sae { get; set; }
         public Sae sae { get; set; }
 
         public Guid id_coach { get; set; }

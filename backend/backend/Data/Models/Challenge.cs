@@ -14,5 +14,6 @@ namespace backend.Data.Models
         
         public Team creator_team { get; set; }
         public Team target_team { get; set; }
+        public bool completed { get; set; }
     }
 }
