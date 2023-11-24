@@ -8,18 +8,22 @@ namespace backend.Data;
 
 public class EntityContext : DbContext
 {
-    public DbSet<User> Users { get; set; }
-    public DbSet<Role> RoleUsers { get; set; }
-    public DbSet<Team> Teams { get; set; }
-    public DbSet<UserTeam> UserTeams { get; set; }
-    public DbSet<Challenge> Challenges { get; set; }
-    public DbSet<Subject> Subjects { get; set; }
-    public DbSet<TeamWish> Wishes { get; set; }
-    public DbSet<TeamSubject> TeamSubjects { get; set; }
     public DbSet<Category> Categories { get; set; }
-    public DbSet<Skill> Skills { get; set; }
-    public DbSet<CharacterSkill> CharacterSkills { get; set; }
+    public DbSet<Challenge> Challenges { get; set; }
     public DbSet<Character> Characters { get; set; }
+    public DbSet<CharacterSkill> CharacterSkills { get; set; }
+    public DbSet<Group> Groups { get; set; }
+    public DbSet<Role> Roles { get; set; }
+    public DbSet<Sae> Saes { get; set; }
+    public DbSet<SaeCoach> SaeCoaches { get; set; }
+    public DbSet<SaeGroup> SaeGroups { get; set; }
+    public DbSet<Skill> Skills { get; set; }
+    public DbSet<Subject> Subjects { get; set; }
+    public DbSet<Team> Teams { get; set; }
+    public DbSet<TeamSubject> TeamSubjects { get; set; }
+    public DbSet<TeamWish> TeamWishes { get; set; }
+    public DbSet<User> Users { get; set; }
+    public DbSet<UserTeam> UserTeams { get; set; }
     
     protected readonly IConfiguration _configuration;
     private readonly PasswordHasher<User> _passwordHasher;
@@ -43,9 +47,9 @@ public class EntityContext : DbContext
 
         foreach(var role in defaultRoles)
         {
-            if (!RoleUsers.Where(c => c.name == role.name).Any())
+            if (!Roles.Where(c => c.name == role.name).Any())
             {
-                RoleUsers.Add(role);
+                Roles.Add(role);
             }
         }
 
@@ -58,7 +62,7 @@ public class EntityContext : DbContext
             var defaultAdmin = new User
             {
                 email = "admin@superadmin.com",
-                role_user = RoleUsers.Where(c => c.name == "Admin").FirstOrDefault(),
+                role_user = Roles.Where(c => c.name == "Admin").FirstOrDefault(),
                 first_name = "Admin",
                 last_name = "SuperAdmin",
             };
