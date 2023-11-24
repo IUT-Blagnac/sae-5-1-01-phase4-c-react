@@ -60,11 +60,11 @@ public class EntityContext : DbContext
 
         var defaultGroups = new List<Group>
         {
-            new() { name = "1", is_apprenticeship = false },
-            new() { name = "2", is_apprenticeship = false },
-            new() { name = "3", is_apprenticeship = true },
-            new() { name = "3A", is_apprenticeship = true },
-            new() { name = "3B", is_apprenticeship = true },
+            new() { id = new Guid("f441bf0a-115e-4c1e-8b1f-a7fb6f5738c5"), name = "1", is_apprenticeship = false },
+            new() { id = new Guid("61cd9a7c-b555-4dea-92e8-9478bab248d8"), name = "2", is_apprenticeship = false },
+            new() { id = new Guid("47c8a811-eb03-45cb-b366-136363f4903c"), name = "3", is_apprenticeship = true },
+            new() { id = new Guid("6d7791c5-56dd-419f-aa7a-a811213cba32"), name = "3A", is_apprenticeship = true },
+            new() { id = new Guid("2dbcecf8-c254-4cb7-9c55-0b3e7108054d"), name = "3B", is_apprenticeship = true },
         };
 
         foreach(var group in defaultGroups)
@@ -87,7 +87,7 @@ public class EntityContext : DbContext
         {
             var defaultAdmin = new User
             {
-                id = new Guid("SUPERULTRAADMIN"),
+                id = new Guid("55a48e75-9d05-4823-b5e8-941180602846"),
                 email = "admin@superadmin.com",
                 role_user = Roles.Where(c => c.name == "Admin").FirstOrDefault(),
                 first_name = "Admin",
@@ -104,8 +104,8 @@ public class EntityContext : DbContext
 
         var defaultTeachers = new List<User>
         {
-            new() { id = new Guid("PABLOSEBAN"), email = "pablo.seban@etu.univ-tlse2.fr", first_name = "Pablo", last_name = "Seban", id_role = Roles.Where(r => r.name == "Teacher").FirstOrDefault().id},
-            new() { id = new Guid("REMIBOULLE"), email = "remi.boulle@etu.univ-tlse2.fr", first_name = "Remi", last_name = "Boulle", id_role = Roles.Where(r => r.name == "Teacher").FirstOrDefault().id}
+            new() { id = new Guid("21afc2e9-eca8-4bc0-aa47-ee71f1b8cf1c"), email = "pablo.seban@etu.univ-tlse2.fr", first_name = "Pablo", last_name = "Seban", id_role = Roles.Where(r => r.name == "Teacher").FirstOrDefault().id},
+            new() { id = new Guid("589eb929-0623-48d3-b78c-0973f3cd9eef"), email = "remi.boulle@etu.univ-tlse2.fr", first_name = "Remi", last_name = "Boulle", id_role = Roles.Where(r => r.name == "Teacher").FirstOrDefault().id}
         };
 
         foreach (var teacher in defaultTeachers)
@@ -123,9 +123,9 @@ public class EntityContext : DbContext
 
         var defaultStudents = new List<User>
         {
-            new() { id = new Guid("LOANGAYRARD"), email = "loan.gayrard@etu.univ-tlse2.fr", first_name = "Loan", last_name = "Gayrard", id_role = Roles.Where(r => r.name == "Student").FirstOrDefault().id, id_group = Groups.Where(g => g.name == "1").FirstOrDefault().id},
-            new() { id = new Guid("MATTHIEUROBERT"), email = "matthieu.robert@etu.univ-tlse2.fr", first_name = "Matthieu", last_name = "Robert", id_role = Roles.Where(r => r.name == "Student").FirstOrDefault().id, id_group = Groups.Where(g => g.name == "2").FirstOrDefault().id},
-            new() { id = new Guid("HUGOCASTELL"), email = "hugo.castell@etu.univ-tlse2.fr", first_name = "Hugo", last_name = "Castell", id_role = Roles.Where(r => r.name == "Student").FirstOrDefault().id, id_group = Groups.Where(g => g.name == "3A").FirstOrDefault().id}
+            new() { id = new Guid("f8f69fc6-2488-44f6-b742-3b63cb9cad6d"), email = "loan.gayrard@etu.univ-tlse2.fr", first_name = "Loan", last_name = "Gayrard", id_role = Roles.Where(r => r.name == "Student").FirstOrDefault().id, id_group = Groups.Where(g => g.name == "1").FirstOrDefault().id},
+            new() { id = new Guid("ca7b4826-5d71-4d97-8dc5-b65a52a15f4c"), email = "matthieu.robert@etu.univ-tlse2.fr", first_name = "Matthieu", last_name = "Robert", id_role = Roles.Where(r => r.name == "Student").FirstOrDefault().id, id_group = Groups.Where(g => g.name == "2").FirstOrDefault().id},
+            new() { id = new Guid("64f4f759-0c6e-4362-9495-0536ac3a512f"), email = "hugo.castell@etu.univ-tlse2.fr", first_name = "Hugo", last_name = "Castell", id_role = Roles.Where(r => r.name == "Student").FirstOrDefault().id, id_group = Groups.Where(g => g.name == "3A").FirstOrDefault().id}
         };
 
         foreach (var student in defaultStudents)
@@ -143,7 +143,7 @@ public class EntityContext : DbContext
 
         var defaultCategories = new List<Category>()
         {
-            new() { id = new Guid("DEVELOPMENT"), name = "Développement" }, new() { id = new Guid("NETWORK"), name = "Réseau" }, new() { id = new Guid("SYSTEM"), name = "Système" } 
+            new() { id = new Guid("0e6890df-3199-4315-80fe-88fdfdb40671"), name = "Développement" }, new() { id = new Guid("28c1c623-12b1-4dac-87ae-2c95f9ecf598"), name = "Réseau" }, new() { id = new Guid("357a01a3-8895-4aa8-9d6c-d66d57ee01f2"), name = "Système" } 
         };
 
         foreach (var category in defaultCategories)
