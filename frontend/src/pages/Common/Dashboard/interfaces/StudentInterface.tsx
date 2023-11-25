@@ -7,7 +7,7 @@ import { Box } from "@mui/joy";
 
 // custom
 
-function StudentDashboard() {
+function StudentInterface() {
   return (
     <Box>
       <Box
@@ -100,4 +100,4 @@ function StudentDashboard() {
   );
 }
 
-export default StudentDashboard;
+export default StudentInterface;

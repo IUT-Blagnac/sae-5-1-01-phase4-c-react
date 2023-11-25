@@ -16,21 +16,21 @@ import {
 } from "@mui/joy";
 
 // Template for a Blank Page
-import BlankPage from "../templates/BlankPage";
-import { Status } from "../../assets/enums/Status.enum";
+import BlankPage from "../../templates/BlankPage";
+import { Status } from "../../../assets/enums/Status.enum";
 
 // Components
-import NewTopic from "../../components/CreateSAE/NewTopic";
+import NewTopic from "../../../components/CreateSAE/NewTopic";
 
 // Models
-import CreateSaeForm from "../../models/CreateSaeForm";
+import CreateSaeForm from "../../../models/CreateSaeForm";
 
 export default function CreateSAE() {
-  const [inputText, setInputText] = useState<string>("");
+  const [inputText, setInputText] = useState<string>("Non, Implémenté");
   const [saeName, setSaeName] = useState<string>("");
   const [saeDescription, setSaeDescription] = useState<string>("");
   const [saeGroups, setSaeGroups] = useState<string[]>([]);
-  const [saeSkills, setSaeSkills] = useState<string[]>([]);
+  const [saeSkills, setSaeSkills] = useState<string[]>(["Non", "Implémenté"]);
   const [saeMinTeamPerSubject, setSaeMinTeamPerSubject] = useState<number>(0);
   const [saeMaxTeamPerSubject, setSaeMaxTeamPerSubject] = useState<number>(0);
   const [saeMinTeamSize, setSaeMinTeamSize] = useState<number>(0);
@@ -68,7 +68,7 @@ export default function CreateSAE() {
       name: saeName,
       description: saeDescription,
       groups: saeGroups,
-      skills: saeSkills,
+      skills: [],
       minTeamPerSubject: saeMinTeamPerSubject,
       maxTeamPerSubject: saeMaxTeamPerSubject,
       minTeamSize: saeMinTeamSize,
@@ -82,7 +82,7 @@ export default function CreateSAE() {
 
   return (
     <BlankPage
-      role={localStorage.getItem("statut") as Status}
+      role={Status.ADMIN}
       pageTitle="Créer une SAE"
       maxContentWidth="900px"
     >
@@ -212,7 +212,9 @@ export default function CreateSAE() {
             {/**  ==================== */}
             <Stack>
               <FormControl>
-                <FormLabel>Champ Feuille de compétence</FormLabel>
+                <FormLabel>
+                  Champ Feuille de compétence (Non implémenté)
+                </FormLabel>
                 <Input
                   value={inputText}
                   onChange={handleInputChange}

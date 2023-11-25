@@ -16,9 +16,9 @@ import {
 } from "@mui/joy";
 
 import { useState } from "react";
-import Sidebar from "../components/SideBar";
-import AuthChecker from "../middlewares/AuthChecker";
-import Header from "../components/Header";
+import Sidebar from "../../../components/SideBar";
+import AuthChecker from "../../../middlewares/AuthChecker";
+import Header from "../../../components/Header";
 
 export default function Support() {
   return (

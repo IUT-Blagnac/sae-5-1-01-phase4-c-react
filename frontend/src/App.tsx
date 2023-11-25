@@ -2,10 +2,10 @@ import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import { URLs } from "./assets/enums/URLs.enum";
 
 import SignInSide from "./pages/Login";
-import Dashboard from "./pages/Dashboard";
-import CreateSAE from "./pages/Admin/CreateSAE";
-import Support from "./pages/Support";
-import ConsultSAE from "./pages/Admin/ConsultSAE";
+import Dashboard from "./pages/Common/Dashboard/Dashboard";
+import CreateSAE from "./pages/Admin/CreateSAE/CreateSAE";
+import Support from "./pages/Common/Support/Support";
+import ConsultSAE from "./pages/Admin/ConsultSAE/ConsultSAE";
 
 function App() {
   return (
