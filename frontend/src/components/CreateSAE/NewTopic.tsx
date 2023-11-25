@@ -71,6 +71,7 @@ export default function NewTopic({ submitSae }: NewTopicProps) {
 
     topics.forEach((topic) => {
       formTopics.push({
+        id: "NULL",
         name: topic.titleText,
         description: topic.descriptionText,
         categories: topic.selectedCategories,

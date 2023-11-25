@@ -1,14 +1,14 @@
 import { Sheet } from "@mui/joy";
 
 // Blank Page Template
-import BlankPage from "./templates/BlankPage";
+import BlankPage from "../../templates/BlankPage";
 
 // Enums
-import { Status } from "../assets/enums/Status.enum";
+import { Status } from "../../../assets/enums/Status.enum";
 
 // Page Content
-import StudentDashboard from "../components/Dashboard/StudentDashboard";
-import AdminDashboard from "../components/Dashboard/AdminDashboard";
+import StudentInterface from "./interfaces/StudentInterface";
+import AdminInterface from "./interfaces/AdminInterface";
 
 export default function Dashboard() {
   return (
@@ -21,9 +21,9 @@ export default function Dashboard() {
           maxWidth: "1200px", // Définissez une largeur maximale si nécessaire
         }}
       >
-        {localStorage.getItem("statut") === Status.ADMIN && <AdminDashboard />}
+        {localStorage.getItem("statut") === Status.ADMIN && <AdminInterface />}
         {localStorage.getItem("statut") === Status.STUDENT && (
-          <StudentDashboard />
+          <StudentInterface />
         )}
       </Sheet>
     </BlankPage>
