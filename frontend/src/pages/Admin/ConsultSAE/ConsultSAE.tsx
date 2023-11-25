@@ -1,4 +1,4 @@
-import { Button, Card, Divider, Sheet, Table, Typography } from "@mui/joy";
+import { Card, Divider, Typography } from "@mui/joy";
 import { Status } from "../../../assets/enums/Status.enum";
 import BlankPage from "../../templates/BlankPage";
 import { useEffect, useState } from "react";
@@ -6,14 +6,11 @@ import Sae from "../../../models/Sae";
 import Topic from "../../../models/Topic";
 import FetchData from "../../../assets/temp/FetchData";
 import Loading from "../../../components/Loading";
-import {
-  convertSaeStatutEnumToHText,
-  cutText,
-  random,
-} from "../../../utils/Utils";
+import { convertSaeStatutEnumToHText } from "../../../utils/Utils";
 import ButtonAdminSae from "../../../components/Buttons/ButtonAdminSae";
 import { SAEStatus } from "../../../assets/enums/SAEStatus.enum";
 import PendingUsers from "./interfaces/PendingUsers";
+import PendingWishes from "./interfaces/PendingWishes";
 
 export default function ConsultSAE() {
   const saeId = window.location.href.split("/")[4];
@@ -31,6 +28,8 @@ export default function ConsultSAE() {
 
       FetchData.fetchTopics(saeId).then((data) => {
         setTopics(data);
+
+        setSignedStudent([]);
         setLoading(false);
       });
     });
@@ -60,6 +59,9 @@ export default function ConsultSAE() {
 
         {sae?.statut === SAEStatus.PENDING_USERS && (
           <PendingUsers topics={topics} />
+        )}
+        {sae?.statut === SAEStatus.PENDING_WISHES && (
+          <PendingWishes topics={topics} />
         )}
       </Card>
     </BlankPage>

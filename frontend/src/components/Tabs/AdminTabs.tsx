@@ -55,7 +55,10 @@ export default function AdminTabs() {
       <ListItem nested>
         <Toggler
           renderToggle={({ open, setOpen }) => (
-            <ListItemButton onClick={() => setOpen(!open)}>
+            <ListItemButton
+              onClick={() => setOpen(!open)}
+              selected={currentURL.includes(URLs.STUDENTS) && !open}
+            >
               <GroupRoundedIcon />
               <ListItemContent>
                 <Typography level="title-sm">Étudiants</Typography>
@@ -71,9 +74,10 @@ export default function AdminTabs() {
               <ListItemButton
                 role="menuitem"
                 component="a"
-                href="/joy-ui/getting-started/templates/profile-dashboard/"
+                href={URLs.IMPORT_STUDENTS}
+                selected={currentURL === URLs.IMPORT_STUDENTS}
               >
-                Ajouter une promotion
+                Importer des utilisateurs
               </ListItemButton>
             </ListItem>
             <ListItem>
