@@ -1,44 +1,105 @@
-import { Button } from "@mui/joy";
+import { Box, Button } from "@mui/joy";
 import { SAEStatus } from "../../assets/enums/SAEStatus.enum";
+
+const GenerateGroupsButton = (
+  <Button
+    variant="outlined"
+    color="primary"
+    size="sm"
+    sx={{
+      position: "absolute",
+      top: 0,
+      right: 0,
+      margin: 2,
+    }}
+    title="Clôture les inscriptions et génère les groupes"
+  >
+    Générer les groupes
+  </Button>
+);
+
+const GenerateWishesButton = (
+  <Button
+    variant="outlined"
+    color="primary"
+    size="sm"
+    sx={{
+      position: "absolute",
+      top: 0,
+      right: 0,
+      margin: 2,
+    }}
+    title="Clôture les voeux et attribue les voeux"
+  >
+    Attribuer les voeux
+  </Button>
+);
+
+const EndSaeButton = (
+  <Button
+    variant="outlined"
+    color="primary"
+    size="sm"
+    sx={{
+      margin: 2,
+    }}
+    title="Clôture la SAE"
+  >
+    Clôturer la SAE
+  </Button>
+);
+
+const OpenForInternship = (
+  <Button
+    variant="outlined"
+    color="primary"
+    size="sm"
+    sx={{
+      margin: 2,
+    }}
+    title="Ouvre la SAE pour les alternants"
+  >
+    Ouvrir pour les alternants
+  </Button>
+);
 
 interface ButtonAdminSaeProps {
   saeStatut: SAEStatus;
 }
-export default function ButtonAdminSae({ saeStatut }: ButtonAdminSaeProps) {
-  let buttonText: string;
-  let buttonHoverText: string;
+
+const ButtonAdminSae = ({ saeStatut }: ButtonAdminSaeProps): JSX.Element => {
+  let buttons: JSX.Element;
 
   switch (saeStatut) {
     case SAEStatus.PENDING_USERS:
-      buttonText = "Générer les groupes";
-      buttonHoverText = "Clôture les inscriptions et génère les groupes";
+      buttons = GenerateGroupsButton;
       break;
     case SAEStatus.PENDING_WISHES:
-      buttonText = "Attribuer les voeux";
-      buttonHoverText = "Clôture les voeux et attribue les voeux";
+      buttons = GenerateWishesButton;
       break;
     case SAEStatus.LAUNCHED:
-      buttonText = "Clôturer la SAE";
-      buttonHoverText = "Clôture la SAE";
+      buttons = (
+        <Box
+          sx={{
+            position: "absolute",
+            top: 0,
+            right: 0,
+            margin: 2,
+          }}
+        >
+          {EndSaeButton}
+          {OpenForInternship}
+        </Box>
+      );
+      break;
+    case SAEStatus.LAUNCHED_OPEN_FOR_INTERNSHIP:
+      buttons = EndSaeButton;
       break;
     default:
-      buttonText = "Erreur";
-      buttonHoverText = "Erreur";
-      break;
+      buttons = <></>;
   }
 
-  return (
-    <Button
-      color="primary"
-      sx={{
-        position: "absolute",
-        top: 0,
-        right: 0,
-        margin: 2,
-      }}
-      title={buttonHoverText}
-    >
-      {buttonText}
-    </Button>
-  );
-}
+  return buttons;
+};
+
+export default ButtonAdminSae;
