@@ -43,14 +43,15 @@ export default function StudentTabs() {
         <ListItemButton
           role="menuitem"
           component="a"
-          href="/joy-ui/getting-started/templates/messages/"
+          selected={currentURL === URLs.SKILLS}
+          href={URLs.SKILLS}
         >
           <AssignmentRoundedIcon />
           <ListItemContent>
-            <Typography level="title-sm">A faire</Typography>
+            <Typography level="title-sm">Mes compétences</Typography>
           </ListItemContent>
           <Chip size="sm" color="primary" variant="solid">
-            4
+            1
           </Chip>
         </ListItemButton>
       </ListItem>
