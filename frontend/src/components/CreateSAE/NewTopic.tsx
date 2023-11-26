@@ -17,7 +17,7 @@ import {
   Option,
 } from "@mui/joy";
 import CreateSaeForm from "../../models/CreateSaeForm";
-import Topic from "../../models/Topics";
+import Topic from "../../models/Topic";
 
 const MAX_DESCRIPTION_LENGTH = 400;
 
@@ -71,6 +71,7 @@ export default function NewTopic({ submitSae }: NewTopicProps) {
 
     topics.forEach((topic) => {
       formTopics.push({
+        id: "NULL",
         name: topic.titleText,
         description: topic.descriptionText,
         categories: topic.selectedCategories,
