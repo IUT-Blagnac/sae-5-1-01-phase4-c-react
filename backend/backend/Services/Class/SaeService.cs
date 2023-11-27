@@ -99,7 +99,7 @@ namespace backend.Services.Class
             return query;
         }
 
-        public List<SaeAdminResponse> GetSaeAdminNbGroup(Guid id)
+        public List<SaeAdminResponse> GetSaeAdminNbGroupByUserId(Guid id)
         {
             var query = (from u in _context.Users
                 join sc in _context.SaeCoaches on u.id equals sc.id_coach
@@ -124,7 +124,7 @@ namespace backend.Services.Class
             return query;
         }
         
-        public List<SaeAdminResponse> GetSaeAdminNbStudent(Guid id)
+        public List<SaeAdminResponse> GetSaeAdminNbStudentByUserId(Guid id)
         {
             var query = (from u in _context.Users
                 join sc in _context.SaeCoaches on u.id equals sc.id_coach
@@ -145,6 +145,58 @@ namespace backend.Services.Class
                 }).ToList();
 
             return query;
+        }
+
+        public SaeAdminResponse GetSaeNbStudent(Guid saeId)
+        {
+            var query = from s in _context.Saes
+                join c in _context.Characters on s.id equals c.id_sae
+                where s.id == saeId
+                group c by new
+                {
+                    s.id, s.name, s.description, s.max_student_per_group, s.max_group_per_subject,
+                    s.min_group_per_subject, s.min_student_per_group, s.state
+                }
+                into character_sae
+                select new SaeAdminResponse()
+                {
+                    id = character_sae.Key.id,
+                    name = character_sae.Key.name,
+                    description = character_sae.Key.description,
+                    min_student_per_group = character_sae.Key.min_student_per_group,
+                    max_student_per_group = character_sae.Key.max_student_per_group,
+                    min_group_per_subject = character_sae.Key.min_group_per_subject,
+                    max_group_per_subject = character_sae.Key.max_group_per_subject,
+                    total_student = character_sae.Count()
+                };
+
+            return query.FirstOrDefault();
+        }
+
+        public SaeAdminResponse GetSaeNbGroup(Guid saeId)
+        {
+            var query = from s in _context.Saes
+                join sg in _context.SaeGroups on s.id equals sg.id_sae
+                where s.id == saeId
+                group sg by new
+                {
+                    s.id, s.name, s.description, s.max_student_per_group, s.max_group_per_subject,
+                    s.min_group_per_subject, s.min_student_per_group, s.state
+                }
+                into group_sae
+                select new SaeAdminResponse()
+                {
+                    id = group_sae.Key.id,
+                    name = group_sae.Key.name,
+                    description = group_sae.Key.description,
+                    min_student_per_group = group_sae.Key.min_student_per_group,
+                    max_student_per_group = group_sae.Key.max_student_per_group,
+                    min_group_per_subject = group_sae.Key.min_group_per_subject,
+                    max_group_per_subject = group_sae.Key.max_group_per_subject,
+                    total_group = group_sae.Count()
+                };
+
+            return query.FirstOrDefault();
         }
     }
 }
