@@ -112,7 +112,7 @@ namespace backend.Controllers
         }
 
         [HttpGet("teams/{id}")]
-        [Authorize]
+        [Authorize(Roles = RoleAccesses.Admin)]
         public async Task<ActionResult<OutputGetTeamsBySaeId>> GetTeamsBySaeId(Guid id)
         {
             OutputGetTeamsBySaeId output = new() { teams = new() };
