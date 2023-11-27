@@ -1,5 +1,6 @@
 ﻿using backend.FormModels;
 using backend.Services.Interfaces;
+using backend.Utils;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -17,7 +18,7 @@ namespace backend.Controllers
         }
 
         [HttpPost]
-        [Authorize]
+        [Authorize(Roles = RoleAccesses.Teacher)]
         public ActionResult AddSae(SaeForm saeForm)
         {
             try

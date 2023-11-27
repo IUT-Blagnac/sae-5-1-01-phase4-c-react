@@ -1,5 +1,6 @@
 ﻿using backend.Data.Models;
 using backend.Services.Interfaces;
+using backend.Utils;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -17,13 +18,14 @@ public class SkillController: ControllerBase
     }
 
     [HttpGet]
-    [Authorize]
+    [Authorize(Roles = RoleAccesses.Student)]
     public ActionResult<List<Skill>> GetSkills()
     {
         return _skillService.GetSkills();
     }
 
     [HttpGet("{id}")]
+    [Authorize(Roles = RoleAccesses.Student)]
     public async Task<ActionResult<Skill>> GetSkillById(Guid id)
     {
         var skill = _skillService.GetSkillById(id);
@@ -37,7 +39,7 @@ public class SkillController: ControllerBase
     }
 
     [HttpPost]
-    [Authorize]
+    [Authorize(Roles = RoleAccesses.Teacher)]
     public async Task<ActionResult<Skill>> AddSkill(string name)
     {
         var skill = _skillService.AddSkill(name);
@@ -53,7 +55,7 @@ public class SkillController: ControllerBase
     }
 
     [HttpDelete("{id}")]
-    [Authorize]
+    [Authorize(Roles = RoleAccesses.Teacher)]
     public async Task<IActionResult> RemoveSkill(Guid id)
     {
         var skill = _skillService.GetSkillById(id);

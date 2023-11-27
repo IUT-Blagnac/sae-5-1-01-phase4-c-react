@@ -23,7 +23,6 @@ public class UserController: ControllerBase
     
     [HttpGet]
     [Route("currentUser")]
-    [Authorize]
     public IActionResult GetAuthenticatedUser()
     {
         var currentUser = _userService.GetCurrentUser(HttpContext);
