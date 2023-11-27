@@ -125,7 +125,8 @@ public class EntityContext : DbContext
         {
             new() { id = new Guid("f8f69fc6-2488-44f6-b742-3b63cb9cad6d"), email = "loan.gayrard@etu.univ-tlse2.fr", first_name = "Loan", last_name = "Gayrard", id_role = Roles.Where(r => r.name == "Student").FirstOrDefault().id, id_group = Groups.Where(g => g.name == "1").FirstOrDefault().id},
             new() { id = new Guid("ca7b4826-5d71-4d97-8dc5-b65a52a15f4c"), email = "matthieu.robert@etu.univ-tlse2.fr", first_name = "Matthieu", last_name = "Robert", id_role = Roles.Where(r => r.name == "Student").FirstOrDefault().id, id_group = Groups.Where(g => g.name == "2").FirstOrDefault().id},
-            new() { id = new Guid("64f4f759-0c6e-4362-9495-0536ac3a512f"), email = "hugo.castell@etu.univ-tlse2.fr", first_name = "Hugo", last_name = "Castell", id_role = Roles.Where(r => r.name == "Student").FirstOrDefault().id, id_group = Groups.Where(g => g.name == "3A").FirstOrDefault().id}
+            new() { id = new Guid("64f4f759-0c6e-4362-9495-0536ac3a512f"), email = "hugo.castell@etu.univ-tlse2.fr", first_name = "Hugo", last_name = "Castell", id_role = Roles.Where(r => r.name == "Student").FirstOrDefault().id, id_group = Groups.Where(g => g.name == "3A").FirstOrDefault().id},
+            new() { id = new Guid("e044a5ee-5a92-4e0c-9c2a-6c35e9734356"), email = "thomas.testa@etu.univ-tlse2.fr", first_name = "Thomas", last_name = "Testa", id_role = Roles.Where(r => r.name == "Student").FirstOrDefault().id, id_group = Groups.Where(g => g.name == "3B").FirstOrDefault().id}
         };
 
         foreach (var student in defaultStudents)
@@ -179,6 +180,40 @@ public class EntityContext : DbContext
             if (!Saes.Where(c => c.name == sae.name).Any())
             {
                 Saes.Add(sae);
+            }
+        }
+
+        //DEFAULT TEAMS WITH USERS
+
+        var defaultTeams = new List<Team>()
+        {
+            new() { id = new Guid("1d6cd248-9654-4297-9b38-8715c1f4a1c4"), name = "Team 1", color = "RED", id_sae = new Guid("c5710c89-1b52-473b-886e-722f97ff713a") },
+            new() { id = new Guid("f984daed-bfb8-4c17-a201-e7e153735e5d"), name = "Team 2", color = "YELLOW", id_sae = new Guid("c5710c89-1b52-473b-886e-722f97ff713a") },
+        };
+
+        foreach (var team in defaultTeams)
+        {
+            if (!Teams.Where(c => c.id == team.id).Any())
+            {
+                Teams.Add(team);
+            }
+        }
+
+        SaveChanges();
+
+        var defaultUserTeams = new List<UserTeam>()
+        {
+            new() { id_user = new Guid("f8f69fc6-2488-44f6-b742-3b63cb9cad6d"), id_team = new Guid("1d6cd248-9654-4297-9b38-8715c1f4a1c4"), role = "Développeur Front-end"},
+            new() { id_user = new Guid("ca7b4826-5d71-4d97-8dc5-b65a52a15f4c"), id_team = new Guid("1d6cd248-9654-4297-9b38-8715c1f4a1c4"), role = "Développeur Back-end"},
+            new() { id_user = new Guid("64f4f759-0c6e-4362-9495-0536ac3a512f"), id_team = new Guid("f984daed-bfb8-4c17-a201-e7e153735e5d"), role = "Développeur Front-end"},
+            new() { id_user = new Guid("e044a5ee-5a92-4e0c-9c2a-6c35e9734356"), id_team = new Guid("f984daed-bfb8-4c17-a201-e7e153735e5d"), role = "Développeur Back-end"}
+        };
+
+        foreach (var userTeam in defaultUserTeams)
+        {
+            if (!UserTeams.Where(c => c.id_team == userTeam.id_team && c.id_user == userTeam.id_user).Any())
+            {
+                UserTeams.Add(userTeam);
             }
         }
 
