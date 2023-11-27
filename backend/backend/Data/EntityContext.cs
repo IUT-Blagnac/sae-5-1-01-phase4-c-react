@@ -245,6 +245,11 @@ public class EntityContext : DbContext
         modelBuilder.Entity<Team>()
             .HasKey(c => c.id);
 
+        modelBuilder.Entity<Team>()
+            .HasOne(t => t.sae)
+            .WithMany(s => s.teams)
+            .HasForeignKey(t => t.id_sae);
+
         // #----------#
         // # UserTeam #
         // #----------#
