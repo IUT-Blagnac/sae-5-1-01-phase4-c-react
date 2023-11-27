@@ -14,6 +14,12 @@ public class TeamService: ITeamService
     {
         _context = context;
     }
+
+    public List<Team> GetTeamsBySaeId(Guid saeId)
+    {
+        var teams = _context.Teams.Where(x => x.id_sae == saeId).ToList();
+        return teams;
+    }
     
     public List<Team> GetTeams(Guid userId)
     {

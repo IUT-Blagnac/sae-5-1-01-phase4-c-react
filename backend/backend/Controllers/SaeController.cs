@@ -1,5 +1,7 @@
-﻿using backend.Data.Models;
+﻿using backend.ApiModels.Output;
+using backend.Data.Models;
 using backend.FormModels;
+using backend.Services.Class;
 using backend.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -10,11 +12,15 @@ namespace backend.Controllers
     [Route("api/[controller]")]
     public class SaeController : ControllerBase
     {
-        public readonly ISaeService _saeService;
+        private readonly ISaeService _saeService;
+        private readonly ITeamService _teamService;
+        private readonly IUserService _userService;
 
-        public SaeController(ISaeService saeService)
+        public SaeController(ISaeService saeService, ITeamService teamService, IUserService userService)
         {
             _saeService = saeService;
+            _teamService = teamService;
+            _userService = userService;
         }
 
         [HttpPost]
@@ -79,6 +85,37 @@ namespace backend.Controllers
             }
 
             return saesNbGroups;
+        }
+
+        [HttpGet("teams/{id}")]
+        [Authorize]
+        public async Task<ActionResult<OutputGetTeamsBySaeId>> GetTeamsBySaeId(Guid id)
+        {
+            OutputGetTeamsBySaeId output = new() { teams = new() };
+
+            var teams = _teamService.GetTeamsBySaeId(id);
+
+            foreach (var team in teams)
+            {
+                var teamComposition = new TeamComposition
+                {
+                    idTeam = team.id,
+                    nameTeam = team.name,
+                    colorTeam = team.color,
+                    idUsers = new List<Guid>()
+                };
+
+                List<User> users = _userService.GetUsersByTeamId(team.id);
+
+                foreach (var user in users)
+                {
+                    teamComposition.idUsers.Add(user.id);
+                }
+
+                output.teams.Add(teamComposition);
+            }
+
+            return output;
         }
     }
 }
