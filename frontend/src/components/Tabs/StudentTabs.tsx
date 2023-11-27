@@ -22,7 +22,12 @@ export default function StudentTabs() {
       }}
     >
       <ListItem>
-        <ListItemButton selected={currentURL === URLs.DASHBOARD}>
+        <ListItemButton
+          selected={currentURL === URLs.DASHBOARD}
+          onClick={() => {
+            window.location.href = URLs.DASHBOARD;
+          }}
+        >
           <HomeRoundedIcon />
           <ListItemContent>
             <Typography level="title-sm">Home</Typography>
