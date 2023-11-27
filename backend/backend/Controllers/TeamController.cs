@@ -5,6 +5,7 @@ using backend.Data.Models;
 using backend.FormModels;
 using backend.Services.Class;
 using backend.Services.Interfaces;
+using backend.Utils;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Routing.Template;
@@ -26,7 +27,7 @@ public class TeamController : ControllerBase
     }
 
     [HttpGet]
-    [Authorize]
+    [Authorize(Roles = RoleAccesses.Student)]
     public ActionResult<List<Team>> GetTeams()
     {
         var user = _userService.GetCurrentUser(HttpContext);
@@ -48,7 +49,7 @@ public class TeamController : ControllerBase
     }
 
     [HttpPost]
-    [Authorize]
+    [Authorize(Roles = RoleAccesses.Student)]
     public async Task<ActionResult<Team>> CreateTeam(TeamForm teamForm)
     {
         var user = _userService.GetCurrentUser(HttpContext);

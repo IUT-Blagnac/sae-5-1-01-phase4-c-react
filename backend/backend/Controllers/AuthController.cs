@@ -121,12 +121,12 @@ public class AuthController: ControllerBase
         var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:Key"]));
         var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
 
-        var role = _context.Roles.FirstOrDefault(x => x.id == user.id_role);
+        var roleuser = _context.Roles.First(x => x.id == user.id_role);
         
         var claims = new[]
         {
             new Claim(ClaimTypes.Email, user.email),
-            new Claim(ClaimTypes.Role, role.name)
+            new Claim(ClaimTypes.Role, roleuser.name)
         };
 
         var token = new JwtSecurityToken(_configuration["Jwt:Issuer"],
