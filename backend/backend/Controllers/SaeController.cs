@@ -1,4 +1,5 @@
-﻿using backend.FormModels;
+﻿using backend.Data.Models;
+using backend.FormModels;
 using backend.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -29,6 +30,20 @@ namespace backend.Controllers
             {
                 return BadRequest();
             }
+        }
+
+        [HttpGet("user/{id}")]
+        [Authorize]
+        public ActionResult<List<Sae>> GetSaesByUserId(Guid id)
+        {
+            var saes = _saeService.GetSaeByUserId(id);
+
+            if (saes == null)
+            {
+                return NotFound();
+            }
+
+            return saes;
         }
     }
 }

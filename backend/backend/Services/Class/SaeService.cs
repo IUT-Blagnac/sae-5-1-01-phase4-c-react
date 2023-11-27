@@ -76,5 +76,27 @@ namespace backend.Services.Class
 
             _context.SaveChanges();
         }
+
+        public List<Sae> GetSaeByUserId(Guid id)
+        {
+            var query = (from u in _context.Users
+                join g in _context.Groups on u.id_group equals g.id
+                join sg in _context.SaeGroups on g.id equals sg.id_group
+                join s in _context.Saes on sg.id_sae equals s.id
+                where u.id == id
+                select new Sae()
+                {
+                    id = s.id,
+                    name = s.name,
+                    description = s.description,
+                    min_student_per_group = s.min_student_per_group,
+                    max_student_per_group = s.max_student_per_group,
+                    min_group_per_subject = s.min_group_per_subject,
+                    max_group_per_subject = s.max_group_per_subject,
+                    state = s.state
+                }).ToList();
+        
+            return query;
+        }
     }
 }
