@@ -1,6 +1,7 @@
 ﻿using backend.Data.Models;
 using backend.FormModels;
 using backend.Services.Interfaces;
+using backend.Utils;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -19,28 +20,28 @@ public class ChallengeController: ControllerBase
     }
 
     [HttpGet]
-    [Authorize]
+    [Authorize(Roles = RoleAccesses.Student)]
     public ActionResult<List<Challenge>> GetChallenges()
     {
         return _challengeservice.GetChallenges();
     }
 
     [HttpGet("creator/{id}")]
-    [Authorize]
+    [Authorize(Roles = RoleAccesses.Student)]
     public ActionResult<List<Challenge>> GetChallengesByCreatorTeamId(Guid id)
     {
         return _challengeservice.GetChallengesByCreatorTeamId(id);
     }
 
     [HttpGet("target/{id}")]
-    [Authorize]
+    [Authorize(Roles = RoleAccesses.Student)]
     public ActionResult<List<Challenge>> GetChallengesByTargetTeamId(Guid id)
     {
         return _challengeservice.GetChallengesByTargetTeamId(id);
     }
 
     [HttpGet("{id}")]
-    [Authorize]
+    [Authorize(Roles = RoleAccesses.Student)]
     public async Task<ActionResult<Challenge>> GetChallengeById(Guid id)
     {
         var challenge = _challengeservice.GetChallengeById(id);
@@ -54,7 +55,7 @@ public class ChallengeController: ControllerBase
     }
 
     [HttpPost]
-    [Authorize]
+    [Authorize(Roles = RoleAccesses.Student)]
     public async Task<ActionResult<Challenge>> CreateChallenge(ChallengeForm challengeForm)
     {
         var challenge = _challengeservice.AddChallenge(challengeForm);
@@ -74,7 +75,7 @@ public class ChallengeController: ControllerBase
     }
 
     [HttpGet("completed/{id}")]
-    [Authorize]
+    [Authorize(Roles = RoleAccesses.Student)]
     public async Task<ActionResult<Challenge>> SetChallengeCompleted(Guid id)
     {
         try

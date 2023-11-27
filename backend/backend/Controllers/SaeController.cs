@@ -3,6 +3,7 @@ using backend.Data.Models;
 using backend.FormModels;
 using backend.Services.Class;
 using backend.Services.Interfaces;
+using backend.Utils;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -24,7 +25,7 @@ namespace backend.Controllers
         }
 
         [HttpPost]
-        [Authorize]
+        [Authorize(Roles = RoleAccesses.Teacher)]
         public ActionResult AddSae(SaeForm saeForm)
         {
             try
@@ -56,14 +57,14 @@ namespace backend.Controllers
         [Authorize]
         public ActionResult<List<SaeAdminResponse>> GetSaesAdminByUserId(Guid id)
         {
-            var saesNbGroups = _saeService.GetSaeAdminNbGroup(id);
+            var saesNbGroups = _saeService.GetSaeAdminNbGroupByUserId(id);
             
             if (saesNbGroups == null)
             {
                 return NotFound();
             }
 
-            var saesNbCharacter = _saeService.GetSaeAdminNbStudent(id);
+            var saesNbCharacter = _saeService.GetSaeAdminNbStudentByUserId(id);
 
             if (saesNbCharacter == null)
             {
@@ -83,6 +84,29 @@ namespace backend.Controllers
                     sae.total_student = saesChar.total_student;
                 }
             }
+
+            return saesNbGroups;
+        }
+        
+        [HttpGet("{id}")]
+        [Authorize]
+        public ActionResult<SaeAdminResponse> GetSaes(Guid id)
+        {
+            var saesNbGroups = _saeService.GetSaeNbGroup(id);
+            
+            if (saesNbGroups == null)
+            {
+                return NotFound();
+            }
+
+            var saesNbCharacter = _saeService.GetSaeNbStudent(id);
+
+            if (saesNbCharacter == null)
+            {
+                return NotFound();
+            }
+
+            saesNbGroups.total_student = saesNbCharacter.total_student;
 
             return saesNbGroups;
         }

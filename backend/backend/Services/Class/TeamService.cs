@@ -71,27 +71,17 @@ public class TeamService: ITeamService
         var userTeam = _context.UserTeams.FirstOrDefault(x => x.id_team == id && x.id_user == userId);
 
         if (userTeam == null)
-        {
             return null;
-        }
+
         var team = _context.Teams.Find(id);
 
         if (team == null)
-        {
             return null;
-        }
 
         team.name = teamForm.name;
         team.color = teamForm.color;
 
-        try
-        {
-            _context.SaveChangesAsync();
-        }
-        catch (DbUpdateConcurrencyException e)
-        {
-            throw e;
-        }
+        _context.SaveChangesAsync();
 
         return team;
     }
