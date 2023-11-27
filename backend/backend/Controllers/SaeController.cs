@@ -1,4 +1,5 @@
-﻿using backend.FormModels;
+﻿using backend.Data.Models;
+using backend.FormModels;
 using backend.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -29,6 +30,55 @@ namespace backend.Controllers
             {
                 return BadRequest();
             }
+        }
+
+        [HttpGet("user/{id}")]
+        [Authorize]
+        public ActionResult<List<Sae>> GetSaesByUserId(Guid id)
+        {
+            var saes = _saeService.GetSaeByUserId(id);
+
+            if (saes == null)
+            {
+                return NotFound();
+            }
+
+            return saes;
+        }
+
+        [HttpGet("admin/{id}")]
+        [Authorize]
+        public ActionResult<List<SaeAdminResponse>> GetSaesAdminByUserId(Guid id)
+        {
+            var saesNbGroups = _saeService.GetSaeAdminNbGroup(id);
+            
+            if (saesNbGroups == null)
+            {
+                return NotFound();
+            }
+
+            var saesNbCharacter = _saeService.GetSaeAdminNbStudent(id);
+
+            if (saesNbCharacter == null)
+            {
+                return NotFound();
+            }
+
+            foreach (var sae in saesNbGroups)
+            {
+                var saesChar = saesNbCharacter.Find(s => s.id == sae.id);
+
+                if (saesChar == null)
+                {
+                    sae.total_student = 0;
+                }
+                else
+                {
+                    sae.total_student = saesChar.total_student;
+                }
+            }
+
+            return saesNbGroups;
         }
     }
 }
