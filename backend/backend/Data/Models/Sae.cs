@@ -15,8 +15,11 @@ namespace backend.Data.Models
         public int? max_group_per_subject { get; set; }
         public State state { get; set; }
 
+        public List<Team> teams { get; set; }
+
         [JsonIgnore]
         public List<Character> characters { get; set; }
+
         [JsonIgnore]
         public List<SaeGroup> sae_groups { get; set; }
 

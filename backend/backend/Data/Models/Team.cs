@@ -9,6 +9,9 @@ namespace backend.Data.Models
         public Guid id { get; set; }
         public string name { get; set; }
         public string color { get; set; }
+
+        public Guid id_sae { get; set; }
+        public Sae sae { get; set; }
         
         [JsonIgnore]
         public List<UserTeam> user_team { get; set; }
