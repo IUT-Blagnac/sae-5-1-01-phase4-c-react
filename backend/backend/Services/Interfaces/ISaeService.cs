@@ -7,5 +7,7 @@ namespace backend.Services.Interfaces
     {
         public void CreateSae(SaeForm saeForm);
         public List<Sae> GetSaeByUserId(Guid id);
+        public List<SaeAdminResponse> GetSaeAdminNbGroup(Guid id);
+        public List<SaeAdminResponse> GetSaeAdminNbStudent(Guid id);
     }
 }

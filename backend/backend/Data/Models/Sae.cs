@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json.Serialization;
 
 namespace backend.Data.Models
 {
@@ -14,11 +15,15 @@ namespace backend.Data.Models
         public int? max_group_per_subject { get; set; }
         public State state { get; set; }
 
+        [JsonIgnore]
         public List<Character> characters { get; set; }
+        [JsonIgnore]
         public List<SaeGroup> sae_groups { get; set; }
 
+        [JsonIgnore]
         public List<SaeCoach> sae_coachs { get; set; }
 
+        [JsonIgnore]
         public List<Subject> subjects { get; set; }
     }
     public enum State

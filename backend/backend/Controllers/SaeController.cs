@@ -45,5 +45,40 @@ namespace backend.Controllers
 
             return saes;
         }
+
+        [HttpGet("admin/{id}")]
+        [Authorize]
+        public ActionResult<List<SaeAdminResponse>> GetSaesAdminByUserId(Guid id)
+        {
+            var saesNbGroups = _saeService.GetSaeAdminNbGroup(id);
+            
+            if (saesNbGroups == null)
+            {
+                return NotFound();
+            }
+
+            var saesNbCharacter = _saeService.GetSaeAdminNbStudent(id);
+
+            if (saesNbCharacter == null)
+            {
+                return NotFound();
+            }
+
+            foreach (var sae in saesNbGroups)
+            {
+                var saesChar = saesNbCharacter.Find(s => s.id == sae.id);
+
+                if (saesChar == null)
+                {
+                    sae.total_student = 0;
+                }
+                else
+                {
+                    sae.total_student = saesChar.total_student;
+                }
+            }
+
+            return saesNbGroups;
+        }
     }
 }

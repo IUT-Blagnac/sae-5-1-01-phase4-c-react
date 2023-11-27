@@ -155,6 +155,135 @@ public class EntityContext : DbContext
         }
 
         SaveChanges();
+        
+        //DEFAULT SAE
+
+        var defaultSaes = new List<Sae>()
+        {
+            new()
+            {
+                id = new Guid("d5e37380-8b99-49c8-8e89-723d8c5f7b97"), name = "SAE CaptElec",
+                description = "SAE CaptElec desc", min_student_per_group = 2, max_student_per_group = 4,
+                max_group_per_subject = 4, min_group_per_subject = 1, state = State.LAUNCHED
+            },
+            new()
+            {
+                id = new Guid("c5710c89-1b52-473b-886e-722f97ff713a"), name = "SAE Koh Lanta",
+                description = "SAE Koh Lanta desc", min_student_per_group = 2, max_student_per_group = 6,
+                max_group_per_subject = 7, min_group_per_subject = 2, state = State.PENDING_USERS
+            },
+        };
+
+        foreach (var sae in defaultSaes)
+        {
+            if (!Saes.Where(c => c.name == sae.name).Any())
+            {
+                Saes.Add(sae);
+            }
+        }
+
+        SaveChanges();
+        
+        // Link Sae To Group
+
+        var defaultSaeGroup = new List<SaeGroup>()
+        {
+            new()
+            {
+                id_group = new Guid("f441bf0a-115e-4c1e-8b1f-a7fb6f5738c5"), id_sae =
+                    new Guid("d5e37380-8b99-49c8-8e89-723d8c5f7b97")
+            },
+            new()
+            {
+                id_group = new Guid("47c8a811-eb03-45cb-b366-136363f4903c"), id_sae =
+                    new Guid("d5e37380-8b99-49c8-8e89-723d8c5f7b97")
+            },
+            new()
+            {
+                id_group = new Guid("6d7791c5-56dd-419f-aa7a-a811213cba32"), id_sae =
+                    new Guid("d5e37380-8b99-49c8-8e89-723d8c5f7b97")
+            },
+            new()
+            {
+                id_group = new Guid("f441bf0a-115e-4c1e-8b1f-a7fb6f5738c5"), id_sae =
+                    new Guid("c5710c89-1b52-473b-886e-722f97ff713a")
+            },
+            new()
+            {
+                id_group = new Guid("6d7791c5-56dd-419f-aa7a-a811213cba32"), id_sae =
+                    new Guid("c5710c89-1b52-473b-886e-722f97ff713a")
+            },
+        };
+
+        foreach (var group in defaultSaeGroup)
+        {
+            if (!SaeGroups.Where(sg => sg.id_group == group.id_group && sg.id_sae == group.id_sae).Any())
+            {
+                SaeGroups.Add(group);
+            }
+        }
+
+        SaveChanges();
+        
+        // Link Sae To Coach
+
+        var defaultSaeCoach = new List<SaeCoach>()
+        {
+            new()
+            {
+                id_coach = new Guid("589eb929-0623-48d3-b78c-0973f3cd9eef"),
+                id_sae = new Guid("d5e37380-8b99-49c8-8e89-723d8c5f7b97")
+            },
+            new()
+            {
+                id_coach = new Guid("21afc2e9-eca8-4bc0-aa47-ee71f1b8cf1c"),
+                id_sae = new Guid("c5710c89-1b52-473b-886e-722f97ff713a")
+            }
+        };
+
+        foreach (var saeCoach in defaultSaeCoach)
+        {
+            if (!SaeCoaches.Where(sc => sc.id_coach == saeCoach.id_coach && sc.id_sae == saeCoach.id_sae).Any())
+            {
+                SaeCoaches.Add(saeCoach);
+            }
+        }
+
+        SaveChanges();
+        
+        // DEFAULT Character
+
+        var defaultCharacter = new List<Character>()
+        {
+            new()
+            {
+                id = new Guid("6d96dc76-d479-4a44-8cd9-8b2b2b534119"), name = "Sonixray",
+                id_sae = new Guid("d5e37380-8b99-49c8-8e89-723d8c5f7b97"),
+                id_user = new Guid("f8f69fc6-2488-44f6-b742-3b63cb9cad6d")
+            },
+            new()
+            {
+                id = new Guid("e8f230f0-fffd-4ac6-8596-1e74bde54188"), name = "Aynbo",
+                id_sae = new Guid("d5e37380-8b99-49c8-8e89-723d8c5f7b97"),
+                id_user = new Guid("ca7b4826-5d71-4d97-8dc5-b65a52a15f4c")
+            },
+            new()
+            {
+                id = new Guid("0e3aaf7a-8cf3-46a2-b60d-e38a2f960506"), name = "Matz",
+                id_sae = new Guid("c5710c89-1b52-473b-886e-722f97ff713a"),
+                id_user = new Guid("ca7b4826-5d71-4d97-8dc5-b65a52a15f4c")
+            }
+        };
+
+        foreach (var character in defaultCharacter) 
+        {
+            if (!Characters.Where(c => c.name == character.name).Any())
+            {
+                Characters.Add(character);
+            }
+        }
+
+        SaveChanges();
     }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
