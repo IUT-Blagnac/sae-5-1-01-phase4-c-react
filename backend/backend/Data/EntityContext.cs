@@ -352,12 +352,6 @@ public class EntityContext : DbContext
                 id_sae = new Guid("d5e37380-8b99-49c8-8e89-723d8c5f7b97"),
                 id_user = new Guid("ca7b4826-5d71-4d97-8dc5-b65a52a15f4c")
             },
-            new()
-            {
-                id = new Guid("0e3aaf7a-8cf3-46a2-b60d-e38a2f960506"), name = "Matz",
-                id_sae = new Guid("c5710c89-1b52-473b-886e-722f97ff713a"),
-                id_user = new Guid("ca7b4826-5d71-4d97-8dc5-b65a52a15f4c")
-            }
         };
 
         foreach (var character in defaultCharacter) 
