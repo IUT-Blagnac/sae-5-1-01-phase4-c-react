@@ -1,6 +1,6 @@
 import { Sheet, Table, Typography } from "@mui/joy";
 import Topic from "../../../../models/Topic";
-import { cutText, random } from "../../../../utils/Utils";
+import { cutText } from "../../../../utils/Utils";
 
 interface PendingUsersProps {
   topics: Topic[];

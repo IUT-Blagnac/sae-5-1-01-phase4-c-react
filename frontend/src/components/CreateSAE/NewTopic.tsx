@@ -65,22 +65,32 @@ export default function NewTopic({ submitSae }: NewTopicProps) {
     );
   };
 
-  const handleSubmitSae = () => {
+  const handleSubmitSae = async () => {
     let formInputs: CreateSaeForm = submitSae();
     let formTopics: Topic[] = [];
 
     topics.forEach((topic) => {
       formTopics.push({
-        id: "NULL",
         name: topic.titleText,
         description: topic.descriptionText,
-        categories: topic.selectedCategories,
+        categoriesId: topic.selectedCategories,
       });
     });
 
     formInputs.subjects = formTopics;
 
     console.log(formInputs);
+
+    const res = await fetch("/api/Sae", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+      },
+      body: JSON.stringify(formInputs),
+    });
+
+    console.log(res);
   };
 
   return (

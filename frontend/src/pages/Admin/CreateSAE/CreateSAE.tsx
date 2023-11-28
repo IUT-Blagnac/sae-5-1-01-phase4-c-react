@@ -67,13 +67,12 @@ export default function CreateSAE() {
     let form: CreateSaeForm = {
       name: saeName,
       description: saeDescription,
-      groups: saeGroups,
-      skills: [],
-      minTeamPerSubject: saeMinTeamPerSubject,
-      maxTeamPerSubject: saeMaxTeamPerSubject,
-      minTeamSize: saeMinTeamSize,
-      maxTeamSize: saeMaxTeamSize,
-      teachers: saeTeachers,
+      id_groups: saeGroups,
+      min_groups_per_subject: saeMinTeamPerSubject,
+      max_groups_per_subject: saeMaxTeamPerSubject,
+      min_students_per_group: saeMinTeamSize,
+      max_students_per_group: saeMaxTeamSize,
+      id_coachs: saeTeachers,
       subjects: [],
     };
 

@@ -1,13 +1,6 @@
-import {
-  Card,
-  FormControl,
-  MenuItem,
-  Select,
-  Slider,
-  Typography,
-} from "@mui/joy";
-import { Status } from "../../assets/enums/Status.enum";
-import BlankPage from "../templates/BlankPage";
+import { Card, FormControl, Slider, Typography } from "@mui/joy";
+import { Status } from "../../../assets/enums/Status.enum";
+import BlankPage from "../../templates/BlankPage";
 import React from "react";
 
 const skills = [

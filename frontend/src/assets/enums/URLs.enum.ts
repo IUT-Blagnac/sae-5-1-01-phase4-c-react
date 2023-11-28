@@ -3,8 +3,10 @@ export enum URLs {
   DASHBOARD = "/dashboard",
   CREATE_SAE = "/dashboard/create-sae",
   SUPPORT = "/support",
-  SAE_MANAGE = "/sae/:id",
+  SAE_MANAGE = "/sae/:id/manage",
+  SAE_CONSULT = "/sae/:id/consult",
   SKILLS = "/skills",
   STUDENTS = "/students",
   IMPORT_STUDENTS = "/students/import",
+  EASTER = "/easter",
 }

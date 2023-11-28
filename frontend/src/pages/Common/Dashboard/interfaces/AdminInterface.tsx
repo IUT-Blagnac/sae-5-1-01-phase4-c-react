@@ -20,14 +20,7 @@ function AdminInterface() {
     });
   });
 
-  const sendRightPageFromStatus = (sae: Sae) => {
-    const statut = sae.statut;
-    return (window.location.href = `sae/${sae.id}`);
-  };
-
-  if (loading) {
-    return <Loading />;
-  }
+  if (loading) return <Loading />;
 
   return (
     <Box>
@@ -108,7 +101,7 @@ function AdminInterface() {
                     color="primary"
                     size="sm"
                     onClick={() => {
-                      sendRightPageFromStatus(sae);
+                      window.location.href = `sae/${sae.id}/manage`;
                     }}
                   >
                     Évoluer

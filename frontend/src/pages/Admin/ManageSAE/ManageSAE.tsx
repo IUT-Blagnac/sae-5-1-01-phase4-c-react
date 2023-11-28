@@ -11,6 +11,7 @@ import ButtonAdminSae from "../../../components/Buttons/ButtonAdminSae";
 import { SAEStatus } from "../../../assets/enums/SAEStatus.enum";
 import PendingUsers from "./interfaces/PendingUsers";
 import PendingWishes from "./interfaces/PendingWishes";
+import AuthChecker from "../../../middlewares/AuthChecker";
 
 export default function ConsultSAE() {
   const saeId = window.location.href.split("/")[4];
@@ -38,32 +39,34 @@ export default function ConsultSAE() {
   if (loading) return <Loading />;
 
   return (
-    <BlankPage role={Status.ADMIN} pageTitle="Consulter une SAE">
-      <Card>
-        <ButtonAdminSae saeStatut={sae?.statut} />
-        <Typography level="h3">
-          {sae?.name} : {convertSaeStatutEnumToHText(sae?.statut)}
-        </Typography>
-        <Typography level="h4">
-          {signedStudent.length} étudiants inscrits
-        </Typography>
-        <Typography
-          sx={{
-            whiteSpace: "pre-wrap",
-          }}
-        >
-          {sae?.description}
-        </Typography>
+    <AuthChecker>
+      <BlankPage role={Status.ADMIN} pageTitle="Manager une SAE">
+        <Card>
+          <ButtonAdminSae saeStatut={sae?.statut} />
+          <Typography level="h3">
+            {sae?.name} : {convertSaeStatutEnumToHText(sae?.statut)}
+          </Typography>
+          <Typography level="h4">
+            {signedStudent.length} étudiants inscrits
+          </Typography>
+          <Typography
+            sx={{
+              whiteSpace: "pre-wrap",
+            }}
+          >
+            {sae?.description}
+          </Typography>
 
-        <Divider sx={{ my: 2 }} />
+          <Divider sx={{ my: 2 }} />
 
-        {sae?.statut === SAEStatus.PENDING_USERS && (
-          <PendingUsers topics={topics} />
-        )}
-        {sae?.statut === SAEStatus.PENDING_WISHES && (
-          <PendingWishes topics={topics} />
-        )}
-      </Card>
-    </BlankPage>
+          {sae?.statut === SAEStatus.PENDING_USERS && (
+            <PendingUsers topics={topics} />
+          )}
+          {sae?.statut === SAEStatus.PENDING_WISHES && (
+            <PendingWishes topics={topics} />
+          )}
+        </Card>
+      </BlankPage>
+    </AuthChecker>
   );
 }
