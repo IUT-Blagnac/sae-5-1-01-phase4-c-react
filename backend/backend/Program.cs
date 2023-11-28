@@ -19,7 +19,7 @@ builder.Services.AddCors(options =>
     options.AddDefaultPolicy(
         builder => 
         {
-            builder.WithOrigins("http://sae.mrobert.fr")
+            builder.WithOrigins("http://sae.mrobert.fr", "http://localhost")
                 .AllowAnyMethod()
                 .AllowAnyHeader();
         });
