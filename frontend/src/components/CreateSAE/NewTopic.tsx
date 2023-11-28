@@ -18,6 +18,7 @@ import {
 } from "@mui/joy";
 import CreateSaeForm from "../../models/CreateSaeForm";
 import Topic from "../../models/Topic";
+import API_URL from "../../env";
 
 const MAX_DESCRIPTION_LENGTH = 400;
 
@@ -81,7 +82,7 @@ export default function NewTopic({ submitSae }: NewTopicProps) {
 
     console.log(formInputs);
 
-    const res = await fetch("/api/Sae", {
+    const res = await fetch(API_URL + "/api/Sae", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

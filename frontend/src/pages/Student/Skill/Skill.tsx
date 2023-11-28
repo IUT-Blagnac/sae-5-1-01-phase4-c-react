@@ -4,6 +4,7 @@ import BlankPage from "../../templates/BlankPage";
 import React, { useEffect, useState } from "react";
 import { KeyboardArrowRight } from "@mui/icons-material";
 import Loading from "../../../components/Loading";
+import API_URL from "../../../env";
 
 interface SkillCharacter {
   id: string;
@@ -22,7 +23,7 @@ export default function Skill() {
   useEffect(() => {
     const userId = localStorage.getItem("userid");
     // Fetch all the skills of the user
-    fetch(`/api/Character/user/${userId}`, {
+    fetch(API_URL + `/api/Character/user/${userId}`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -38,7 +39,7 @@ export default function Skill() {
       })
       .then((allSkillsCharachters: SkillCharacter[]) => {
         // Fetch all the skills
-        fetch(`/api/Skill`, {
+        fetch(API_URL + `/api/Skill`, {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
@@ -118,7 +119,7 @@ export default function Skill() {
       skills: formatedSkillCharacters,
     };
 
-    fetch("/api/Character", {
+    fetch(API_URL + "/api/Character", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
