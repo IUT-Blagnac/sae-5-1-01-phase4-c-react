@@ -1,6 +1,8 @@
 ﻿using System.Security.Claims;
 using backend.Data;
 using backend.Data.Models;
+using backend.Services.Class;
+using backend.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -10,42 +12,30 @@ namespace backend.Controllers;
 [Route("api/[controller]")]
 public class UserController: ControllerBase
 {
-    private readonly EntityContext _context;
+    private readonly IUserService _userService;
+    private readonly IRoleUserService _roleUserService;
 
-    public UserController(EntityContext context)
+    public UserController(IUserService userService, IRoleUserService roleUserService)
     {
-        _context = context;
+        _userService = userService;
+        _roleUserService = roleUserService;
     }
     
     [HttpGet]
     [Route("currentUser")]
-    [Authorize]
     public IActionResult GetAuthenticatedUser()
     {
-        var currentUser = GetCurrentUser();
+        var currentUser = _userService.GetCurrentUser(HttpContext);
 
-        var role = _context.RoleUsers.FirstOrDefault(x => x.id == currentUser.role_id);
-        
-        if (currentUser != null)
+        if (currentUser is not null)
         {
-            return new OkObjectResult( new { email = currentUser.email, firstname = currentUser.first_name, lastname = currentUser.last_name, role = role.name});
+            var role = _roleUserService.GetRole(currentUser.id_role);
+
+            return new OkObjectResult( new { id = currentUser.id, email = currentUser.email, firstname = currentUser.first_name, lastname = currentUser.last_name, role = role.name});
         }
-
-        return Unauthorized();
-    }
-
-    private User? GetCurrentUser()
-    {
-        var identity = HttpContext.User.Identity as ClaimsIdentity;
-
-        if (identity != null)
+        else
         {
-            var userClaims = identity.Claims;
-            var email = userClaims.FirstOrDefault(x => x.Type == ClaimTypes.Email)?.Value;
-            
-            return _context.Users.FirstOrDefault(x => x.email == email);
+            return Unauthorized();
         }
-
-        return null;
     }
 }

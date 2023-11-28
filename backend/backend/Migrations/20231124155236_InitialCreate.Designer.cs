@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using backend.Data;
@@ -11,9 +12,11 @@ using backend.Data;
 namespace backend.Migrations
 {
     [DbContext(typeof(EntityContext))]
-    partial class EntityContextModelSnapshot : ModelSnapshot
+    [Migration("20231124155236_InitialCreate")]
+    partial class InitialCreate
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -280,16 +283,11 @@ namespace backend.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<Guid>("id_sae")
-                        .HasColumnType("uuid");
-
                     b.Property<string>("name")
                         .IsRequired()
                         .HasColumnType("text");
 
                     b.HasKey("id");
-
-                    b.HasIndex("id_sae");
 
                     b.ToTable("team");
                 });
@@ -514,17 +512,6 @@ namespace backend.Migrations
                     b.Navigation("subject");
                 });
 
-            modelBuilder.Entity("backend.Data.Models.Team", b =>
-                {
-                    b.HasOne("backend.Data.Models.Sae", "sae")
-                        .WithMany("teams")
-                        .HasForeignKey("id_sae")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("sae");
-                });
-
             modelBuilder.Entity("backend.Data.Models.TeamSubject", b =>
                 {
                     b.HasOne("backend.Data.Models.Subject", "subject")
@@ -632,8 +619,6 @@ namespace backend.Migrations
                     b.Navigation("sae_groups");
 
                     b.Navigation("subjects");
-
-                    b.Navigation("teams");
                 });
 
             modelBuilder.Entity("backend.Data.Models.Skill", b =>
