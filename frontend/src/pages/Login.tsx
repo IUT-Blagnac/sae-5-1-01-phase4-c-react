@@ -10,14 +10,17 @@ import {
   Box,
   Grid,
   FormControlLabel,
+  Typography,
 } from "@mui/material";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
-import Typography from "@mui/material/Typography";
-
 import loginImage from "../assets/img/login.jpg";
 import Copyright from "../components/Copyright";
+import { URLs } from "../assets/enums/URLs.enum";
 
 export default function SignInSide() {
+  localStorage.removeItem("hasFoundEaster");
+  const [error, setError] = React.useState<string | null>(null);
+
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
@@ -26,6 +29,12 @@ export default function SignInSide() {
       email: data.get("email"),
       password: data.get("password"),
     };
+
+    if (data.get("email") === "Thomas" && data.get("password") === "Testa") {
+      localStorage.setItem("hasFoundEaster", "SUPER_TESTA_ADMIN");
+      window.location.href = URLs.EASTER;
+      return;
+    }
 
     try {
       const resLogin = await fetch("/api/Auth/login", {
@@ -46,6 +55,7 @@ export default function SignInSide() {
           },
         });
 
+        setError("");
         const resultUser = await resUser.json();
 
         localStorage.setItem("email", resultUser.email);
@@ -54,8 +64,13 @@ export default function SignInSide() {
         localStorage.setItem("statut", resultUser.role);
 
         window.location.href = "/dashboard";
+      } else {
+        // Afficher un message d'erreur en cas d'échec de connexion
+        setError("La connexion a échoué. Vérifiez vos identifiants.");
       }
-    } catch (e) {}
+    } catch (e) {
+      setError("Une erreur inattendue s'est produite. Veuillez réessayer.");
+    }
   };
 
   return (
@@ -96,6 +111,11 @@ export default function SignInSide() {
           <Typography component="h2" variant="h5">
             Se connecter
           </Typography>
+          {error && (
+            <Typography color="error" sx={{ mt: 1 }}>
+              {error}
+            </Typography>
+          )}
           <Box
             component="form"
             noValidate

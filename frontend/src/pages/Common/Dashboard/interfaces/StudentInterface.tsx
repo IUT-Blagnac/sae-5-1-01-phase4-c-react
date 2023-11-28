@@ -4,10 +4,30 @@ import Table from "@mui/joy/Table";
 // Icons import
 import FolderRoundedIcon from "@mui/icons-material/FolderRounded";
 import { Box } from "@mui/joy";
+import { useEffect, useState } from "react";
+import Sae from "../../../../models/Sae";
+import FetchData from "../../../../assets/temp/FetchData";
+import Loading from "../../../../components/Loading";
+import { convertSaeStatutEnumToHText } from "../../../../utils/Utils";
 
 // custom
 
 function StudentInterface() {
+  const [loading, setLoading] = useState(true);
+  const [saes, setSaes] = useState<Sae[]>([]);
+
+  const hasDoneSkillSheet = false;
+  const signedSae = ["1"];
+
+  useEffect(() => {
+    FetchData.fetchSaes().then((data) => {
+      setSaes(data);
+      setLoading(false);
+    });
+  });
+
+  if (loading) return <Loading />;
+
   return (
     <Box>
       <Box
@@ -50,49 +70,41 @@ function StudentInterface() {
                 <Typography level="title-sm">Description</Typography>
               </th>
               <th>
-                <Typography level="title-sm">Tâches à faire</Typography>
+                <Typography level="title-sm">État de la SAE</Typography>
+              </th>
+              <th>
+                <Typography level="title-sm">Inscrit ?</Typography>
               </th>
             </tr>
           </thead>
           <tbody>
-            <tr
-              onClick={() => {
-                console.log("sae-koh-lanta");
-              }}
-            >
-              <td>
-                <Typography
-                  level="title-sm"
-                  startDecorator={<FolderRoundedIcon color="primary" />}
-                  sx={{ alignItems: "flex-start" }}
-                >
-                  Koh-Lanta
-                </Typography>
-              </td>
-              <td>
-                <Typography level="body-sm">Useless</Typography>
-              </td>
-              <td>
-                <Typography level="body-sm">Non</Typography>
-              </td>
-            </tr>
-            <tr>
-              <td>
-                <Typography
-                  level="title-sm"
-                  startDecorator={<FolderRoundedIcon color="primary" />}
-                  sx={{ alignItems: "flex-start" }}
-                >
-                  Slave-Narratives
-                </Typography>
-              </td>
-              <td>
-                <Typography level="body-sm">Say no to slavery</Typography>
-              </td>
-              <td>
-                <Typography level="body-sm">Oui</Typography>
-              </td>
-            </tr>
+            {saes.map((sae) => (
+              <tr key={sae.id}>
+                <td>
+                  <Typography
+                    level="title-sm"
+                    startDecorator={<FolderRoundedIcon color="primary" />}
+                    sx={{ alignItems: "flex-start" }}
+                  >
+                    {sae.name}
+                  </Typography>
+                </td>
+                <td>
+                  <Typography level="body-sm">{sae.description}</Typography>
+                </td>
+
+                <td>
+                  <Typography level="body-sm">
+                    {convertSaeStatutEnumToHText(sae?.statut)}
+                  </Typography>
+                </td>
+                <td>
+                  <Typography level="body-sm">
+                    {signedSae.includes(sae.id) ? "✅" : "❌"}
+                  </Typography>
+                </td>
+              </tr>
+            ))}
           </tbody>
         </Table>
       </Box>

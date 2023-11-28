@@ -81,7 +81,7 @@ const TOPIC_ONE: Topic = {
   id: "1",
   name: "Slaves-Narratives",
   description: "Say no to slavery",
-  categories: ["PHP", "Refactor"],
+  categoriesId: ["PHP", "Refactor"],
 };
 
 const TOPIC_TWO: Topic = {
@@ -89,14 +89,14 @@ const TOPIC_TWO: Topic = {
   name: "Site Vacataires",
   description:
     "Salut les vacataires, je suis une longue description, j'ai plus d'idée",
-  categories: ["Tech au Choix", "From Scratch"],
+  categoriesId: ["Tech au Choix", "From Scratch"],
 };
 
 const TOPIC_THREE: Topic = {
   id: "3",
   name: "Irit",
   description: "J'ai plus d'idée",
-  categories: ["Angular", "Refactor"],
+  categoriesId: ["Angular", "Refactor"],
 };
 
 const LINK_TOPIC_SAE = [

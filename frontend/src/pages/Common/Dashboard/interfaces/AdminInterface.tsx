@@ -25,9 +25,7 @@ function AdminInterface() {
     return (window.location.href = `sae/${sae.id}`);
   };
 
-  if (loading) {
-    return <Loading />;
-  }
+  if (loading) return <Loading />;
 
   return (
     <Box>

@@ -9,6 +9,7 @@ import ImportUser from "./pages/Admin/ImportUser/ImportUser";
 import CreateSAE from "./pages/Admin/CreateSAE/CreateSAE";
 import ConsultSAE from "./pages/Admin/ConsultSAE/ConsultSAE";
 import Skill from "./pages/Student/Skill";
+import EasterEgg from "./pages/Common/EasterEgg/EasterEgg";
 
 function App() {
   return (
@@ -18,6 +19,7 @@ function App() {
         <Route path={URLs.BASE} Component={SignInSide} />
         <Route path={URLs.SUPPORT} Component={Support} />
         <Route path={URLs.DASHBOARD} Component={Dashboard} />
+        <Route path={URLs.EASTER} Component={EasterEgg} />
         <Route path="*" Component={NotFoundPage} />
 
         {/** Admin Only routes */}

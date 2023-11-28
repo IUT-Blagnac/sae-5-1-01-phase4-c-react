@@ -3,12 +3,11 @@ import Topic from "./Topic";
 export default interface CreateSaeForm {
   name: string;
   description: string;
-  groups: string[];
-  skills: string[];
-  teachers: string[];
-  minTeamSize: number;
-  maxTeamSize: number;
-  maxTeamPerSubject: number;
-  minTeamPerSubject: number;
+  id_groups: string[];
+  id_coachs: string[];
+  min_students_per_group: number;
+  max_students_per_group: number;
+  min_groups_per_subject: number;
+  max_groups_per_subject: number;
   subjects: Topic[];
 }

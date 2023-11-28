@@ -1,6 +1,6 @@
 export default interface Topic {
-  id: string;
+  id?: string;
   name: string;
   description: string;
-  categories: string[];
+  categoriesId: string[];
 }
