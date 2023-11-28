@@ -1,0 +1,65 @@
+version: "3"
+
+services:
+  db:
+    image: postgres
+    environment:
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_USER: postgres
+      POSTGRES_DB: postgres
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    networks:
+      - db
+
+  backend:
+    image: backend
+    container_name: backend
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    expose:
+      - 80
+    depends_on:
+      - db
+    environment:
+      - DB_HOST=db
+      - DB_PORT=5432
+      - DB_USER=postgres
+      - DB_PASSWORD=postgres
+      - DB_NAME=postgres
+    networks:
+      - reverse_proxy
+      - db
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.back.rule=Host(`api.$DOMAIN_NAME`)" 
+      - "traefik.http.services.back.loadbalancer.server.port=80"
+
+  frontend:
+    image: frontend
+    container_name: frontend
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    expose:
+      - 80
+    depends_on:
+      - backend
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.front.rule=Host(`$DOMAIN_NAME`)" 
+      - "traefik.http.services.front.loadbalancer.server.port=80"
+    networks:
+      - reverse_proxy
+
+volumes:
+  postgres-data:
+
+networks:
+  db:
+  reverse_proxy:
+    name: traefik
+    external: true

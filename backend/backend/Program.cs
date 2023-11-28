@@ -14,6 +14,17 @@ var  MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
 
 var connectionString = builder.Configuration.GetConnectionString("DatabaseConnection");
 
+builder.Services.AddCors(options =>
+{
+    options.AddDefaultPolicy(
+        builder => 
+        {
+            builder.WithOrigins("http://sae.mrobert.fr")
+                .AllowAnyMethod()
+                .AllowAnyHeader();
+        });
+});
+
 // Add services to the container.
 builder.Services.AddDbContext<EntityContext>(opt => 
     opt.UseNpgsql(connectionString));
@@ -48,11 +59,6 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJw
     };
 });
 
-builder.Services.AddCors(options =>
-{
-    options.AddPolicy(name: MyAllowSpecificOrigins,
-        policy  => policy.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
-});
 
 var app = builder.Build();
 
@@ -60,9 +66,12 @@ var app = builder.Build();
 app.UseSwagger(); 
 app.UseSwaggerUI();
 
-app.UseCors(MyAllowSpecificOrigins);
+
 
 app.UseHttpsRedirection();
+
+app.UseCors();
+
 app.UseAuthentication();
 app.UseAuthorization();
 

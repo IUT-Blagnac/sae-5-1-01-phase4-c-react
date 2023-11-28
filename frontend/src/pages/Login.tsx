@@ -40,7 +40,7 @@ export default function SignInSide() {
     try {
       const resLogin = await fetch(API_URL + "/api/Auth/login", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: { "Content-Type": "application/json"},
         body: JSON.stringify(body),
       });
 
