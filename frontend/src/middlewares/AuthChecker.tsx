@@ -1,6 +1,7 @@
 import { useEffect, useState, FC } from "react";
 import { CircularProgress } from "@mui/material";
 import { URLs } from "../assets/enums/URLs.enum";
+import API_URL from "../env";
 
 export interface AuthCheckerProps {
   children: React.ReactNode;
@@ -14,7 +15,7 @@ const AuthChecker: FC<AuthCheckerProps> = ({ children }) => {
   useEffect(() => {
     const checkUser = async () => {
       try {
-        const resUser = await fetch("/api/User/currentUser", {
+        const resUser = await fetch(API_URL + "/api/User/currentUser", {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
@@ -26,7 +27,6 @@ const AuthChecker: FC<AuthCheckerProps> = ({ children }) => {
           setIsUserAuthenticated(false);
         } else {
           const data = await resUser.json();
-          console.log(data);
 
           localStorage.setItem("statut", data.role);
           setIsUserAuthenticated(true);

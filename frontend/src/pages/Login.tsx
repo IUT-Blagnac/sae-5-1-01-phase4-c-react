@@ -16,6 +16,7 @@ import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import loginImage from "../assets/img/login.jpg";
 import Copyright from "../components/Copyright";
 import { URLs } from "../assets/enums/URLs.enum";
+import API_URL from "../env";
 
 export default function SignInSide() {
   localStorage.removeItem("hasFoundEaster");
@@ -37,7 +38,7 @@ export default function SignInSide() {
     }
 
     try {
-      const resLogin = await fetch("/api/Auth/login", {
+      const resLogin = await fetch(API_URL + "/api/Auth/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(body),
@@ -47,7 +48,7 @@ export default function SignInSide() {
         const resultLogin = await resLogin.json();
         localStorage.setItem("token", resultLogin.token);
 
-        const resUser = await fetch("/api/User/currentUser", {
+        const resUser = await fetch(API_URL + "/api/User/currentUser", {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
@@ -58,6 +59,7 @@ export default function SignInSide() {
         setError("");
         const resultUser = await resUser.json();
 
+        localStorage.setItem("userid", resultUser.id);
         localStorage.setItem("email", resultUser.email);
         localStorage.setItem("firstname", resultUser.firstname);
         localStorage.setItem("lastname", resultUser.lastname);
