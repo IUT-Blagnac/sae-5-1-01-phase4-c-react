@@ -28,6 +28,8 @@ builder.Services.AddScoped<IChallengeservice, ChallengeService>();
 builder.Services.AddScoped<ISaeService, SaeService>();
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IRoleUserService, RoleUserService>();
+builder.Services.AddScoped<ICharacterService, CharacterService>();
+builder.Services.AddScoped<IGroupService, GroupService>();
 
 //JWT Authentication
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>
