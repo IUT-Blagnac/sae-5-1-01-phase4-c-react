@@ -1,4 +1,5 @@
-﻿using backend.Data;
+﻿using System.Net;
+using backend.Data;
 using backend.Data.Models;
 using backend.FormModels;
 using backend.Services.Interfaces;
@@ -84,19 +85,9 @@ namespace backend.Services.Class
                 join sg in _context.SaeGroups on g.id equals sg.id_group
                 join s in _context.Saes on sg.id_sae equals s.id
                 where u.id == id
-                select new Sae()
-                {
-                    id = s.id,
-                    name = s.name,
-                    description = s.description,
-                    min_student_per_group = s.min_student_per_group,
-                    max_student_per_group = s.max_student_per_group,
-                    min_group_per_subject = s.min_group_per_subject,
-                    max_group_per_subject = s.max_group_per_subject,
-                    state = s.state
-                }).ToList();
+                select s);
         
-            return query;
+            return query.ToList();
         }
 
         public List<SaeAdminResponse> GetSaeAdminNbGroupByUserId(Guid id)
@@ -197,6 +188,129 @@ namespace backend.Services.Class
                 };
 
             return query.FirstOrDefault();
+        }
+
+        public List<User> GetUsersAssignedToSae(Guid saeId)
+        {
+            var query = from u in _context.Users
+                join g in _context.Groups on u.id_group equals g.id
+                where g.sae_groups.FirstOrDefault(sg => sg.id_sae == saeId) != null
+                select u;
+            return query.ToList();
+        }
+
+        public List<User> GetUsersWithCharactersAssignedToSae(Guid saeId)
+        {
+            var query = from u in _context.Users
+                join c in _context.Characters on u.id equals c.id_user
+                join s in _context.Saes on c.id_sae equals s.id
+                where s.id == saeId
+                select u;
+
+            return query.ToList();
+
+
+        }
+
+        public SaeAdminResponse SetSaeToPendingWishes(Guid saeId)
+        {
+            var query = from s in _context.Saes
+                where s.id == saeId && s.state == State.PENDING_USERS
+                select s;
+            var sae = query.FirstOrDefault();
+            if (sae == null)
+            {
+                //check if no SAE found in the good state
+                throw new HttpRequestException("Sae in the required state not found", null, HttpStatusCode.NotFound);
+                return null;
+            }
+            
+            //try to generate groups
+            // find all users assigned to the SAE
+
+            var users = GetUsersWithCharactersAssignedToSae(saeId);
+
+            if (sae.min_student_per_group == null)
+            {
+                throw new HttpRequestException("This selected Sae hasn't got any minimum students per group defined", null, HttpStatusCode.Forbidden);
+            }
+
+
+
+            int currentGroup = 0;
+            Team currTeam = null;
+            int currTeamNbMembers = 0;
+            List<Team> teams = new List<Team>();
+            Random r = new Random();
+            foreach (var user in users.OrderBy(x => r.Next()))
+            {
+                // foreach random user in users assign to group untill group amount == floor(users/minusers) then start looping the groups and adding the remaining users
+                if (currTeam == null || (teams.Count < Math.Floor(users.Count/(decimal)sae.min_student_per_group)))
+                {
+                    currTeamNbMembers = 0;
+                    currTeam = new Team()
+                    {
+                        id = Guid.NewGuid(),
+                        name = "Equipe " + (teams.Count + 1),
+                        id_sae = saeId,
+                        color = "white", //list sae colors,
+                        creator_challenge = new List<Challenge>(),
+                        sae = sae,
+                        target_challenge = new List<Challenge>(),
+                        user_team =
+                            new List<UserTeam>(), // create UserTeam on additions to the team and add them to this list
+                        team_subject = new List<TeamSubject>(),
+                        wish = new List<TeamWish>(),
+
+                    };
+                    teams.Add(currTeam);
+                    _context.Teams.Add(currTeam);
+                }
+
+                if (teams.Count > Math.Floor(users.Count / (decimal)sae.min_student_per_group))
+                {
+                    //loop through groups and add remaining users
+                    if (teams.Count > 0)
+                    {
+                        if (currentGroup == teams.Count)
+                        {
+                            break;
+                        }
+                        currTeam = teams[currentGroup];
+                        currentGroup++;
+                    }
+
+                }
+                var userTeam = new UserTeam()
+                {
+                    id_user = user.id,
+                    user = user,
+                    role = "membre", //default to membre
+                    id_team = currTeam.id,
+                    team = currTeam,
+                };
+                _context.UserTeams.Add(userTeam);
+                currTeam.user_team.Add(userTeam);
+                //user.user_team.Add(userTeam);
+                currTeamNbMembers++;
+            }
+
+
+
+            
+            
+            
+            //if group generation successful pass sae to next stat
+            sae.state = State.PENDING_WISHES;
+
+            _context.SaveChanges();
+
+            return new SaeAdminResponse(sae)
+            {
+                total_group = teams.Count,
+                total_student = users.Count
+                    
+            };
         }
     }
 }
