@@ -26,7 +26,6 @@ const AuthChecker: FC<AuthCheckerProps> = ({ children }) => {
           setIsUserAuthenticated(false);
         } else {
           const data = await resUser.json();
-          console.log(data);
 
           localStorage.setItem("statut", data.role);
           setIsUserAuthenticated(true);

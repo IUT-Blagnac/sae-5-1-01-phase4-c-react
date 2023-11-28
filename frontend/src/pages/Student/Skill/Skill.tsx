@@ -1,30 +1,143 @@
-import { Card, FormControl, Slider, Typography } from "@mui/joy";
+import { Button, Card, FormControl, Slider, Typography } from "@mui/joy";
 import { Status } from "../../../assets/enums/Status.enum";
 import BlankPage from "../../templates/BlankPage";
-import React from "react";
+import React, { useEffect, useState } from "react";
+import { KeyboardArrowRight } from "@mui/icons-material";
+import Loading from "../../../components/Loading";
 
-const skills = [
-  "Programmation",
-  "Développement web",
-  "Base de données",
-  "Algorithmie",
-  "Conception logicielle",
-  "Réseaux informatiques",
-  "Sécurité informatique",
-  "Intelligence artificielle",
-  "Analyse de données",
-  "Interface utilisateur",
-];
+interface SkillCharacter {
+  id: string;
+  name: string;
+  confidence_level: number;
+}
 
 export default function Skill() {
-  const [skillValues, setSkillValues] = React.useState<{
-    [key: string]: number;
-  }>({});
+  const [loading, setLoading] = useState(true);
+  const [skillCharacters, setSkillCharacters] = useState<SkillCharacter[]>([]);
 
-  const handleSkillChange =
-    (skill: string) => (event: React.ChangeEvent<{ value: unknown }>) => {
-      setSkillValues({ ...skillValues, [skill]: event.target.value as number });
+  const areTheSame = (a: SkillCharacter, b: { id: string; name: string }) => {
+    return a.id === b.id && a.name === b.name;
+  };
+
+  useEffect(() => {
+    const userId = localStorage.getItem("userid");
+    // Fetch all the skills of the user
+    fetch(`/api/Character/user/${userId}`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+      },
+    })
+      .then((res) => {
+        if (res.status === 200) {
+          return res.json();
+        } else {
+          throw new Error("Erreur lors de la récupération des compétences");
+        }
+      })
+      .then((allSkillsCharachters: SkillCharacter[]) => {
+        // Fetch all the skills
+        fetch(`/api/Skill`, {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        })
+          .then((res) => {
+            if (res.status === 200) {
+              return res.json();
+            } else {
+              throw new Error("Erreur lors de la récupération des compétences");
+            }
+          })
+          .then((data: { id: string; name: string }[]) => {
+            const skillCharacters_: SkillCharacter[] = [];
+
+            for (const skill of data) {
+              let found: SkillCharacter | undefined = undefined;
+              for (const skillCharacter__ of allSkillsCharachters) {
+                if (areTheSame(skillCharacter__, skill)) {
+                  found = skillCharacter__;
+                  break;
+                }
+              }
+              if (!found) {
+                skillCharacters_.push({
+                  id: skill.id,
+                  name: skill.name,
+                  confidence_level: 0,
+                });
+              } else {
+                skillCharacters_.push({
+                  id: skill.id,
+                  name: skill.name,
+                  confidence_level: found.confidence_level,
+                });
+              }
+            }
+
+            setSkillCharacters(skillCharacters_);
+            setLoading(false);
+          })
+          .catch((err) => {
+            console.error(err);
+          });
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+  }, []);
+
+  if (loading) return <Loading />;
+
+  const handleSkillChange = (skillName: string, value: number) => {
+    const newSkillCharacters = [...skillCharacters];
+    for (const skillCharacter of newSkillCharacters) {
+      if (skillCharacter.name === skillName) {
+        skillCharacter.confidence_level = value;
+      }
+    }
+    setSkillCharacters(newSkillCharacters);
+  };
+
+  const handleSubmit = async () => {
+    const formatedSkillCharacters = [];
+    // Copy the array but replace the property id by id_skill
+    for (const skillCharacter of skillCharacters) {
+      formatedSkillCharacters.push({
+        id_skill: skillCharacter.id,
+        confidence_level: skillCharacter.confidence_level,
+      });
+    }
+
+    const body = {
+      name: "NULL",
+      id_sae: "c5710c89-1b52-473b-886e-722f97ff713a",
+      skills: formatedSkillCharacters,
     };
+
+    fetch("/api/Character", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+      },
+      body: JSON.stringify(body),
+    })
+      .then((res) => {
+        if (res.status === 201) {
+          return res.json();
+        } else {
+          throw new Error("Erreur lors de la création du personnage");
+        }
+      })
+      .then((data) => {})
+      .catch((err) => {
+        console.error(err);
+      });
+  };
 
   return (
     <BlankPage
@@ -33,28 +146,40 @@ export default function Skill() {
       maxContentWidth="800px"
     >
       <Card>
+        <Button
+          endDecorator={<KeyboardArrowRight />}
+          color="success"
+          sx={{
+            maxWidth: "50%",
+            marginLeft: "auto",
+            marginRight: "auto",
+          }}
+          onClick={() => {
+            handleSubmit();
+          }}
+        >
+          Sauvegarder
+        </Button>
         <form>
-          {skills.map((skill) => (
-            <div key={skill} style={{ marginBottom: "16px" }}>
-              <Typography>{skill}</Typography>
+          {skillCharacters.map((skill) => (
+            <div key={skill.id} style={{ marginBottom: "16px" }}>
+              <Typography>{skill.name}</Typography>
               <FormControl>
                 <Typography level="body-sm">
-                  Niveau {skillValues[skill] || 0}
+                  Niveau {skill.confidence_level}
                 </Typography>
               </FormControl>
               <div style={{ display: "flex", alignItems: "center" }}>
                 <Slider
-                  value={skillValues[skill] || 0}
+                  value={skill.confidence_level}
                   min={0}
                   max={10}
                   step={1}
                   marks
-                  onChange={(event, value) =>
-                    handleSkillChange(skill)({
-                      target: { value },
-                    } as React.ChangeEvent<{ value: unknown }>)
-                  }
                   style={{ marginTop: "6px", flexGrow: 1 }}
+                  onChange={(e, value) =>
+                    handleSkillChange(skill.name, value as number)
+                  }
                 />
               </div>
             </div>

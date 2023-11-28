@@ -58,6 +58,7 @@ export default function SignInSide() {
         setError("");
         const resultUser = await resUser.json();
 
+        localStorage.setItem("userid", resultUser.id);
         localStorage.setItem("email", resultUser.email);
         localStorage.setItem("firstname", resultUser.firstname);
         localStorage.setItem("lastname", resultUser.lastname);
