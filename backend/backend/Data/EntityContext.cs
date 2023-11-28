@@ -126,7 +126,8 @@ public class EntityContext : DbContext
             new() { id = new Guid("f8f69fc6-2488-44f6-b742-3b63cb9cad6d"), email = "loan.gayrard@etu.univ-tlse2.fr", first_name = "Loan", last_name = "Gayrard", id_role = Roles.Where(r => r.name == "Student").FirstOrDefault().id, id_group = Groups.Where(g => g.name == "1").FirstOrDefault().id},
             new() { id = new Guid("ca7b4826-5d71-4d97-8dc5-b65a52a15f4c"), email = "matthieu.robert@etu.univ-tlse2.fr", first_name = "Matthieu", last_name = "Robert", id_role = Roles.Where(r => r.name == "Student").FirstOrDefault().id, id_group = Groups.Where(g => g.name == "2").FirstOrDefault().id},
             new() { id = new Guid("64f4f759-0c6e-4362-9495-0536ac3a512f"), email = "hugo.castell@etu.univ-tlse2.fr", first_name = "Hugo", last_name = "Castell", id_role = Roles.Where(r => r.name == "Student").FirstOrDefault().id, id_group = Groups.Where(g => g.name == "3A").FirstOrDefault().id},
-            new() { id = new Guid("e044a5ee-5a92-4e0c-9c2a-6c35e9734356"), email = "thomas.testa@etu.univ-tlse2.fr", first_name = "Thomas", last_name = "Testa", id_role = Roles.Where(r => r.name == "Student").FirstOrDefault().id, id_group = Groups.Where(g => g.name == "3B").FirstOrDefault().id}
+            new() { id = new Guid("e044a5ee-5a92-4e0c-9c2a-6c35e9734356"), email = "thomas.testa@etu.univ-tlse2.fr", first_name = "Thomas", last_name = "Testa", id_role = Roles.Where(r => r.name == "Student").FirstOrDefault().id, id_group = Groups.Where(g => g.name == "3B").FirstOrDefault().id},
+            new() { id = new Guid("dcb414a5-8a3f-4a8a-9e65-202cb4a73c2d"), email = "eric.philippe@etu.univ-tlse2.fr", first_name = "Eric", last_name = "Philippe", id_role = Roles.Where(r => r.name == "Student").FirstOrDefault().id, id_group = Groups.Where(g => g.name == "3A").FirstOrDefault().id}
         };
 
         foreach (var student in defaultStudents)
@@ -135,23 +136,6 @@ public class EntityContext : DbContext
             {
                 student.password = _passwordHasher.HashPassword(student, "6@ANdqS$x@er&76khmkJ");
                 Users.Add(student);
-            }
-        }
-
-        SaveChanges();
-
-        //DEFAULT CATEGORIES
-
-        var defaultCategories = new List<Category>()
-        {
-            new() { id = new Guid("0e6890df-3199-4315-80fe-88fdfdb40671"), name = "Développement" }, new() { id = new Guid("28c1c623-12b1-4dac-87ae-2c95f9ecf598"), name = "Réseau" }, new() { id = new Guid("357a01a3-8895-4aa8-9d6c-d66d57ee01f2"), name = "Système" } 
-        };
-
-        foreach (var category in defaultCategories)
-        {
-            if (!Categories.Where(c => c.name == category.name).Any())
-            {
-                Categories.Add(category);
             }
         }
 
@@ -182,6 +166,72 @@ public class EntityContext : DbContext
                 Saes.Add(sae);
             }
         }
+
+        SaveChanges();
+
+        //DEFAULT SUBJECTS
+
+        var defaultSubjects = new List<Subject>()
+        {
+            new() {id = new Guid("01f12434-bbdd-4159-bf3c-8a97b9e0545d"), name = "Sujet 1", description = "Ce sujet 1 a pour but de...", id_sae = new Guid("d5e37380-8b99-49c8-8e89-723d8c5f7b97")},
+            new() {id = new Guid("51edda44-243c-4e23-993d-a318e1d050ec"), name = "Sujet 2", description = "Ce sujet 2 a pour but de...", id_sae = new Guid("d5e37380-8b99-49c8-8e89-723d8c5f7b97")},
+            new() {id = new Guid("78064c17-0964-4945-8cc0-cfdee9cf8f0b"), name = "Sujet 1", description = "Ce sujet 1 a pour but de...", id_sae = new Guid("c5710c89-1b52-473b-886e-722f97ff713a")},
+            new() {id = new Guid("d15387f0-3e4d-4ce4-8378-e2ead38578ed"), name = "Sujet 2", description = "Ce sujet 2 a pour but de...", id_sae = new Guid("c5710c89-1b52-473b-886e-722f97ff713a")}
+        };
+
+        foreach (var subject in defaultSubjects)
+        {
+            if (!Subjects.Where(c => c.id == subject.id).Any())
+            {
+                Subjects.Add(subject);
+            }
+        }
+
+        SaveChanges();
+
+        //DEFAULT CATEGORIES
+
+        var defaultCategories = new List<Category>()
+        {
+            new() { id = new Guid("0e6890df-3199-4315-80fe-88fdfdb40671"), name = "Réfactoring" },
+            new() { id = new Guid("28c1c623-12b1-4dac-87ae-2c95f9ecf598"), name = "Modélisation" },
+            new() { id = new Guid("357a01a3-8895-4aa8-9d6c-d66d57ee01f2"), name = "Amélioration" },
+            new() { id = new Guid("81dccd2d-bae2-4335-be00-da9ad09b87e0"), name = "Création" }
+        };
+
+        foreach (var category in defaultCategories)
+        {
+            if (!Categories.Where(c => c.name == category.name).Any())
+            {
+                Categories.Add(category);
+            }
+        }
+
+        SaveChanges();
+
+        //DEFAULT SUBJET CATEGORY
+
+        var defaultSujectsCategories = new List<SubjectCategory>()
+        {
+            new() { id_category = new Guid("0e6890df-3199-4315-80fe-88fdfdb40671"), id_subject = new Guid("01f12434-bbdd-4159-bf3c-8a97b9e0545d")},
+            new() { id_category = new Guid("28c1c623-12b1-4dac-87ae-2c95f9ecf598"), id_subject = new Guid("01f12434-bbdd-4159-bf3c-8a97b9e0545d")},
+            new() { id_category = new Guid("357a01a3-8895-4aa8-9d6c-d66d57ee01f2"), id_subject = new Guid("51edda44-243c-4e23-993d-a318e1d050ec")},
+            new() { id_category = new Guid("81dccd2d-bae2-4335-be00-da9ad09b87e0"), id_subject = new Guid("51edda44-243c-4e23-993d-a318e1d050ec")},
+            new() { id_category = new Guid("0e6890df-3199-4315-80fe-88fdfdb40671"), id_subject = new Guid("78064c17-0964-4945-8cc0-cfdee9cf8f0b")},
+            new() { id_category = new Guid("357a01a3-8895-4aa8-9d6c-d66d57ee01f2"), id_subject = new Guid("78064c17-0964-4945-8cc0-cfdee9cf8f0b")},
+            new() { id_category = new Guid("28c1c623-12b1-4dac-87ae-2c95f9ecf598"), id_subject = new Guid("d15387f0-3e4d-4ce4-8378-e2ead38578ed")},
+            new() { id_category = new Guid("81dccd2d-bae2-4335-be00-da9ad09b87e0"), id_subject = new Guid("d15387f0-3e4d-4ce4-8378-e2ead38578ed")}
+        };
+
+        foreach (var subjectCategory in defaultSujectsCategories)
+        {
+            if (!SubjectCategories.Where(c => c.id_category == subjectCategory.id_category && c.id_subject == subjectCategory.id_subject).Any())
+            {
+                SubjectCategories.Add(subjectCategory);
+            }
+        }
+
+        SaveChanges();
 
         //DEFAULT TEAMS WITH USERS
 
@@ -230,7 +280,7 @@ public class EntityContext : DbContext
             },
             new()
             {
-                id_group = new Guid("47c8a811-eb03-45cb-b366-136363f4903c"), id_sae =
+                id_group = new Guid("61cd9a7c-b555-4dea-92e8-9478bab248d8"), id_sae =
                     new Guid("d5e37380-8b99-49c8-8e89-723d8c5f7b97")
             },
             new()
@@ -302,12 +352,6 @@ public class EntityContext : DbContext
                 id_sae = new Guid("d5e37380-8b99-49c8-8e89-723d8c5f7b97"),
                 id_user = new Guid("ca7b4826-5d71-4d97-8dc5-b65a52a15f4c")
             },
-            new()
-            {
-                id = new Guid("0e3aaf7a-8cf3-46a2-b60d-e38a2f960506"), name = "Matz",
-                id_sae = new Guid("c5710c89-1b52-473b-886e-722f97ff713a"),
-                id_user = new Guid("ca7b4826-5d71-4d97-8dc5-b65a52a15f4c")
-            }
         };
 
         foreach (var character in defaultCharacter) 
@@ -315,6 +359,30 @@ public class EntityContext : DbContext
             if (!Characters.Where(c => c.name == character.name).Any())
             {
                 Characters.Add(character);
+            }
+        }
+
+        SaveChanges();
+
+        // DEFAULT SKILLS
+
+        var defaultSkills = new List<Skill>()
+        {
+            new() {id = new Guid("8c229595-2c2c-4926-bb80-bc39e151e4fb"), name = "Front-end"},
+            new() {id = new Guid("23acec0d-4f11-4b01-9492-835ca99cf4b8"), name = "Back-end"},
+            new() {id = new Guid("9bdba010-80ba-4f86-9a18-9a32b31464fb"), name = "Base de données"},
+            new() {id = new Guid("0aa8c577-028f-4cc3-b2a6-8a95859c7c37"), name = "DevOps"},
+            new() {id = new Guid("5b03189e-b68b-4bae-b3dd-66716f705a17"), name = "Versioning"},
+            new() {id = new Guid("2dccd78d-2fb6-40dc-b332-b0c27cc6323e"), name = "Gestion de projet"},
+            new() {id = new Guid("86dcf6aa-dd2f-498c-b8b1-ee6ba8b2e6aa"), name = "Communication"},
+            new() {id = new Guid("0946fc5a-d84a-40ad-b208-7cd58c48f1de"), name = "Travail d'équipe"}
+        };
+
+        foreach (var skill in defaultSkills)
+        {
+            if (!Skills.Where(c => c.name == skill.name).Any())
+            {
+                Skills.Add(skill);
             }
         }
 
