@@ -7,9 +7,10 @@ import Dashboard from "./pages/Common/Dashboard/Dashboard";
 import NotFoundPage from "./pages/404";
 import ImportUser from "./pages/Admin/ImportUser/ImportUser";
 import CreateSAE from "./pages/Admin/CreateSAE/CreateSAE";
-import ConsultSAE from "./pages/Admin/ConsultSAE/ConsultSAE";
-import Skill from "./pages/Student/Skill";
+import ManageSAE from "./pages/Admin/ManageSAE/ManageSAE";
+import Skill from "./pages/Student/Skill/Skill";
 import EasterEgg from "./pages/Common/EasterEgg/EasterEgg";
+import ConsultSAE from "./pages/Student/ConsultSAE/ConsultSAE";
 
 function App() {
   return (
@@ -17,14 +18,15 @@ function App() {
       <Routes>
         {/** Common routes */}
         <Route path={URLs.BASE} Component={SignInSide} />
-        <Route path={URLs.SUPPORT} Component={Support} />
         <Route path={URLs.DASHBOARD} Component={Dashboard} />
+        <Route path={URLs.SAE_CONSULT} Component={ConsultSAE} />
+        <Route path={URLs.SUPPORT} Component={Support} />
         <Route path={URLs.EASTER} Component={EasterEgg} />
         <Route path="*" Component={NotFoundPage} />
 
         {/** Admin Only routes */}
         <Route path={URLs.CREATE_SAE} Component={CreateSAE} />
-        <Route path={URLs.SAE_MANAGE} Component={ConsultSAE} />
+        <Route path={URLs.SAE_MANAGE} Component={ManageSAE} />
         <Route path={URLs.IMPORT_STUDENTS} Component={ImportUser} />
 
         {/** Student Only routes */}

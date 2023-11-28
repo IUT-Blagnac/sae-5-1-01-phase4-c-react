@@ -79,7 +79,13 @@ function StudentInterface() {
           </thead>
           <tbody>
             {saes.map((sae) => (
-              <tr key={sae.id}>
+              <tr
+                key={sae.id}
+                onClick={() => {
+                  window.location.href = `sae/${sae.id}/consult`;
+                }}
+                title="Cliquer pour consulter la SAE"
+              >
                 <td>
                   <Typography
                     level="title-sm"
