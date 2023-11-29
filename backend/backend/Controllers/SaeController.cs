@@ -110,36 +110,5 @@ namespace backend.Controllers
 
             return saesNbGroups;
         }
-
-        [HttpGet("teams/{id}")]
-        [Authorize(Roles = RoleAccesses.Admin)]
-        public async Task<ActionResult<OutputGetTeamsBySaeId>> GetTeamsBySaeId(Guid id)
-        {
-            OutputGetTeamsBySaeId output = new() { teams = new() };
-
-            var teams = _teamService.GetTeamsBySaeId(id);
-
-            foreach (var team in teams)
-            {
-                var teamComposition = new TeamComposition
-                {
-                    idTeam = team.id,
-                    nameTeam = team.name,
-                    colorTeam = team.color,
-                    idUsers = new List<Guid>()
-                };
-
-                List<User> users = _userService.GetUsersByTeamId(team.id);
-
-                foreach (var user in users)
-                {
-                    teamComposition.idUsers.Add(user.id);
-                }
-
-                output.teams.Add(teamComposition);
-            }
-
-            return output;
-        }
     }
 }
