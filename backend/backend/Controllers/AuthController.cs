@@ -23,15 +23,18 @@ public class AuthController : ControllerBase
     private readonly EntityContext _context;
     private readonly PasswordHasher<UserLogin> _passwordHasher;
     private readonly ILogger<AuthController> _logger;
-    private readonly IUserService _userService;
 
-    public AuthController(IConfiguration configuration, EntityContext context, ILogger<AuthController> logger, IUserService userService)
+    private readonly IUserService _userService;
+    private readonly ICSVService _csvService;
+
+    public AuthController(IConfiguration configuration, EntityContext context, ILogger<AuthController> logger, IUserService userService, ICSVService csvService)
     {
         _configuration = configuration;
         _context = context;
         _passwordHasher = new PasswordHasher<UserLogin>();
         _logger = logger;
         _userService = userService;
+        _csvService = csvService;
     }
 
     [AllowAnonymous]
@@ -77,20 +80,12 @@ public class AuthController : ControllerBase
         return Created("User created", new { Email = userRegister.Email, FirstName = userRegister.FirstName });
     }
 
-    [HttpPost]
-    [Route("register_multiple")]
-    [Authorize(Roles = RoleAccesses.Teacher)]
-    public async Task<ActionResult> RegisterMultiples([FromBody] List<UserRegister> userRegisters)
+    private ActionResult RegisterMultiples(List<UserRegister> userRegisters)
     {
+        List<User> new_users;
         try
         {
-            foreach (UserRegister userRegister in userRegisters)
-            {
-                _userService.RegisterUser(email: userRegister.Email,
-                                          passwd: userRegister.Password,
-                                          first_name: userRegister.FirstName,
-                                          last_name: userRegister.LastName);
-            }
+            new_users = _userService.RegisterUsers(userRegisters);
         }
         catch (UserService.RegisterException reg_ex)
         {
@@ -105,7 +100,33 @@ public class AuthController : ControllerBase
             return StatusCode(400, new { message = "Unknown exception" });
         }
 
-        return StatusCode(201, "Users created");
+        return Created("Users created", new_users);
+    }
+
+    [HttpPost]
+    [Route("register_multiple_json")]
+    [Authorize(Roles = RoleAccesses.Teacher)]
+    public async Task<ActionResult> RegisterMultiplesFromJson([FromBody] List<UserRegister> userRegisters)
+    {
+        return RegisterMultiples(userRegisters);
+    }
+
+    [HttpPost]
+    [Route("register_multiple_csv")]
+    [Authorize(Roles = RoleAccesses.Teacher)]
+    public async Task<ActionResult> RegisterMultiplesFromCsv([FromForm] IFormFileCollection file)
+    {
+        List<UserRegister> userRegisters;
+        try
+        {
+            userRegisters = _csvService.ReadCSV<UserRegister>(file[0].OpenReadStream()).ToList();
+        }
+        catch (Exception)
+        {
+            return StatusCode(422, new { message = "Invalid file or well not formated" });
+        }
+
+        return RegisterMultiples(userRegisters);
     }
 
     private User? Authenticate(UserLogin userLogin)

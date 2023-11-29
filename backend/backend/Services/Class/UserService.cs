@@ -1,5 +1,6 @@
 ﻿using backend.Data;
 using backend.Data.Models;
+using backend.FormModels;
 using backend.Services.Interfaces;
 using Microsoft.AspNetCore.Identity;
 using System.Security.Claims;
@@ -24,7 +25,7 @@ public class UserService : IUserService
         }
     }
 
-    public User RegisterUser(string email, string passwd, string first_name, string last_name)
+    private User RegisterUserWithoutSaving(string email, string passwd, string first_name, string last_name)
     {
         User? user = _context.Users.FirstOrDefault(x => x.email == email);
 
@@ -53,9 +54,35 @@ public class UserService : IUserService
         registered_user.password = hashedPassword;
 
         _context.Users.Add(registered_user);
+
+        return registered_user;
+    }
+
+    public User RegisterUser(string email, string passwd, string first_name, string last_name)
+    {
+        var registered_user = RegisterUserWithoutSaving(email, passwd, first_name, last_name);
+
         _context.SaveChanges();
 
         return registered_user;
+    }
+
+    public List<User> RegisterUsers(IEnumerable<UserRegister> userRegisters)
+    {
+        List<User> users = new();
+
+        foreach (UserRegister userRegister in userRegisters)
+        {
+            var new_registered_user = RegisterUserWithoutSaving(email: userRegister.Email,
+                                                                passwd: userRegister.Password,
+                                                                first_name: userRegister.FirstName,
+                                                                last_name: userRegister.LastName);
+            users.Add(new_registered_user);
+        }
+
+        _context.SaveChanges();
+
+        return users;
     }
 
     public User? GetCurrentUser(HttpContext httpContext)
@@ -82,4 +109,5 @@ public class UserService : IUserService
         _context.Remove(user);
         _context.SaveChanges();
     }
+
 }
