@@ -1,4 +1,5 @@
-﻿using backend.Data.Models;
+﻿using backend.ApiModels.Output;
+using backend.Data.Models;
 
 namespace backend.Services.Interfaces;
 
@@ -8,4 +9,5 @@ public interface IUserService
     public User? GetCurrentUser(HttpContext httpContext);
     public List<User> GetUsersByTeamId(Guid idTeam);
     public void RemoveUser(Guid id_user);
+    public OutputGetTeachers GetTeachers();
 }

@@ -1,4 +1,5 @@
-﻿using backend.Data;
+﻿using backend.ApiModels.Output;
+using backend.Data;
 using backend.Data.Models;
 using backend.Services.Interfaces;
 using System.Security.Claims;
@@ -54,5 +55,30 @@ public class UserService: IUserService
         var user = _context.Users.FirstOrDefault(user => user.id == id_user);
         _context.Remove(user);
         _context.SaveChanges();
+    }
+
+    public OutputGetTeachers GetTeachers()
+    {
+        var output = new OutputGetTeachers();
+        
+        var idRoleTeacher = _context.Roles.Where(c => c.name == "Teacher").FirstOrDefault()?.id;
+
+        if (idRoleTeacher is null)
+        {
+            return null;
+        }
+
+        var teachers = _context.Users.Where(user => user.id_role == idRoleTeacher).ToList();
+
+        foreach (var teacher in teachers)
+        {
+            output.Teachers.Add(new TeacherSimplified
+            {
+                id = teacher.id,
+                fullName = teacher.first_name + " " + teacher.last_name
+            });
+        }
+
+        return output;
     }
 }
