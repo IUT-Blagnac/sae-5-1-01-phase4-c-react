@@ -10,7 +10,20 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Configuration.AddEnvironmentVariables();
 
+var  MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
+
 var connectionString = builder.Configuration.GetConnectionString("DatabaseConnection");
+
+builder.Services.AddCors(options =>
+{
+    options.AddDefaultPolicy(
+        builder => 
+        {
+            builder.WithOrigins("http://sae.mrobert.fr", "http://localhost")
+                .AllowAnyMethod()
+                .AllowAnyHeader();
+        });
+});
 
 // Add services to the container.
 builder.Services.AddDbContext<EntityContext>(opt => 
@@ -46,13 +59,19 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJw
     };
 });
 
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
 app.UseSwagger(); 
 app.UseSwaggerUI();
 
+
+
 app.UseHttpsRedirection();
+
+app.UseCors();
+
 app.UseAuthentication();
 app.UseAuthorization();
 
