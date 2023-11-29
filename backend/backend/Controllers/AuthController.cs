@@ -77,9 +77,9 @@ public class AuthController : ControllerBase
         return Created("User created", new { Email = userRegister.Email, FirstName = userRegister.FirstName });
     }
 
-    [AllowAnonymous]
     [HttpPost]
     [Route("register_multiple")]
+    [Authorize(Roles = RoleAccesses.Teacher)]
     public async Task<ActionResult> RegisterMultiples([FromBody] List<UserRegister> userRegisters)
     {
         try
@@ -150,30 +150,5 @@ public class AuthController : ControllerBase
             signingCredentials: credentials);
 
         return new JwtSecurityTokenHandler().WriteToken(token);
-    }
-
-    [HttpPost]
-    [Authorize(Roles = RoleAccesses.Teacher)]
-    public async Task<ActionResult<User>> AddUsers(List<UserRegister> userRegisters)
-    {
-        foreach (var userRegister in userRegisters)
-        {
-            Register(userRegister);
-        }
-        var new_user = _userService.AddUser(mail, passwd, name, surname);
-
-        return CreatedAtAction(
-            nameof(GetAuthenticatedUser),
-            new { id = new_user.id },
-            new
-            {
-                new_user.id,
-                new_user.email,
-                new_user.password,
-                new_user.first_name,
-                new_user.last_name
-                //new_user.id_role,
-                //new_user.id_group
-            });
     }
 }
