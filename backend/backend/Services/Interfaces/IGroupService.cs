@@ -2,8 +2,8 @@
 
 namespace backend.Services.Interfaces
 {
-    public interface IGroupService
-    {
+public interface IGroupService
+{
         public List<Group> GetGroups();
     }
 }

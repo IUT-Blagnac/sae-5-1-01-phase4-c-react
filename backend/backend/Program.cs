@@ -1,10 +1,10 @@
-using System.Text;
 using backend.Data;
 using backend.Services.Class;
 using backend.Services.Interfaces;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -13,7 +13,7 @@ builder.Configuration.AddEnvironmentVariables();
 var connectionString = builder.Configuration.GetConnectionString("DatabaseConnection");
 
 // Add services to the container.
-builder.Services.AddDbContext<EntityContext>(opt => 
+builder.Services.AddDbContext<EntityContext>(opt =>
     opt.UseNpgsql(connectionString));
 
 builder.Services.AddControllers();
@@ -28,6 +28,9 @@ builder.Services.AddScoped<IChallengeservice, ChallengeService>();
 builder.Services.AddScoped<ISaeService, SaeService>();
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IRoleUserService, RoleUserService>();
+builder.Services.AddScoped<ICharacterService, CharacterService>();
+builder.Services.AddScoped<IGroupService, GroupService>();
+builder.Services.AddScoped<ICSVService, CSVService>();
 builder.Services.AddScoped<IGroupService, GroupService>();
 builder.Services.AddScoped<ICategoryService, CategoryService>();
 
@@ -49,7 +52,7 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJw
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
-app.UseSwagger(); 
+app.UseSwagger();
 app.UseSwaggerUI();
 
 app.UseHttpsRedirection();
