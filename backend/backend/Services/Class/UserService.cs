@@ -1,11 +1,12 @@
 ﻿using backend.Data;
 using backend.Data.Models;
 using backend.Services.Interfaces;
+using Microsoft.AspNetCore.Identity;
 using System.Security.Claims;
 
 namespace backend.Services.Class;
 
-public class UserService: IUserService
+public class UserService : IUserService
 {
     private readonly EntityContext _context;
 
@@ -14,21 +15,47 @@ public class UserService: IUserService
         _context = context;
     }
 
-    public User AddUser(string email, string passwd, string first_name, string last_name)
+    public class RegisterException : Exception
     {
-        var new_user = new User
+        public int StatusCode { get; }
+        public RegisterException(int statusCode, string message) : base(message)
+        {
+            StatusCode = statusCode;
+        }
+    }
+
+    public User RegisterUser(string email, string passwd, string first_name, string last_name)
+    {
+        User? user = _context.Users.FirstOrDefault(x => x.email == email);
+
+        Role? defaultRole = _context.Roles.FirstOrDefault(c => c.name == "Student");
+
+        if (user is not null)
+            throw new RegisterException(409, "User already exits");
+
+        if (defaultRole is null)
+            throw new RegisterException(500, "Internal server error");
+
+        if (passwd.Length < 8)
+            throw new RegisterException(403, "Password is too short");
+
+        var registered_user = new User
         {
             id = Guid.NewGuid(),
             email = email,
-            password = passwd,
             first_name = first_name,
             last_name = last_name,
+            role_user = defaultRole
         };
 
-        _context.Users.Add(new_user);
+        var hashedPassword = new PasswordHasher<User>().HashPassword(registered_user, passwd);
+
+        registered_user.password = hashedPassword;
+
+        _context.Users.Add(registered_user);
         _context.SaveChanges();
 
-        return new_user;
+        return registered_user;
     }
 
     public User? GetCurrentUser(HttpContext httpContext)

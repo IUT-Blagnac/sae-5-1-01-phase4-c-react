@@ -3,6 +3,7 @@ using backend.Data;
 using backend.Data.Models;
 using backend.Services.Class;
 using backend.Services.Interfaces;
+using backend.Utils;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -38,4 +39,5 @@ public class UserController: ControllerBase
             return Unauthorized();
         }
     }
+
 }
