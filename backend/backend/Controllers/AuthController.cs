@@ -100,7 +100,7 @@ public class AuthController : ControllerBase
             return StatusCode(400, new { message = "Unknown exception" });
         }
 
-        return Created("Users created", new_users);
+        return Ok();
     }
 
     [HttpPost]
@@ -114,12 +114,14 @@ public class AuthController : ControllerBase
     [HttpPost]
     [Route("register_multiple_csv")]
     [Authorize(Roles = RoleAccesses.Teacher)]
-    public async Task<ActionResult> RegisterMultiplesFromCsv([FromForm] IFormFileCollection file)
+    public async Task<ActionResult> RegisterMultiplesFromCsv([FromForm] IFormFile file)
     {
         List<UserRegister> userRegisters;
         try
         {
-            userRegisters = _csvService.ReadCSV<UserRegister>(file[0].OpenReadStream()).ToList();
+            var enumerable = _csvService.ReadCSV<UserRegister>(file.OpenReadStream());
+
+            userRegisters = enumerable.ToList();
         }
         catch (Exception)
         {
