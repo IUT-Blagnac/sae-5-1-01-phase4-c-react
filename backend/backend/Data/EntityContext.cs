@@ -62,7 +62,6 @@ public class EntityContext : DbContext
         {
             new() { id = new Guid("f441bf0a-115e-4c1e-8b1f-a7fb6f5738c5"), name = "1", is_apprenticeship = false },
             new() { id = new Guid("61cd9a7c-b555-4dea-92e8-9478bab248d8"), name = "2", is_apprenticeship = false },
-            new() { id = new Guid("47c8a811-eb03-45cb-b366-136363f4903c"), name = "3", is_apprenticeship = true },
             new() { id = new Guid("6d7791c5-56dd-419f-aa7a-a811213cba32"), name = "3A", is_apprenticeship = true },
             new() { id = new Guid("2dbcecf8-c254-4cb7-9c55-0b3e7108054d"), name = "3B", is_apprenticeship = true },
         };
