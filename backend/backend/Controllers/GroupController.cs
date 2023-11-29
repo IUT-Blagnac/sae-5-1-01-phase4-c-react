@@ -27,7 +27,7 @@ public class GroupController: ControllerBase
     public IActionResult GetGroups()
     {
         try
-    {
+        {
             var groups = _groupService.GetGroups();
             return Ok(groups);
         }
@@ -36,7 +36,5 @@ public class GroupController: ControllerBase
             _logger.LogError(e.Message);
             return BadRequest();
         }
-
-        return groups;
     }
 }
