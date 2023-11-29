@@ -35,8 +35,10 @@ services:
       - db
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.back.rule=Host(`api.$DOMAIN_NAME`)" 
+      - "traefik.http.routers.back.rule=Host(`api.$DOMAIN_NAME`)"
+      - "traefik.http.routers.back.entrypoints=websecure" 
       - "traefik.http.services.back.loadbalancer.server.port=80"
+      - "traefik.http.routers.back.tls.certresolver=mvallew"
 
   frontend:
     image: frontend
@@ -50,8 +52,10 @@ services:
       - backend
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.front.rule=Host(`$DOMAIN_NAME`)" 
+      - "traefik.http.routers.front.rule=Host(`$DOMAIN_NAME`)"
+      - "traefik.http.routers.front.entrypoints=websecure" 
       - "traefik.http.services.front.loadbalancer.server.port=80"
+      - "traefik.http.routers.front.tls.certresolver=mvallew"
     networks:
       - reverse_proxy
 
