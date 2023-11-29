@@ -253,7 +253,7 @@ namespace backend.Services.Class
                         id = Guid.NewGuid(),
                         name = "Equipe " + (teams.Count + 1),
                         id_sae = saeId,
-                        color = "white", //list sae colors,
+                        color = "", //list sae colors,
                         creator_challenge = new List<Challenge>(),
                         sae = sae,
                         target_challenge = new List<Challenge>(),
