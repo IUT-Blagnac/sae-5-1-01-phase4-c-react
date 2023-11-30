@@ -86,13 +86,18 @@ public class UserService : IUserService
         return users;
     }
 
+    public User? GetUser(string? email)
+    {
+        return email is not null ? _context.Users.FirstOrDefault(x => x.email == email) :
+                                   null;
+    }
+
     public User? GetCurrentUser(HttpContext httpContext)
     {
         ClaimsIdentity? identity = httpContext.User.Identity as ClaimsIdentity;
         Claim? email = identity?.Claims?.FirstOrDefault(x => x.Type == ClaimTypes.Email);
 
-        return email is not null ? _context.Users.FirstOrDefault(x => x.email == email.Value) :
-                                   null;
+        return GetUser(email?.Value);
     }
 
     public List<User> GetUsersByTeamId(Guid idTeam)
@@ -114,7 +119,7 @@ public class UserService : IUserService
     public OutputGetTeachers GetTeachers()
     {
         var output = new OutputGetTeachers();
-        
+
         var idRoleTeacher = _context.Roles.Where(c => c.name == "Teacher").FirstOrDefault()?.id;
 
         if (idRoleTeacher is null)

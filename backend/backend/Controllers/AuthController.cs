@@ -1,5 +1,4 @@
-﻿using backend.Data;
-using backend.Data.Models;
+﻿using backend.Data.Models;
 using backend.FormModels;
 using backend.Services.Class;
 using backend.Services.Interfaces;
@@ -20,21 +19,21 @@ namespace backend.Controllers;
 public class AuthController : ControllerBase
 {
     private readonly IConfiguration _configuration;
-    private readonly EntityContext _context;
     private readonly PasswordHasher<UserLogin> _passwordHasher;
     private readonly ILogger<AuthController> _logger;
 
     private readonly IUserService _userService;
     private readonly ICSVService _csvService;
+    private readonly IRoleUserService _roleUserService;
 
-    public AuthController(IConfiguration configuration, EntityContext context, ILogger<AuthController> logger, IUserService userService, ICSVService csvService)
+    public AuthController(IConfiguration configuration, ILogger<AuthController> logger, IUserService userService, ICSVService csvService, IRoleUserService roleUserService)
     {
         _configuration = configuration;
-        _context = context;
         _passwordHasher = new PasswordHasher<UserLogin>();
         _logger = logger;
         _userService = userService;
         _csvService = csvService;
+        _roleUserService = roleUserService;
     }
 
     [AllowAnonymous]
@@ -133,23 +132,23 @@ public class AuthController : ControllerBase
 
     private User? Authenticate(UserLogin userLogin)
     {
-        var user = _context.Users.FirstOrDefault(x => x.email == userLogin.Email);
+        var user = _userService.GetUser(userLogin.Email);
 
-        if (user == null)
+        if (user is not null)
         {
-            return null;
-        }
-        var passwordVerification = _passwordHasher.VerifyHashedPassword(userLogin, user.password, userLogin.Password);
+            var passwordVerification = _passwordHasher.VerifyHashedPassword(userLogin, user.password, userLogin.Password);
 
-        switch (passwordVerification)
-        {
-            case PasswordVerificationResult.Failed:
-                return null;
-            case PasswordVerificationResult.Success:
-                return user;
+            switch (passwordVerification)
+            {
+                case PasswordVerificationResult.Failed:
+                    return null;
+                case PasswordVerificationResult.Success:
+                    return user;
+            }
+
+            _logger.LogWarning("Password hash algorithm is deprecated and should be changed");
         }
 
-        _logger.LogWarning("Password hash algorithm is deprecated and should be changed");
         return user;
     }
 
@@ -158,12 +157,12 @@ public class AuthController : ControllerBase
         var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:Key"]));
         var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
 
-        var roleuser = _context.Roles.First(x => x.id == user.id_role);
+        var roleuser = _roleUserService.GetRole(user.id_role);
 
         var claims = new[]
         {
             new Claim(ClaimTypes.Email, user.email),
-            new Claim(ClaimTypes.Role, roleuser.name)
+            new Claim(ClaimTypes.Role, roleuser?.name ?? "Student")
         };
 
         var token = new JwtSecurityToken(_configuration["Jwt:Issuer"],
