@@ -84,7 +84,7 @@ public class TeamController : ControllerBase
 
         try
         {
-            var team = _teamService.MoifyTeam(id, teamForm, user.id);
+            var team = _teamService.ModifyTeam(id, teamForm, user.id);
             if (team == null)
             {
                 return NotFound();
@@ -96,6 +96,7 @@ public class TeamController : ControllerBase
             return NotFound();
         }
     }
+
 
     [HttpGet("sae/{id}")]
     [Authorize(Roles = RoleAccesses.Teacher)]
@@ -126,5 +127,20 @@ public class TeamController : ControllerBase
         }
 
         return output;
+    }
+
+    [HttpPost("MakeWish")]
+    [Authorize(Roles = RoleAccesses.Student)]
+    public Task<ActionResult<List<TeamWish>>> MakeWish(WishForm form)
+    {
+        var user = _userService.GetCurrentUser(HttpContext);
+        
+        var teamWishList = _teamService.MakeWish(user.id,form.idTeam, form.idSubject);
+
+        return Task.FromResult<ActionResult<List<TeamWish>>>(CreatedAtAction(
+            nameof(MakeWish),
+            new { id = form.idTeam },
+            teamWishList));
+
     }
 }

@@ -10,5 +10,6 @@ public interface ITeamService
     public List<Team> GetTeams(Guid userId);
     public Team GetTeam(Guid id);
     public Team CreateTeam(TeamForm teamForm, Guid userId);
-    public Team MoifyTeam(Guid id, TeamForm teamForm, Guid userId);
+    public Team ModifyTeam(Guid id, TeamForm teamForm, Guid userId);
+    public List<TeamWish> MakeWish(Guid user, Guid idTeam, Guid idSubject);
 }
