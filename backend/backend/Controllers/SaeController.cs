@@ -1,7 +1,6 @@
 ﻿using backend.ApiModels.Output;
 using backend.Data.Models;
 using backend.FormModels;
-using backend.Services.Class;
 using backend.Services.Interfaces;
 using backend.Utils;
 using Microsoft.AspNetCore.Authorization;
@@ -58,7 +57,7 @@ namespace backend.Controllers
         public ActionResult<List<SaeAdminResponse>> GetSaesAdminByUserId(Guid id)
         {
             var saesNbGroups = _saeService.GetSaeAdminNbGroupByUserId(id);
-            
+
             if (saesNbGroups == null)
             {
                 return NotFound();
@@ -87,13 +86,13 @@ namespace backend.Controllers
 
             return saesNbGroups;
         }
-        
+
         [HttpGet("{id}")]
         [Authorize]
         public ActionResult<SaeAdminResponse> GetSaes(Guid id)
         {
             var saesNbGroups = _saeService.GetSaeNbGroup(id);
-            
+
             if (saesNbGroups == null)
             {
                 return NotFound();
@@ -110,7 +109,7 @@ namespace backend.Controllers
 
             return saesNbGroups;
         }
-        
+
         /**
          * Méthode pour passer d'un état à un autre
          *
@@ -134,7 +133,7 @@ namespace backend.Controllers
         [Authorize(Roles = RoleAccesses.Teacher)]
         public ActionResult<SaeAdminResponse> PassToState(Guid id, State state)
         {
-            
+
             switch (state)
             {
                 case State.PENDING_USERS:
@@ -153,8 +152,8 @@ namespace backend.Controllers
                     //"not implemented";
                     break;
             }
-            
-            
+
+
             return null;
         }
 
