@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import {
   Box,
@@ -24,6 +24,7 @@ import NewTopic from "../../../components/CreateSAE/NewTopic";
 
 // Models
 import CreateSaeForm from "../../../models/CreateSaeForm";
+import API_URL from "../../../env";
 
 export default function CreateSAE() {
   const [inputText, setInputText] = useState<string>("Non, Implémenté");
@@ -36,6 +37,19 @@ export default function CreateSAE() {
   const [saeMinTeamSize, setSaeMinTeamSize] = useState<number>(0);
   const [saeMaxTeamSize, setSaeMaxTeamSize] = useState<number>(0);
   const [saeTeachers, setSaeTeachers] = useState<string[]>([]);
+  const [loading, setLoading] = useState<boolean>(false);
+  const [categories, setCategories] = useState<string[]>([]);
+
+  useEffect(() => {
+    fetch(API_URL + "/api/Category", {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    }).then((res) => {
+      console.log(res);
+    });
+  });
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setInputText(event.target.value);
