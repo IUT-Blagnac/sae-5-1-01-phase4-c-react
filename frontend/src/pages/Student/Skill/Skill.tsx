@@ -1,8 +1,19 @@
-import { Button, Card, FormControl, Slider, Typography } from "@mui/joy";
+import {
+  Alert,
+  Box,
+  Button,
+  Card,
+  FormControl,
+  Slider,
+  Typography,
+} from "@mui/joy";
 import { Status } from "../../../assets/enums/Status.enum";
 import BlankPage from "../../templates/BlankPage";
 import React, { useEffect, useState } from "react";
-import { KeyboardArrowRight } from "@mui/icons-material";
+import {
+  KeyboardArrowRight,
+  PlaylistAddCheckCircleRounded,
+} from "@mui/icons-material";
 import Loading from "../../../components/Loading";
 import API_URL from "../../../env";
 
@@ -15,6 +26,7 @@ interface SkillCharacter {
 export default function Skill() {
   const [loading, setLoading] = useState(true);
   const [skillCharacters, setSkillCharacters] = useState<SkillCharacter[]>([]);
+  const [success, setSuccess] = useState(false);
 
   const areTheSame = (a: SkillCharacter, b: { id: string; name: string }) => {
     return a.id === b.id && a.name === b.name;
@@ -129,12 +141,12 @@ export default function Skill() {
     })
       .then((res) => {
         if (res.status === 201) {
+          setSuccess(true);
           return res.json();
         } else {
           throw new Error("Erreur lors de la création du personnage");
         }
       })
-      .then((data) => {})
       .catch((err) => {
         console.error(err);
       });
@@ -147,6 +159,35 @@ export default function Skill() {
       maxContentWidth="800px"
     >
       <Card>
+        <Typography level="body-sm">Renseigner mes compétences</Typography>
+        {success && (
+          <Box
+            sx={{
+              display: "flex",
+              flexDirection: "column",
+              gap: 2,
+              width: "100%",
+            }}
+          >
+            <Alert
+              variant="soft"
+              color="success"
+              startDecorator={<PlaylistAddCheckCircleRounded />}
+              endDecorator={
+                <Button
+                  size="sm"
+                  variant="solid"
+                  color="success"
+                  onClick={() => setSuccess(false)}
+                >
+                  Close
+                </Button>
+              }
+            >
+              Vos compétences ont bien été enregistrées !
+            </Alert>
+          </Box>
+        )}
         <Button
           endDecorator={<KeyboardArrowRight />}
           color="success"

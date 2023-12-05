@@ -55,9 +55,11 @@ export default function StudentTabs() {
           <ListItemContent>
             <Typography level="title-sm">Mes compétences</Typography>
           </ListItemContent>
-          <Chip size="sm" color="primary" variant="solid">
-            1
-          </Chip>
+          {localStorage.getItem("hasDoneSkills") === "true" && (
+            <Chip size="sm" color="primary" variant="solid">
+              1
+            </Chip>
+          )}
         </ListItemButton>
       </ListItem>
     </List>
