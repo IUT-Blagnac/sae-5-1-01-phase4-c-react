@@ -7,6 +7,7 @@ import BlankPage from "../../templates/BlankPage";
 import { Status } from "../../../assets/enums/Status.enum";
 import AuthChecker from "../../../middlewares/AuthChecker";
 import { Card } from "@mui/joy";
+import API_URL from "../../../env";
 
 export default function ConsultSAE() {
   const saeId = window.location.href.split("/")[4];
@@ -18,14 +19,15 @@ export default function ConsultSAE() {
   const [topics, setTopics] = useState<Topic[]>([]);
 
   useEffect(() => {
-    FetchData.fetchSae(saeId).then((data) => {
-      setSae(data);
-
-      FetchData.fetchTopics(saeId).then((data) => {
-        setTopics(data);
-
-        setLoading(false);
-      });
+    let saeId = window.location.href.split("/")[4];
+    fetch(API_URL + "/api/Sae/user/" + localStorage.getItem("userid"), {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + localStorage.getItem("token"),
+      },
+    }).then((res) => {
+      console.log(res);
     });
   });
 

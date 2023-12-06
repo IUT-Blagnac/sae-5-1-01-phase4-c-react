@@ -8,7 +8,11 @@ import { useEffect, useState } from "react";
 import Sae from "../../../../models/Sae";
 import FetchData from "../../../../assets/temp/FetchData";
 import Loading from "../../../../components/Loading";
-import { convertSaeStatutEnumToHText } from "../../../../utils/Utils";
+import {
+  convertSaeIntToStatutEnum,
+  convertSaeStatutEnumToHText,
+} from "../../../../utils/Utils";
+import API_URL from "../../../../env";
 
 // custom
 
@@ -20,9 +24,18 @@ function StudentInterface() {
   const signedSae = ["1"];
 
   useEffect(() => {
-    FetchData.fetchSaes().then((data) => {
-      setSaes(data);
-      setLoading(false);
+    fetch(API_URL + "/api/Sae/user/" + localStorage.getItem("userid"), {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + localStorage.getItem("token"),
+      },
+    }).then(async (res) => {
+      if (res.status === 200) {
+        const data = await res.json();
+        setSaes(data);
+        setLoading(false);
+      }
     });
   });
 
@@ -101,7 +114,10 @@ function StudentInterface() {
 
                 <td>
                   <Typography level="body-sm">
-                    {convertSaeStatutEnumToHText(sae?.statut)}
+                    {convertSaeStatutEnumToHText(
+                      // @ts-ignore
+                      convertSaeIntToStatutEnum(sae?.statut)
+                    )}
                   </Typography>
                 </td>
                 <td>
