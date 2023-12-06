@@ -62,7 +62,6 @@ public class EntityContext : DbContext
         {
             new() { id = new Guid("f441bf0a-115e-4c1e-8b1f-a7fb6f5738c5"), name = "1", is_apprenticeship = false },
             new() { id = new Guid("61cd9a7c-b555-4dea-92e8-9478bab248d8"), name = "2", is_apprenticeship = false },
-            new() { id = new Guid("47c8a811-eb03-45cb-b366-136363f4903c"), name = "3", is_apprenticeship = true },
             new() { id = new Guid("6d7791c5-56dd-419f-aa7a-a811213cba32"), name = "3A", is_apprenticeship = true },
             new() { id = new Guid("2dbcecf8-c254-4cb7-9c55-0b3e7108054d"), name = "3B", is_apprenticeship = true },
         };
@@ -352,12 +351,6 @@ public class EntityContext : DbContext
                 id_sae = new Guid("d5e37380-8b99-49c8-8e89-723d8c5f7b97"),
                 id_user = new Guid("ca7b4826-5d71-4d97-8dc5-b65a52a15f4c")
             },
-            new()
-            {
-                id = new Guid("0e3aaf7a-8cf3-46a2-b60d-e38a2f960506"), name = "Matz",
-                id_sae = new Guid("c5710c89-1b52-473b-886e-722f97ff713a"),
-                id_user = new Guid("ca7b4826-5d71-4d97-8dc5-b65a52a15f4c")
-            }
         };
 
         foreach (var character in defaultCharacter) 

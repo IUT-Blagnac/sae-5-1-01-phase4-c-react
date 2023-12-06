@@ -18,18 +18,42 @@ public class CharacterService: ICharacterService
     
     public Character createCharacter(CharacterForm characterForm, Guid userId)
     {
-        Guid idCharacter = Guid.NewGuid();
-
-        Character newCharacter = new()
+        var character = _context.Characters.FirstOrDefault(c => c.id_user == userId);
+        var res = new Character();
+        
+        if (character == null)
         {
-            id = idCharacter,
-            name = characterForm.name,
-            id_user = userId,
-            id_sae = characterForm.id_sae
-        };
+            Guid idCharacter = Guid.NewGuid();
 
-        _context.Characters.Add(newCharacter);
-        _context.SaveChanges();
+            Character newCharacter = new()
+            {
+                id = idCharacter,
+                name = characterForm.name,
+                id_user = userId,
+                id_sae = characterForm.id_sae
+            };
+
+            _context.Characters.Add(newCharacter);
+            _context.SaveChanges();
+
+            res = newCharacter;
+        }
+        else
+        {
+            var skills = _context.CharacterSkills.ToList();
+
+            if (skills != null)
+            {
+                foreach (var s in skills)
+                {
+                    _context.Remove(s);
+                }
+
+                _context.SaveChanges();
+            }
+
+            res = character;
+        }
 
         foreach (CharacterSkillForm cs in characterForm.skills)
         {
@@ -42,7 +66,7 @@ public class CharacterService: ICharacterService
             
             _context.CharacterSkills.Add(new CharacterSkill
             {
-                id_character = idCharacter,
+                id_character = character.id,
                 id_skill = cs.id_skill,
                 confidence_level = cs.confidence_level
             });
@@ -50,7 +74,7 @@ public class CharacterService: ICharacterService
 
         _context.SaveChanges();
         
-        return newCharacter;
+        return res;
     }
 
     public List<CharacterSkills> getCharacterByUserId(Guid id)

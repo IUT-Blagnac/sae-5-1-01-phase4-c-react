@@ -4,18 +4,17 @@ using backend.Services.Interfaces;
 
 namespace backend.Services.Class
 {
-    public class GroupService : IGroupService
+    public class CategoryService : ICategoryService
     {
         private readonly EntityContext _context;
-
-        public GroupService(EntityContext context)
+        public CategoryService(EntityContext context)
         {
             _context = context;
         }
-    
-        public List<Group> GetGroups()
+
+        public List<Category> GetCategories()
         {
-            return _context.Groups.ToList();
+            return _context.Categories.ToList();
         }
     }
 }

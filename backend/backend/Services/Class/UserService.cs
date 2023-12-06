@@ -1,11 +1,14 @@
-﻿using backend.Data;
+﻿using backend.ApiModels.Output;
+using backend.Data;
 using backend.Data.Models;
+using backend.FormModels;
 using backend.Services.Interfaces;
+using Microsoft.AspNetCore.Identity;
 using System.Security.Claims;
 
 namespace backend.Services.Class;
 
-public class UserService: IUserService
+public class UserService : IUserService
 {
     private readonly EntityContext _context;
 
@@ -14,21 +17,79 @@ public class UserService: IUserService
         _context = context;
     }
 
-    public User AddUser(string email, string passwd, string first_name, string last_name)
+    public class RegisterException : Exception
     {
-        var new_user = new User
+        public int StatusCode { get; }
+        public RegisterException(int statusCode, string message) : base(message)
+        {
+            StatusCode = statusCode;
+        }
+    }
+
+    private User RegisterUserWithoutSaving(string email, string passwd, string first_name, string last_name)
+    {
+        User? user = _context.Users.FirstOrDefault(x => x.email == email);
+
+        Role? defaultRole = _context.Roles.FirstOrDefault(c => c.name == "Student");
+
+        if (user is not null)
+            throw new RegisterException(409, "User already exits");
+
+        if (defaultRole is null)
+            throw new RegisterException(500, "Internal server error");
+
+        if (passwd.Length < 8)
+            throw new RegisterException(403, "Password is too short");
+
+        var registered_user = new User
         {
             id = Guid.NewGuid(),
             email = email,
-            password = passwd,
             first_name = first_name,
             last_name = last_name,
+            role_user = defaultRole
         };
 
-        _context.Users.Add(new_user);
+        var hashedPassword = new PasswordHasher<User>().HashPassword(registered_user, passwd);
+
+        registered_user.password = hashedPassword;
+
+        _context.Users.Add(registered_user);
+
+        return registered_user;
+    }
+
+    public User RegisterUser(string email, string passwd, string first_name, string last_name)
+    {
+        var registered_user = RegisterUserWithoutSaving(email, passwd, first_name, last_name);
+
         _context.SaveChanges();
 
-        return new_user;
+        return registered_user;
+    }
+
+    public List<User> RegisterUsers(IEnumerable<UserRegister> userRegisters)
+    {
+        List<User> users = new();
+
+        foreach (UserRegister userRegister in userRegisters)
+        {
+            var new_registered_user = RegisterUserWithoutSaving(email: userRegister.Email,
+                                                                passwd: userRegister.Password,
+                                                                first_name: userRegister.FirstName,
+                                                                last_name: userRegister.LastName);
+            users.Add(new_registered_user);
+        }
+
+        _context.SaveChanges();
+
+        return users;
+    }
+
+    public User? GetUser(string? email)
+    {
+        return email is not null ? _context.Users.FirstOrDefault(x => x.email == email) :
+                                   null;
     }
 
     public User? GetCurrentUser(HttpContext httpContext)
@@ -36,8 +97,7 @@ public class UserService: IUserService
         ClaimsIdentity? identity = httpContext.User.Identity as ClaimsIdentity;
         Claim? email = identity?.Claims?.FirstOrDefault(x => x.Type == ClaimTypes.Email);
 
-        return email is not null ? _context.Users.FirstOrDefault(x => x.email == email.Value) :
-                                   null;
+        return GetUser(email?.Value);
     }
 
     public List<User> GetUsersByTeamId(Guid idTeam)
@@ -54,5 +114,30 @@ public class UserService: IUserService
         var user = _context.Users.FirstOrDefault(user => user.id == id_user);
         _context.Remove(user);
         _context.SaveChanges();
+    }
+
+    public OutputGetTeachers GetTeachers()
+    {
+        var output = new OutputGetTeachers();
+
+        var idRoleTeacher = _context.Roles.Where(c => c.name == "Teacher").FirstOrDefault()?.id;
+
+        if (idRoleTeacher is null)
+        {
+            return null;
+        }
+
+        var teachers = _context.Users.Where(user => user.id_role == idRoleTeacher).ToList();
+
+        foreach (var teacher in teachers)
+        {
+            output.Teachers.Add(new TeacherSimplified
+            {
+                id = teacher.id,
+                fullName = teacher.first_name + " " + teacher.last_name
+            });
+        }
+
+        return output;
     }
 }
