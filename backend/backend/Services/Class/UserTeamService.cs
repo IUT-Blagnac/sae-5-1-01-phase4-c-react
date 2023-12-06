@@ -37,13 +37,13 @@ public class UserTeamService: IUserTeamService
         _context.SaveChangesAsync();
     }
 
-    public List<UserTeam> GenTeams(List<User> users, List<Team> teams)
+    public List<UserTeam> GenTeams(List<Guid> users, List<Guid> teams)
     {
         List<Player> players = new List<Player>();
         
         foreach (var u in users)
         {
-            players.Add(new Player(u.id, globalCharacterNote(u.id)));
+            players.Add(new Player(u, globalCharacterNote(u)));
         }
 
         List<List<Player>> groups = SimulatedAnnealing(players, teams.Count);
@@ -59,7 +59,8 @@ public class UserTeamService: IUserTeamService
                 var ut = new UserTeam
                 {
                     id_user = player.userId,
-                    id_team = teams[i].id,
+                    id_team = teams[i],
+                    role = "Member"
                 };
                 
                 userTeams.Add(ut);
@@ -107,6 +108,8 @@ public class UserTeamService: IUserTeamService
         double refreshFactor = 0.95, int nbIteration = 1000)
     {
         int sizeGroup = players.Count / nbGroups;
+        int remainingPlayers = players.Count % nbGroups; // Calculate the remaining players
+
         List<List<Player>> groups = new List<List<Player>>(Enumerable.Range(0, nbGroups)
             .Select(i => players.GetRange(i * sizeGroup, sizeGroup).ToList()));
 
@@ -119,15 +122,23 @@ public class UserTeamService: IUserTeamService
         {
             List<Player> group1 = groups[random.Next(groups.Count)];
             List<Player> group2 = groups[random.Next(groups.Count)];
-
+            
+            while (group1 == group2)
+            {
+                group2 = groups[random.Next(groups.Count)];
+            }
+            
             Player player1 = group1[random.Next(group1.Count)];
             Player player2 = group2[random.Next(group2.Count)];
 
-            group1.Remove(player1);
-            group2.Remove(player2);
-            group1.Add(player2);
-            group2.Add(player1);
-
+            int index1 = groups.FindIndex(g => g.Contains(player1));
+            int index2 = groups.FindIndex(g => g.Contains(player2));
+    
+            groups[index1].Remove(player1);
+            groups[index2].Remove(player2);
+            groups[index1].Add(player2);
+            groups[index2].Add(player1);
+    
             double newStandardDeviation = ComputeStandardDeviationAverage(groups);
 
             if (newStandardDeviation < bestStandardDivision ||
@@ -137,17 +148,32 @@ public class UserTeamService: IUserTeamService
             }
             else
             {
-                group1.Remove(player2);
-                group2.Remove(player1);
-                group1.Add(player1);
-                group2.Add(player2);
+                groups[index1].Remove(player2);
+                groups[index2].Remove(player1);
+                groups[index1].Add(player1);
+                groups[index2].Add(player2);
             }
+
+            var size = 0;
+            foreach (var g in groups)
+            {
+                size += g.Count;
+            }
+
+            Console.WriteLine("size : " + size);
 
             temp *= refreshFactor;
         }
 
+        // Distribute remaining players
+        for (int i = 0; i < remainingPlayers; i++)
+        {
+            groups[i].Add(players[sizeGroup * nbGroups + i]);
+        }
+
         return groups;
     }
+
 
     private class Player
     {

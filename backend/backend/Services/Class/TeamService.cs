@@ -49,7 +49,8 @@ public class TeamService: ITeamService
         {
             id = Guid.NewGuid(),
             name = teamForm.name,
-            color = teamForm.color
+            color = teamForm.color,
+            id_sae = teamForm.id_sae,
         };
 
         var userTeam = new UserTeam
@@ -61,7 +62,7 @@ public class TeamService: ITeamService
         
         _context.Teams.Add(teamItem);
         _context.UserTeams.Add(userTeam);
-        _context.SaveChangesAsync();
+        _context.SaveChanges();
 
         return teamItem;
     }
