@@ -1,7 +1,6 @@
 ﻿using backend.ApiModels.Output;
 using backend.Data.Models;
 using backend.FormModels;
-using backend.Services.Class;
 using backend.Services.Interfaces;
 using backend.Utils;
 using Microsoft.AspNetCore.Authorization;
@@ -58,7 +57,7 @@ namespace backend.Controllers
         public ActionResult<List<SaeAdminResponse>> GetSaesAdminByUserId(Guid id)
         {
             var saesNbGroups = _saeService.GetSaeAdminNbGroupByUserId(id);
-            
+
             if (saesNbGroups == null)
             {
                 return NotFound();
@@ -87,13 +86,13 @@ namespace backend.Controllers
 
             return saesNbGroups;
         }
-        
+
         [HttpGet("{id}")]
         [Authorize]
         public ActionResult<SaeAdminResponse> GetSaes(Guid id)
         {
             var saesNbGroups = _saeService.GetSaeNbGroup(id);
-            
+
             if (saesNbGroups == null)
             {
                 return NotFound();
@@ -109,6 +108,53 @@ namespace backend.Controllers
             saesNbGroups.total_student = saesNbCharacter.total_student;
 
             return saesNbGroups;
+        }
+
+        /**
+         * Méthode pour passer d'un état à un autre
+         *
+         * Implémenté pour l'instant
+         * 
+         * Bascule d'une SAE de pending users à pending wished
+            
+            IN
+            {
+            "sae_id": "la sae cible"
+            }
+            
+            
+            OUT
+            // Passage de la SAE de PENDING_USERS à PENDING_WISHES
+            // Génération des groupes en parallèle
+            
+            
+         */
+        [HttpGet("passToState/{id}/{state}")]
+        [Authorize(Roles = RoleAccesses.Teacher)]
+        public ActionResult<SaeAdminResponse> PassToState(Guid id, State state)
+        {
+
+            switch (state)
+            {
+                case State.PENDING_USERS:
+                    //not implemented, normaly shouldn't be used
+                    break;
+                case State.PENDING_WISHES:
+                    return _saeService.SetSaeToPendingWishes(id);
+                    break;
+                case State.LAUNCHED:
+                    //"not implemented";
+                    break;
+                case State.LAUNCHED_OPEN_FOR_INTERNSHIP:
+                    //"not implemented";
+                    break;
+                case State.CLOSED:
+                    //"not implemented";
+                    break;
+            }
+
+
+            return null;
         }
 
         [HttpGet("teams/{id}")]

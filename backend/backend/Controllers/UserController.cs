@@ -3,6 +3,7 @@ using backend.Data;
 using backend.Data.Models;
 using backend.Services.Class;
 using backend.Services.Interfaces;
+using backend.Utils;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -14,13 +15,15 @@ public class UserController: ControllerBase
 {
     private readonly IUserService _userService;
     private readonly IRoleUserService _roleUserService;
+    private readonly ILogger<UserController> _logger;
 
-    public UserController(IUserService userService, IRoleUserService roleUserService)
+    public UserController(IUserService userService, IRoleUserService roleUserService, ILogger<UserController> logger)
     {
         _userService = userService;
         _roleUserService = roleUserService;
+        _logger = logger;
     }
-    
+
     [HttpGet]
     [Route("currentUser")]
     public IActionResult GetAuthenticatedUser()
@@ -36,6 +39,23 @@ public class UserController: ControllerBase
         else
         {
             return Unauthorized();
+        }
+    }
+
+    [HttpGet]
+    [Authorize(Roles = RoleAccesses.Teacher)]
+    [Route("teachers")]
+    public IActionResult GetTeachers()
+    {
+        try
+        {
+            var teachers = _userService.GetTeachers();
+            return Ok(teachers);
+        }
+        catch (Exception e)
+        {
+            _logger.LogError(e.Message);
+            return BadRequest(e.Message);
         }
     }
 }
