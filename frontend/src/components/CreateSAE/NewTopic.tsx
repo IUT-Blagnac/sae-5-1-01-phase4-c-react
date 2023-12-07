@@ -24,9 +24,13 @@ const MAX_DESCRIPTION_LENGTH = 400;
 
 interface NewTopicProps {
   submitSae: () => CreateSaeForm;
+  categories: {
+    id: string;
+    name: string;
+  }[];
 }
 
-export default function NewTopic({ submitSae }: NewTopicProps) {
+export default function NewTopic({ submitSae, categories }: NewTopicProps) {
   const [topics, setTopics] = useState([
     {
       id: 1,
@@ -178,10 +182,21 @@ export default function NewTopic({ submitSae }: NewTopicProps) {
                   },
                 }}
               >
-                <Option value="WebDev">WebDev</Option>
-                <Option value="Refactoring">Refactoring</Option>
-                <Option value="Test Cases">Test Cases</Option>
-                <Option value="Linux">Linux</Option>
+                {categories.map((category) => (
+                  <Option
+                    key={category.id}
+                    value={category.id}
+                    sx={{
+                      backgroundColor: "transparent",
+                      "&.Mui-selected": {
+                        backgroundColor: "primary",
+                        color: "white",
+                      },
+                    }}
+                  >
+                    {category.name}
+                  </Option>
+                ))}
               </Select>
             </FormControl>
           </Stack>

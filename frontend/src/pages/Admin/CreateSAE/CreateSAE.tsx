@@ -25,6 +25,7 @@ import NewTopic from "../../../components/CreateSAE/NewTopic";
 // Models
 import CreateSaeForm from "../../../models/CreateSaeForm";
 import API_URL from "../../../env";
+import { getFetchHeaders } from "../../../utils/Utils";
 
 export default function CreateSAE() {
   const [inputText, setInputText] = useState<string>("Non, Implémenté");
@@ -38,18 +39,43 @@ export default function CreateSAE() {
   const [saeMaxTeamSize, setSaeMaxTeamSize] = useState<number>(0);
   const [saeTeachers, setSaeTeachers] = useState<string[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
-  const [categories, setCategories] = useState<string[]>([]);
+  const [categories, setCategories] = useState<{ id: string; name: string }[]>(
+    []
+  );
+  const [groups, setGroups] = useState<{ id: string; name: string }[]>([]);
+  const [teachers, setTeachers] = useState<{ id: string; fullName: string }[]>(
+    []
+  );
 
   useEffect(() => {
-    fetch(API_URL + "/api/Category", {
+    fetch(API_URL + "/api/Group", {
       method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    }).then((res) => {
-      console.log(res);
+      headers: getFetchHeaders(),
+    }).then(async (res) => {
+      if (res.status === 200) {
+        const data = await res.json();
+        setGroups(data);
+        fetch(API_URL + "/api/User/teachers", {
+          method: "GET",
+          headers: getFetchHeaders(),
+        }).then(async (res) => {
+          if (res.status === 200) {
+            const data = await res.json();
+            setTeachers(data.teachers);
+            fetch(API_URL + "/api/Category", {
+              method: "GET",
+              headers: getFetchHeaders(),
+            }).then(async (res) => {
+              if (res.status === 200) {
+                const data = await res.json();
+                setCategories(data);
+              }
+            });
+          }
+        });
+      }
     });
-  });
+  }, []);
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setInputText(event.target.value);
@@ -196,26 +222,11 @@ export default function CreateSAE() {
                   value={saeGroups}
                   onChange={handleChangeSaeGroup}
                 >
-                  <Option value="3A">3.A</Option>
-                  <Option value="3B">3.B</Option>
-                  <Option value="31">3.1</Option>
-                  <Option value="32">3.2</Option>
-
-                  <Option value="21A">2.1A</Option>
-                  <Option value="21B">2.1B</Option>
-                  <Option value="22A">2.2A</Option>
-                  <Option value="22B">2.2B</Option>
-                  <Option value="23A">2.3A</Option>
-                  <Option value="23B">2.3B</Option>
-
-                  <Option value="11A">1.1A</Option>
-                  <Option value="11B">1.1B</Option>
-                  <Option value="12A">1.2A</Option>
-                  <Option value="12B">1.2B</Option>
-                  <Option value="13A">1.3A</Option>
-                  <Option value="13B">1.3B</Option>
-                  <Option value="14A">1.4A</Option>
-                  <Option value="14B">1.4B</Option>
+                  {groups.map((group) => (
+                    <Option key={group.id} value={group.id}>
+                      {group.name}
+                    </Option>
+                  ))}
                 </Select>
               </FormControl>
             </Stack>
@@ -343,17 +354,18 @@ export default function CreateSAE() {
                   value={saeTeachers}
                   onChange={handleChangeSaeTeacher}
                 >
-                  <Option value="EP">Esther Pendaries</Option>
-                  <Option value="PSE">Pablo Seban</Option>
-                  <Option value="PSO">Pascal Sotin</Option>
-                  <Option value="JMB">Jean-Michel Bruel</Option>
+                  {teachers.map((teacher) => (
+                    <Option key={teacher.id} value={teacher.id}>
+                      {teacher.fullName}
+                    </Option>
+                  ))}
                 </Select>
               </FormControl>
             </Stack>
           </Stack>
         </Stack>
       </Card>
-      <NewTopic submitSae={handleSubmitWithoutTopic} />
+      <NewTopic submitSae={handleSubmitWithoutTopic} categories={categories} />
     </BlankPage>
   );
 }

@@ -13,8 +13,6 @@ import {
 } from "../../../../utils/Utils";
 import API_URL from "../../../../env";
 
-// custom
-
 function StudentInterface() {
   const [loading, setLoading] = useState(true);
   const [saes, setSaes] = useState<Sae[]>([]);
@@ -29,11 +27,13 @@ function StudentInterface() {
     }).then(async (res) => {
       if (res.status === 200) {
         const data = await res.json();
+        console.log(data);
+
         setSaes(data);
         setLoading(false);
       }
     });
-  });
+  }, []);
 
   if (loading) return <Loading />;
 
@@ -109,7 +109,7 @@ function StudentInterface() {
                   <Typography level="body-sm">
                     {convertSaeStatutEnumToHText(
                       // @ts-ignore
-                      convertSaeIntToStatutEnum(sae?.statut)
+                      convertSaeIntToStatutEnum(sae?.state)
                     )}
                   </Typography>
                 </td>

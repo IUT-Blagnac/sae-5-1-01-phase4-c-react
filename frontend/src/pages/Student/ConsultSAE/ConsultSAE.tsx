@@ -48,6 +48,18 @@ export default function ConsultSAE() {
               res.json().then((data) => {
                 let saes = data as Sae[];
                 setSae(saes.find((sae) => sae.id === saeId) as Sae);
+
+                fetch(API_URL + "/api/Team/sae/" + saeId, {
+                  method: "GET",
+                  headers: getFetchHeaders(),
+                }).then(async (res) => {
+                  if (res.status === 200) {
+                    const data = await res.json();
+                    // @ts-ignore
+                    let teamId = data[0].id;
+                    console.log(teamId);
+                  }
+                });
                 setLoading(false);
               });
             }
@@ -59,12 +71,15 @@ export default function ConsultSAE() {
 
   if (loading) return <Loading />;
 
+  // @ts-ignore
+  let saeState: number = sae?.state;
+
   return (
     <AuthChecker>
       <BlankPage role={Status.STUDENT} pageTitle="Consulter une SAE">
         <Card variant="solid" color="primary" invertedColors>
           <CardContent orientation="horizontal">
-            <CircularProgress size="lg" determinate value={33}>
+            <CircularProgress size="lg" determinate value={(saeState + 1) * 20}>
               <DocumentScannerOutlined />
             </CircularProgress>
             <CardContent>
@@ -73,7 +88,7 @@ export default function ConsultSAE() {
               <Typography level="body-md">
                 {convertSaeStatutEnumToHText(
                   // @ts-ignore
-                  convertSaeIntToStatutEnum(sae?.statut)
+                  convertSaeIntToStatutEnum(sae?.state)
                 )}
               </Typography>
               <Typography level="body-sm">{sae?.description}</Typography>
