@@ -68,6 +68,8 @@ interface ButtonAdminSaeProps {
 }
 
 const ButtonAdminSae = ({ saeStatut }: ButtonAdminSaeProps): JSX.Element => {
+  console.log(saeStatut);
+
   let buttons: JSX.Element;
 
   switch (saeStatut) {

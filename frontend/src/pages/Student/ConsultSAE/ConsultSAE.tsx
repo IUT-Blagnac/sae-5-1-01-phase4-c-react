@@ -27,6 +27,7 @@ export default function ConsultSAE() {
     React.Dispatch<React.SetStateAction<Sae>>
   ];
   const [topics, setTopics] = useState<Topic[]>([]);
+  const [team, setTeam] = useState<any[]>([]);
 
   useEffect(() => {
     let saeId = window.location.href.split("/")[4];
@@ -49,10 +50,17 @@ export default function ConsultSAE() {
                 let saes = data as Sae[];
                 setSae(saes.find((sae) => sae.id === saeId) as Sae);
 
-                fetch(API_URL + "/api/Team/sae/" + saeId, {
-                  method: "GET",
-                  headers: getFetchHeaders(),
-                }).then(async (res) => {
+                fetch(
+                  API_URL +
+                    "/api/Team/sae/" +
+                    localStorage.getItem("userid") +
+                    "/" +
+                    saeId,
+                  {
+                    method: "GET",
+                    headers: getFetchHeaders(),
+                  }
+                ).then(async (res) => {
                   if (res.status === 200) {
                     const data = await res.json();
                     // @ts-ignore

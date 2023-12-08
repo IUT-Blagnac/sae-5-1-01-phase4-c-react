@@ -8,14 +8,18 @@ import { useEffect, useState } from "react";
 import Sae from "../../../../models/Sae";
 import Loading from "../../../../components/Loading";
 import API_URL from "../../../../env";
-import { getFetchHeaders } from "../../../../utils/Utils";
+import {
+  convertSaeIntToStatutEnum,
+  convertSaeStatutEnumToHText,
+  getFetchHeaders,
+} from "../../../../utils/Utils";
 
 function AdminInterface() {
   const [loading, setLoading] = useState(true);
   const [saes, setSaes] = useState<Sae[]>([]);
 
   useEffect(() => {
-    fetch(API_URL + "/api/Sae/admin/" + localStorage.getItem("userid"), {
+    fetch(API_URL + "/api/Sae/admin", {
       method: "GET",
       headers: getFetchHeaders(),
     }).then(async (res) => {
@@ -73,7 +77,7 @@ function AdminInterface() {
                 <Typography level="title-sm">Description</Typography>
               </th>
               <th>
-                <Typography level="title-sm">Total Groupes</Typography>
+                <Typography level="title-sm">État de la SAE</Typography>
               </th>
               <th>
                 <Typography level="title-sm">Total Étudiants</Typography>
@@ -99,7 +103,11 @@ function AdminInterface() {
                   <Typography level="body-sm">{sae.description}</Typography>
                 </td>
                 <td>
-                  <Typography level="body-sm">{10}</Typography>
+                  <Typography level="body-sm">
+                    {convertSaeStatutEnumToHText(
+                      convertSaeIntToStatutEnum(sae.state)
+                    )}
+                  </Typography>
                 </td>
                 <td>
                   <Typography level="body-sm">{2}</Typography>

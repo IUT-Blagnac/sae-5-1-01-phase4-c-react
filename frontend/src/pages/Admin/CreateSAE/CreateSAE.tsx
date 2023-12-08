@@ -26,6 +26,7 @@ import NewTopic from "../../../components/CreateSAE/NewTopic";
 import CreateSaeForm from "../../../models/CreateSaeForm";
 import API_URL from "../../../env";
 import { getFetchHeaders } from "../../../utils/Utils";
+import Loading from "../../../components/Loading";
 
 export default function CreateSAE() {
   const [inputText, setInputText] = useState<string>("Non, Implémenté");
@@ -69,6 +70,7 @@ export default function CreateSAE() {
               if (res.status === 200) {
                 const data = await res.json();
                 setCategories(data);
+                setLoading(false);
               }
             });
           }
@@ -118,6 +120,8 @@ export default function CreateSAE() {
 
     return form;
   };
+
+  if (loading) return <Loading />;
 
   return (
     <BlankPage
