@@ -49,6 +49,14 @@ public class TeamController : ControllerBase
         return team;
     }
 
+    [HttpGet]
+    [Route("{user_id}/{sae_id}")]
+    [Authorize(Roles = RoleAccesses.Student)]
+    public Team? GetTeamByUserIdAndSaeId(Guid user_id, Guid sae_id)
+    {
+        return _teamService.GetTeamByUserIdAndSaeId(user_id, sae_id);
+    }
+
     [HttpPost]
     [Authorize(Roles = RoleAccesses.Student)]
     public async Task<ActionResult<Team>> CreateTeam(TeamForm teamForm)
