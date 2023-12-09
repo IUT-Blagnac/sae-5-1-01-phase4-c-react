@@ -22,16 +22,17 @@ public class TeamService : ITeamService
 
     public Team? GetTeamByUserIdAndSaeId(Guid userId, Guid saeId)
     {
+        
         var query = (from u in _context.Users
                      join ut in _context.UserTeams on u.id equals ut.id_user
                      join t in _context.Teams on ut.id_team equals t.id
-                     join s in _context.TeamSubjects on t.id equals s.id_team
-                     where u.id == userId && s.id_subject == saeId
+                     where u.id == userId && t.id_sae == saeId
                      select new Team()
                      {
                          id = t.id,
                          name = t.name,
-                         color = t.color
+                         color = t.color,
+                         id_sae = t.id_sae
                      }).FirstOrDefault();
 
         return query;
