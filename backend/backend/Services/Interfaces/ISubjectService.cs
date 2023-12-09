@@ -2,8 +2,8 @@
 
 namespace backend.Services.Interfaces
 {
-    public interface ICategoryService
+    public interface ISubjectService
     {
-        public List<Category> GetCategories();
+        public List<Subject> GetSubjectsBySaeId(Guid idSae);
     }
 }
