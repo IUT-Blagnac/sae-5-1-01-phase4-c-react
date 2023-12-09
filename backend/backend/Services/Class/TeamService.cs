@@ -2,11 +2,10 @@
 using backend.Data.Models;
 using backend.FormModels;
 using backend.Services.Interfaces;
-using Microsoft.EntityFrameworkCore;
 
 namespace backend.Services.Class;
 
-public class TeamService: ITeamService
+public class TeamService : ITeamService
 {
     private readonly EntityContext _context;
 
@@ -20,20 +19,37 @@ public class TeamService: ITeamService
         var teams = _context.Teams.Where(x => x.id_sae == saeId).ToList();
         return teams;
     }
-    
+
+    public Team? GetTeamByUserIdAndSaeId(Guid userId, Guid saeId)
+    {
+        var query = (from u in _context.Users
+                     join ut in _context.UserTeams on u.id equals ut.id_user
+                     join t in _context.Teams on ut.id_team equals t.id
+                     join s in _context.TeamSubjects on t.id equals s.id_team
+                     where u.id == userId && s.id_subject == saeId
+                     select new Team()
+                     {
+                         id = t.id,
+                         name = t.name,
+                         color = t.color
+                     }).FirstOrDefault();
+
+        return query;
+    }
+
     public List<Team> GetTeams(Guid userId)
     {
 
         var query = (from u in _context.Users
-            join ut in _context.UserTeams on u.id equals ut.id_user
-            join t in _context.Teams on ut.id_team equals t.id
-            where u.id == userId
-            select new Team()
-            {
-                id = t.id,
-                name = t.name,
-                color = t.color
-            }).ToList();
+                     join ut in _context.UserTeams on u.id equals ut.id_user
+                     join t in _context.Teams on ut.id_team equals t.id
+                     where u.id == userId
+                     select new Team()
+                     {
+                         id = t.id,
+                         name = t.name,
+                         color = t.color
+                     }).ToList();
 
         return query;
     }
@@ -58,7 +74,7 @@ public class TeamService: ITeamService
             id_team = teamItem.id,
             role = "chef"
         };
-        
+
         _context.Teams.Add(teamItem);
         _context.UserTeams.Add(userTeam);
         _context.SaveChangesAsync();
