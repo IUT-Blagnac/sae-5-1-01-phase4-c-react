@@ -18,6 +18,7 @@ public class SaeAdminResponse : Sae
 
     public SaeAdminResponse(){}
 
-    public int total_group { get; set; }
-    public int total_student { get; set; }
+    public int total_nb_groups { get; set; }
+    public int total_nb_teams { get; set; }
+    public int total_nb_student { get; set; }
 }
