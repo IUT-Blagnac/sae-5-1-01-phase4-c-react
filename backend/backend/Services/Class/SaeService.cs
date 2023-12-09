@@ -158,32 +158,63 @@ namespace backend.Services.Class
 
         public SaeAdminResponse GetSaeNbStudent(Guid saeId)
         {
+            // var query = from s in _context.Saes
+            //             join c in _context.Characters on s.id equals c.id_sae
+            //             where s.id == saeId
+            //             group c by new
+            //             {
+            //                 s.id,
+            //                 s.name,
+            //                 s.description,
+            //                 s.max_student_per_group,
+            //                 s.max_group_per_subject,
+            //                 s.min_group_per_subject,
+            //                 s.min_student_per_group,
+            //                 s.state
+            //             }
+            //     into character_sae
+            //             select new SaeAdminResponse()
+            //             {
+            //                 id = character_sae.Key.id,
+            //                 name = character_sae.Key.name,
+            //                 description = character_sae.Key.description,
+            //                 min_student_per_group = character_sae.Key.min_student_per_group,
+            //                 max_student_per_group = character_sae.Key.max_student_per_group,
+            //                 min_group_per_subject = character_sae.Key.min_group_per_subject,
+            //                 max_group_per_subject = character_sae.Key.max_group_per_subject,
+            //                 total_nb_student = character_sae.Count()
+            // //             };
+            
             var query = from s in _context.Saes
-                        join c in _context.Characters on s.id equals c.id_sae
-                        where s.id == saeId
-                        group c by new
-                        {
-                            s.id,
-                            s.name,
-                            s.description,
-                            s.max_student_per_group,
-                            s.max_group_per_subject,
-                            s.min_group_per_subject,
-                            s.min_student_per_group,
-                            s.state
-                        }
-                into character_sae
-                        select new SaeAdminResponse()
-                        {
-                            id = character_sae.Key.id,
-                            name = character_sae.Key.name,
-                            description = character_sae.Key.description,
-                            min_student_per_group = character_sae.Key.min_student_per_group,
-                            max_student_per_group = character_sae.Key.max_student_per_group,
-                            min_group_per_subject = character_sae.Key.min_group_per_subject,
-                            max_group_per_subject = character_sae.Key.max_group_per_subject,
-                            total_nb_student = character_sae.Count()
-                        };
+                join sg in _context.SaeGroups on s.id equals sg.id_sae
+                join g in _context.Groups on sg.id_group equals g.id
+                join u in _context.Users on g.id equals u.id_group
+                where s.id == saeId
+                group sg by new
+                {
+                    s.id,
+                    s.name,
+                    s.description,
+                    s.max_student_per_group,
+                    s.max_group_per_subject,
+                    s.min_group_per_subject,
+                    s.min_student_per_group,
+                    s.state
+                }
+                into student_sae
+                select new SaeAdminResponse()
+                {
+                    id = student_sae.Key.id,
+                    name = student_sae.Key.name,
+                    description = student_sae.Key.description,
+                    min_student_per_group = student_sae.Key.min_student_per_group,
+                    max_student_per_group = student_sae.Key.max_student_per_group,
+                    min_group_per_subject = student_sae.Key.min_group_per_subject,
+                    max_group_per_subject = student_sae.Key.max_group_per_subject,
+                    state = student_sae.Key.state,
+                    total_nb_student = student_sae.Count()
+                };
+
 
             return query.FirstOrDefault();
         }
@@ -214,6 +245,7 @@ namespace backend.Services.Class
                             max_student_per_group = group_sae.Key.max_student_per_group,
                             min_group_per_subject = group_sae.Key.min_group_per_subject,
                             max_group_per_subject = group_sae.Key.max_group_per_subject,
+                            state = group_sae.Key.state,
                             total_nb_groups = group_sae.Count()
                         };
 
