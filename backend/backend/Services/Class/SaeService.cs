@@ -274,17 +274,21 @@ namespace backend.Services.Class
 
         }
 
-        public SaeAdminResponse SetSaeToPendingWishes(Guid saeId)
+        public Sae? GetSae(Guid saeId)
         {
             var query = from s in _context.Saes
-                        where s.id == saeId && s.state == State.PENDING_USERS
-                        select s;
-            var sae = query.FirstOrDefault();
-            if (sae == null)
+                where s.id == saeId
+                select s;
+            //check if SAE found in the good state
+            return query.FirstOrDefault();
+        }
+
+        public SaeAdminResponse SetSaeToPendingWishes(Guid saeId)
+        {
+            var sae = GetSae(saeId);
+            if (sae is not { state: State.PENDING_USERS })
             {
-                //check if no SAE found in the good state
                 throw new HttpRequestException("Sae in the required state not found", null, HttpStatusCode.NotFound);
-                return null;
             }
 
             //try to generate groups
@@ -310,7 +314,7 @@ namespace backend.Services.Class
                 var nbTeam = (sae.min_student_per_group + sae.max_student_per_group) / 2;
 
                 var teams = new List<Team>();
-                var colors = new List<string>() { "red", "blue", "green", "yellow", "purple", "orange", "pink", "brown", "black", "white" };
+                var colors = new List<string>() { "red", "blugreen", "yellow", "purple", "orange", "pink", "brown", "black", "white" };
                 
                 for (int i = 0; i < nbTeam; i++)
                 {
@@ -354,5 +358,91 @@ namespace backend.Services.Class
 
             };
         }
+
+        public SaeAdminResponse SetSaeToLaunched(Guid saeId)
+        {
+            
+            //get sae info and check if good state
+            var sae = GetSae(saeId);
+            if (sae is not { state: State.PENDING_WISHES })
+            {
+                throw new HttpRequestException("Sae in the required state not found", null, HttpStatusCode.NotFound);
+            }
+            
+            //get teams assigned to sae
+
+            var query1 = from t in _context.Teams
+                where t.id_sae == saeId
+                select t;
+
+            var teams = query1.ToList();
+            
+            //get subjects
+
+            var query2 = from s in _context.Subjects
+                where s.id_sae == saeId
+                select s;
+            
+            var subjects = query2.ToList();
+            
+            var teamWishes = _context.TeamWishes.Where(wish => subjects.Contains(wish.subject)).ToList();
+
+            List<TeamSubject> assignments = AssignTeamsToSubjects(teams, subjects, teamWishes);
+
+            // Display the assignments
+            foreach (TeamSubject assignment in assignments)
+            {
+                _context.TeamSubjects.Add(assignment);
+            }
+            sae.state = State.LAUNCHED;
+            //remove wishes
+            _context.TeamWishes.RemoveRange(teamWishes);
+            _context.SaveChanges();
+            //add the routes
+
+            return new SaeAdminResponse(sae);
+        }
+
+        public static List<TeamSubject> AssignTeamsToSubjects(List<Team?> teams, List<Subject> subjects, List<TeamWish> teamWishes)
+        {
+            List<TeamSubject> assignments = new List<TeamSubject>();
+            Dictionary<Guid, bool> assignedTeams = new Dictionary<Guid, bool>();
+
+            // Assign teams based on wished subjects and preferences
+            foreach (TeamWish teamWish in teamWishes)
+            {
+                Team? team = teams.FirstOrDefault(t => t.id == teamWish.id_team);
+
+                if (team != null && !assignedTeams.ContainsKey(team.id))
+                {
+                    assignments.Add(new TeamSubject { id_team = team.id, id_subject = teamWish.id_subject });
+                    assignedTeams[team.id] = true;
+                }
+            }
+
+            // Assign remaining teams to subjects without preferences
+            foreach (Subject subject in subjects)
+            {
+                int? teamsForSubject = subject.sae.max_group_per_subject - assignments.Count(a => a.id_subject == subject.id);
+
+                List<Team?> remainingTeamsForSubject = teams
+                    .Where(t => !assignedTeams.ContainsKey(t.id))
+                    .ToList();
+
+                for (int i = 0; i < teamsForSubject && i < remainingTeamsForSubject.Count; i++)
+                {
+                    Team? team = remainingTeamsForSubject[i];
+                    if (team != null)
+                    {
+                        assignments.Add(new TeamSubject { id_team = team.id, id_subject = subject.id });
+                        assignedTeams[team.id] = true;
+                    }
+                }
+            }
+
+            return assignments;
+        }
+
+
     }
 }

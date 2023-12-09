@@ -150,7 +150,7 @@ namespace backend.Controllers
                     return _saeService.SetSaeToPendingWishes(id);
                     break;
                 case State.LAUNCHED:
-                    //"not implemented";
+                    return _saeService.SetSaeToLaunched(id);
                     break;
                 case State.LAUNCHED_OPEN_FOR_INTERNSHIP:
                     //"not implemented";
