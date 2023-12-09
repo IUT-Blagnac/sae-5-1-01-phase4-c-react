@@ -37,6 +37,10 @@ public class EntityContext : DbContext
 
     public void InitializeDefaultData()
     {
+        #region DEFAULT DATA
+
+        #region ROLES
+
         //DEFAULT ROLES
 
         var defaultRoles = new List<Role>
@@ -55,6 +59,10 @@ public class EntityContext : DbContext
         }
 
         SaveChanges();
+
+        #endregion ROLES
+
+        #region GROUPS
 
         //DEFAULT GROUPS
 
@@ -80,6 +88,10 @@ public class EntityContext : DbContext
 
         SaveChanges();
 
+        #endregion GROUPS
+
+        #region ADMIN
+
         //DEFAULT ADMIN USER
 
         if (!Users.Where(c => c.email == "admin@superadmin.com").Any())
@@ -99,6 +111,10 @@ public class EntityContext : DbContext
 
         SaveChanges();
 
+        #endregion ADMIN
+
+        #region TEACHERS
+
         //DEFAULT TEACHERS
 
         var defaultTeachers = new List<User>
@@ -117,6 +133,10 @@ public class EntityContext : DbContext
         }
 
         SaveChanges();
+
+        #endregion TEACHERS
+
+        #region USERS
 
         //DEFAULT USERS
 
@@ -139,22 +159,32 @@ public class EntityContext : DbContext
         }
 
         SaveChanges();
-        
+
+        #endregion USERS
+
+        #region SAE
+
         //DEFAULT SAE
 
         var defaultSaes = new List<Sae>()
         {
             new()
             {
-                id = new Guid("d5e37380-8b99-49c8-8e89-723d8c5f7b97"), name = "SAE CaptElec",
-                description = "SAE CaptElec desc", min_student_per_group = 2, max_student_per_group = 4,
-                max_group_per_subject = 4, min_group_per_subject = 1, state = State.LAUNCHED
-            },
-            new()
-            {
                 id = new Guid("c5710c89-1b52-473b-886e-722f97ff713a"), name = "SAE Koh Lanta",
                 description = "SAE Koh Lanta desc", min_student_per_group = 2, max_student_per_group = 6,
                 max_group_per_subject = 7, min_group_per_subject = 2, state = State.PENDING_USERS
+            },
+            new()
+            {
+                id = new Guid("67e3ca39-a099-4e4b-ae44-4c3e21627c91"), name = "SAE Base de données",
+                description = "SAE Base de données desc", min_student_per_group = 2, max_student_per_group = 8,
+                max_group_per_subject = 7, min_group_per_subject = 2, state = State.PENDING_WISHES
+            },
+            new()
+            {
+                id = new Guid("d5e37380-8b99-49c8-8e89-723d8c5f7b97"), name = "SAE CaptElec",
+                description = "SAE CaptElec desc", min_student_per_group = 2, max_student_per_group = 4,
+                max_group_per_subject = 4, min_group_per_subject = 1, state = State.LAUNCHED
             },
         };
 
@@ -168,6 +198,10 @@ public class EntityContext : DbContext
 
         SaveChanges();
 
+        #endregion SAE
+
+        #region SUBJECTS
+
         //DEFAULT SUBJECTS
 
         var defaultSubjects = new List<Subject>()
@@ -175,7 +209,9 @@ public class EntityContext : DbContext
             new() {id = new Guid("01f12434-bbdd-4159-bf3c-8a97b9e0545d"), name = "Sujet 1", description = "Ce sujet 1 a pour but de...", id_sae = new Guid("d5e37380-8b99-49c8-8e89-723d8c5f7b97")},
             new() {id = new Guid("51edda44-243c-4e23-993d-a318e1d050ec"), name = "Sujet 2", description = "Ce sujet 2 a pour but de...", id_sae = new Guid("d5e37380-8b99-49c8-8e89-723d8c5f7b97")},
             new() {id = new Guid("78064c17-0964-4945-8cc0-cfdee9cf8f0b"), name = "Sujet 1", description = "Ce sujet 1 a pour but de...", id_sae = new Guid("c5710c89-1b52-473b-886e-722f97ff713a")},
-            new() {id = new Guid("d15387f0-3e4d-4ce4-8378-e2ead38578ed"), name = "Sujet 2", description = "Ce sujet 2 a pour but de...", id_sae = new Guid("c5710c89-1b52-473b-886e-722f97ff713a")}
+            new() {id = new Guid("d15387f0-3e4d-4ce4-8378-e2ead38578ed"), name = "Sujet 2", description = "Ce sujet 2 a pour but de...", id_sae = new Guid("c5710c89-1b52-473b-886e-722f97ff713a")},
+            new() {id = new Guid("9ba95000-d99c-4f45-9b97-41082cbcbfad"), name = "Sujet 1", description = "Ce sujet 1 a pour but de...", id_sae = new Guid("67e3ca39-a099-4e4b-ae44-4c3e21627c91")},
+            new() {id = new Guid("82a4cb77-0ae8-4aea-8ee0-e646f7495671"), name = "Sujet 2", description = "Ce sujet 2 a pour but de...", id_sae = new Guid("67e3ca39-a099-4e4b-ae44-4c3e21627c91")},
         };
 
         foreach (var subject in defaultSubjects)
@@ -187,6 +223,10 @@ public class EntityContext : DbContext
         }
 
         SaveChanges();
+
+        #endregion SUBJECTS
+
+        #region CATEGORIES
 
         //DEFAULT CATEGORIES
 
@@ -208,6 +248,10 @@ public class EntityContext : DbContext
 
         SaveChanges();
 
+        #endregion CATEGORIES
+
+        #region SUBJECT CATEGORIES
+
         //DEFAULT SUBJET CATEGORY
 
         var defaultSujectsCategories = new List<SubjectCategory>()
@@ -219,7 +263,11 @@ public class EntityContext : DbContext
             new() { id_category = new Guid("0e6890df-3199-4315-80fe-88fdfdb40671"), id_subject = new Guid("78064c17-0964-4945-8cc0-cfdee9cf8f0b")},
             new() { id_category = new Guid("357a01a3-8895-4aa8-9d6c-d66d57ee01f2"), id_subject = new Guid("78064c17-0964-4945-8cc0-cfdee9cf8f0b")},
             new() { id_category = new Guid("28c1c623-12b1-4dac-87ae-2c95f9ecf598"), id_subject = new Guid("d15387f0-3e4d-4ce4-8378-e2ead38578ed")},
-            new() { id_category = new Guid("81dccd2d-bae2-4335-be00-da9ad09b87e0"), id_subject = new Guid("d15387f0-3e4d-4ce4-8378-e2ead38578ed")}
+            new() { id_category = new Guid("81dccd2d-bae2-4335-be00-da9ad09b87e0"), id_subject = new Guid("d15387f0-3e4d-4ce4-8378-e2ead38578ed")},
+            new() { id_category = new Guid("28c1c623-12b1-4dac-87ae-2c95f9ecf598"), id_subject = new Guid("9ba95000-d99c-4f45-9b97-41082cbcbfad")},
+            new() { id_category = new Guid("357a01a3-8895-4aa8-9d6c-d66d57ee01f2"), id_subject = new Guid("9ba95000-d99c-4f45-9b97-41082cbcbfad")},
+            new() { id_category = new Guid("28c1c623-12b1-4dac-87ae-2c95f9ecf598"), id_subject = new Guid("82a4cb77-0ae8-4aea-8ee0-e646f7495671")},
+            new() { id_category = new Guid("357a01a3-8895-4aa8-9d6c-d66d57ee01f2"), id_subject = new Guid("82a4cb77-0ae8-4aea-8ee0-e646f7495671")}
         };
 
         foreach (var subjectCategory in defaultSujectsCategories)
@@ -232,12 +280,18 @@ public class EntityContext : DbContext
 
         SaveChanges();
 
+        #endregion SUBJET CATEGORIES
+
+        #region TEAMS WITH USERS
+
         //DEFAULT TEAMS WITH USERS
 
         var defaultTeams = new List<Team>()
         {
-            new() { id = new Guid("1d6cd248-9654-4297-9b38-8715c1f4a1c4"), name = "Team 1", color = "RED", id_sae = new Guid("c5710c89-1b52-473b-886e-722f97ff713a") },
-            new() { id = new Guid("f984daed-bfb8-4c17-a201-e7e153735e5d"), name = "Team 2", color = "YELLOW", id_sae = new Guid("c5710c89-1b52-473b-886e-722f97ff713a") },
+            new() { id = new Guid("1d6cd248-9654-4297-9b38-8715c1f4a1c4"), name = "Team 1", color = "RED", id_sae = new Guid("67e3ca39-a099-4e4b-ae44-4c3e21627c91") },
+            new() { id = new Guid("f984daed-bfb8-4c17-a201-e7e153735e5d"), name = "Team 2", color = "YELLOW", id_sae = new Guid("67e3ca39-a099-4e4b-ae44-4c3e21627c91") },
+            new() { id = new Guid("676ed36e-60f4-4ff7-b782-ce6b12488348"), name = "Team 1", color = "RED", id_sae = new Guid("d5e37380-8b99-49c8-8e89-723d8c5f7b97") },
+            new() { id = new Guid("674b04bd-53ff-4f32-985b-353ddfe98cf2"), name = "Team 2", color = "YELLOW", id_sae = new Guid("d5e37380-8b99-49c8-8e89-723d8c5f7b97") },
         };
 
         foreach (var team in defaultTeams)
@@ -255,7 +309,11 @@ public class EntityContext : DbContext
             new() { id_user = new Guid("f8f69fc6-2488-44f6-b742-3b63cb9cad6d"), id_team = new Guid("1d6cd248-9654-4297-9b38-8715c1f4a1c4"), role = "Développeur Front-end"},
             new() { id_user = new Guid("ca7b4826-5d71-4d97-8dc5-b65a52a15f4c"), id_team = new Guid("1d6cd248-9654-4297-9b38-8715c1f4a1c4"), role = "Développeur Back-end"},
             new() { id_user = new Guid("64f4f759-0c6e-4362-9495-0536ac3a512f"), id_team = new Guid("f984daed-bfb8-4c17-a201-e7e153735e5d"), role = "Développeur Front-end"},
-            new() { id_user = new Guid("e044a5ee-5a92-4e0c-9c2a-6c35e9734356"), id_team = new Guid("f984daed-bfb8-4c17-a201-e7e153735e5d"), role = "Développeur Back-end"}
+            new() { id_user = new Guid("e044a5ee-5a92-4e0c-9c2a-6c35e9734356"), id_team = new Guid("f984daed-bfb8-4c17-a201-e7e153735e5d"), role = "Développeur Back-end"},
+            new() { id_user = new Guid("f8f69fc6-2488-44f6-b742-3b63cb9cad6d"), id_team = new Guid("676ed36e-60f4-4ff7-b782-ce6b12488348"), role = "Développeur Front-end"},
+            new() { id_user = new Guid("ca7b4826-5d71-4d97-8dc5-b65a52a15f4c"), id_team = new Guid("676ed36e-60f4-4ff7-b782-ce6b12488348"), role = "Développeur Back-end"},
+            new() { id_user = new Guid("64f4f759-0c6e-4362-9495-0536ac3a512f"), id_team = new Guid("674b04bd-53ff-4f32-985b-353ddfe98cf2"), role = "Développeur Front-end"},
+            new() { id_user = new Guid("e044a5ee-5a92-4e0c-9c2a-6c35e9734356"), id_team = new Guid("674b04bd-53ff-4f32-985b-353ddfe98cf2"), role = "Développeur Back-end"}
         };
 
         foreach (var userTeam in defaultUserTeams)
@@ -267,7 +325,11 @@ public class EntityContext : DbContext
         }
 
         SaveChanges();
-        
+
+        #endregion TEAMS WITH USERS
+
+        #region LINK SAE TO GROUP
+
         // Link Sae To Group
 
         var defaultSaeGroup = new List<SaeGroup>()
@@ -297,6 +359,16 @@ public class EntityContext : DbContext
                 id_group = new Guid("6d7791c5-56dd-419f-aa7a-a811213cba32"), id_sae =
                     new Guid("c5710c89-1b52-473b-886e-722f97ff713a")
             },
+            new()
+            {
+                id_group = new Guid("f441bf0a-115e-4c1e-8b1f-a7fb6f5738c5"), id_sae =
+                    new Guid("67e3ca39-a099-4e4b-ae44-4c3e21627c91")
+            },
+            new()
+            {
+                id_group = new Guid("6d7791c5-56dd-419f-aa7a-a811213cba32"), id_sae =
+                    new Guid("67e3ca39-a099-4e4b-ae44-4c3e21627c91")
+            }
         };
 
         foreach (var group in defaultSaeGroup)
@@ -308,7 +380,11 @@ public class EntityContext : DbContext
         }
 
         SaveChanges();
-        
+
+        #endregion LINK SAE TO GROUP
+
+        #region LINK SAE TO COACH
+
         // Link Sae To Coach
 
         var defaultSaeCoach = new List<SaeCoach>()
@@ -322,6 +398,11 @@ public class EntityContext : DbContext
             {
                 id_coach = new Guid("21afc2e9-eca8-4bc0-aa47-ee71f1b8cf1c"),
                 id_sae = new Guid("c5710c89-1b52-473b-886e-722f97ff713a")
+            },
+            new()
+            {
+                id_coach = new Guid("21afc2e9-eca8-4bc0-aa47-ee71f1b8cf1c"),
+                id_sae = new Guid("67e3ca39-a099-4e4b-ae44-4c3e21627c91")
             }
         };
 
@@ -334,7 +415,51 @@ public class EntityContext : DbContext
         }
 
         SaveChanges();
-        
+
+        #endregion LINK SAE TO COACH
+
+        #region LINK TEAM TO SUBJECT
+
+        // Link team to subject
+
+        var defaultTeamSubject = new List<TeamSubject>()
+        {
+            new()
+            {
+                id_team = new Guid("1d6cd248-9654-4297-9b38-8715c1f4a1c4"),
+                id_subject = new Guid("01f12434-bbdd-4159-bf3c-8a97b9e0545d")
+            },
+            new()
+            {
+                id_team = new Guid("674b04bd-53ff-4f32-985b-353ddfe98cf2"),
+                id_subject = new Guid("51edda44-243c-4e23-993d-a318e1d050ec")
+            },
+            new()
+            {
+                id_team = new Guid("676ed36e-60f4-4ff7-b782-ce6b12488348"),
+                id_subject = new Guid("82a4cb77-0ae8-4aea-8ee0-e646f7495671")
+            },
+            new()
+            {
+                id_team = new Guid("f984daed-bfb8-4c17-a201-e7e153735e5d"),
+                id_subject = new Guid("9ba95000-d99c-4f45-9b97-41082cbcbfad")
+            }
+        };
+
+        foreach (var teamSubject in defaultTeamSubject)
+        {
+            if (!TeamSubjects.Where(sc => sc.id_team == teamSubject.id_team && sc.id_subject == teamSubject.id_subject).Any())
+            {
+                TeamSubjects.Add(teamSubject);
+            }
+        }
+
+        SaveChanges();
+
+        #endregion LINK TEAM TO SUBJECT
+
+        #region DEFAULT CHARACTER
+
         // DEFAULT Character
 
         var defaultCharacter = new List<Character>()
@@ -363,6 +488,10 @@ public class EntityContext : DbContext
 
         SaveChanges();
 
+        #endregion DEFAULT CHARACTER 
+
+        #region DEFAULT SKILLS
+
         // DEFAULT SKILLS
 
         var defaultSkills = new List<Skill>()
@@ -386,6 +515,10 @@ public class EntityContext : DbContext
         }
 
         SaveChanges();
+
+        #endregion DEFAULT SKILLS
+
+        #endregion DEFAULT DATA
     }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
