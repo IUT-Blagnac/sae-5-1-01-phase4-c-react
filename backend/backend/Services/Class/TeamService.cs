@@ -1,4 +1,5 @@
-﻿using backend.Data;
+﻿using System.Net;
+using backend.Data;
 using backend.Data.Models;
 using backend.FormModels;
 using backend.Services.Interfaces;
@@ -84,7 +85,7 @@ public class TeamService : ITeamService
         return teamItem;
     }
 
-    public Team MoifyTeam(Guid id, TeamForm teamForm, Guid userId)
+    public Team ModifyTeam(Guid id, TeamForm teamForm, Guid userId)
     {
         var userTeam = _context.UserTeams.FirstOrDefault(x => x.id_team == id && x.id_user == userId);
 
@@ -102,5 +103,60 @@ public class TeamService : ITeamService
         _context.SaveChangesAsync();
 
         return team;
+    }
+
+    public List<TeamWish> MakeWish(Guid idUser, Guid idTeam, Guid idSubject)
+    {
+        //verify if the user is part of the team
+        var query = from t in _context.Teams
+            join u in _context.UserTeams on t.id equals u.id_team 
+            where u.id_user == idUser && u.id_team == idTeam
+            select t;
+
+        if (!query.Any())
+        {
+            throw new HttpRequestException("This user isn't part of the team", null, HttpStatusCode.Forbidden);
+        }
+        
+        //verify if that the sae the team is part of has the subject and that the sae is in state pending wishes
+        var query2 = from s in _context.Subjects
+            join ut in _context.Teams on s.id_sae equals ut.id_sae
+            join sae in _context.Saes on ut.id_sae equals sae.id
+            where sae.state == State.PENDING_WISHES
+            select s;
+        
+        if (!query2.Any())
+        {
+            throw new HttpRequestException("This sae subject isn't part of the teams SAE", null, HttpStatusCode.Forbidden);
+        }
+        
+        //verify that a wish doesn't already exist for this subject
+        var query3 = from w in _context.TeamWishes
+            where w.id_team == idTeam && w.id_subject == idSubject
+            select w;
+
+        if (query3.Any())
+        {
+            throw new HttpRequestException("Wish already exists", null, HttpStatusCode.Forbidden);
+        }
+
+        var wish = new TeamWish()
+        {
+            id_subject = idSubject,
+            id_team = idTeam,
+        };
+        
+
+
+        List<TeamWish> wishes = query3.ToList();
+        
+        //wishes.Add(wish);
+        
+        
+        _context.TeamWishes.Add(wish);
+
+        _context.SaveChangesAsync();
+        
+        return wishes;
     }
 }

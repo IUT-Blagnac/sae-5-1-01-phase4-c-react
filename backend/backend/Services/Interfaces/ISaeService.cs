@@ -1,5 +1,6 @@
 ﻿using backend.Data.Models;
 using backend.FormModels;
+using Microsoft.AspNetCore.Mvc;
 
 namespace backend.Services.Interfaces
 {
@@ -13,5 +14,6 @@ namespace backend.Services.Interfaces
         public SaeAdminResponse GetSaeNbGroup(Guid saeId);
         public SaeAdminResponse GetSaeNbStudent(Guid saeId);
         public SaeAdminResponse SetSaeToPendingWishes(Guid saeId);
+        public SaeAdminResponse SetSaeToLaunched(Guid id);
     }
 }
