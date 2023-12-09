@@ -26,7 +26,7 @@ public class UserService : IUserService
         }
     }
 
-    private User RegisterUserWithoutSaving(string email, string passwd, string first_name, string last_name)
+    private User RegisterUserWithoutSaving(string email, string passwd, string first_name, string last_name, Guid id_group)
     {
         User? user = _context.Users.FirstOrDefault(x => x.email == email);
 
@@ -47,7 +47,8 @@ public class UserService : IUserService
             email = email,
             first_name = first_name,
             last_name = last_name,
-            role_user = defaultRole
+            role_user = defaultRole,
+            id_group = id_group
         };
 
         var hashedPassword = new PasswordHasher<User>().HashPassword(registered_user, passwd);
@@ -59,9 +60,9 @@ public class UserService : IUserService
         return registered_user;
     }
 
-    public User RegisterUser(string email, string passwd, string first_name, string last_name)
+    public User RegisterUser(string email, string passwd, string first_name, string last_name, Guid id_group)
     {
-        var registered_user = RegisterUserWithoutSaving(email, passwd, first_name, last_name);
+        var registered_user = RegisterUserWithoutSaving(email, passwd, first_name, last_name, id_group);
 
         _context.SaveChanges();
 
@@ -77,7 +78,8 @@ public class UserService : IUserService
             var new_registered_user = RegisterUserWithoutSaving(email: userRegister.Email,
                                                                 passwd: userRegister.Password,
                                                                 first_name: userRegister.FirstName,
-                                                                last_name: userRegister.LastName);
+                                                                last_name: userRegister.LastName,
+                                                                userRegister.id_group);
             users.Add(new_registered_user);
         }
 

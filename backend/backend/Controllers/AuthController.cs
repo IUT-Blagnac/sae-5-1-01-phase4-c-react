@@ -61,7 +61,8 @@ public class AuthController : ControllerBase
             _userService.RegisterUser(email: userRegister.Email,
                                       passwd: userRegister.Password,
                                       first_name: userRegister.FirstName,
-                                      last_name: userRegister.LastName);
+                                      last_name: userRegister.LastName,
+                                      id_group: userRegister.id_group);
         }
         catch (UserService.RegisterException reg_ex)
         {

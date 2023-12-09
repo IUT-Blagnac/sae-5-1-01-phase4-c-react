@@ -154,14 +154,6 @@ public class UserTeamService: IUserTeamService
                 groups[index2].Add(player2);
             }
 
-            var size = 0;
-            foreach (var g in groups)
-            {
-                size += g.Count;
-            }
-
-            Console.WriteLine("size : " + size);
-
             temp *= refreshFactor;
         }
 

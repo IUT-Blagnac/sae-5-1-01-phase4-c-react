@@ -83,11 +83,11 @@ namespace backend.Controllers
 
                 if (saesChar == null)
                 {
-                    sae.total_student = 0;
+                    sae.total_nb_student = 0;
                 }
                 else
                 {
-                    sae.total_student = saesChar.total_student;
+                    sae.total_nb_student = saesChar.total_nb_student;
                 }
             }
 
@@ -112,7 +112,7 @@ namespace backend.Controllers
                 return NotFound();
             }
 
-            saesNbGroups.total_student = saesNbCharacter.total_student;
+            saesNbGroups.total_nb_student = saesNbCharacter.total_nb_student;
 
             return saesNbGroups;
         }
