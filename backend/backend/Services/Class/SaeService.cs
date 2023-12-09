@@ -314,7 +314,7 @@ namespace backend.Services.Class
                 var nbTeam = (sae.min_student_per_group + sae.max_student_per_group) / 2;
 
                 var teams = new List<Team>();
-                var colors = new List<string>() { "red", "blugreen", "yellow", "purple", "orange", "pink", "brown", "black", "white" };
+                var colors = new List<string>() { "red", "blue", "green", "yellow", "purple", "orange", "pink", "brown", "black", "white" };
                 
                 for (int i = 0; i < nbTeam; i++)
                 {
