@@ -5,31 +5,45 @@ version: "v23.1"
 date: { localdate }
 ---
 
-# Développement avancé
+# ProGest
 
-Thanks to Louis Chanouha for code & idea.
 
-## Tags
 
-![Build](https://github.com/IUT-Blagnac/S5.A.01-template.git/actions/workflows/build.yml/badge.svg)
-![Tests](https://github.com/IUT-Blagnac/S5.A.01-template.git/actions/workflows/tests.yml/badge.svg)
-[![License: MPL-2.0](https://img.shields.io/badge/License-MPL%202.0-brightgreen.svg)](https://opensource.org/licenses/MPL-2.0)
+## Content
 
-> TIP: Pensez à mettre à jour les infos dans ce fichier pour que les badges pointent sur les résultats effectifs de vos intégrations continue ou sur la bonne licence logicielle.
+- [Release](#-release)
+- [Équipe](#-équipe)
+- [Contexte général](#-contexte-général)
+- [Documentation](#-documentation)
 
-> WARNING: Ce dépôt présente une des parties du projet à développer dans le cadre de la SAÉ 5.A.01 du BUT3 Informatique de l'IUT de Blagnac.
+## ✅ Release
 
-## Équipe
+Site internet : [ProGest](https://sae.homelab.mrobert.fr/) 
+
+URL du site internet : https://sae.homelab.mrobert.fr/
+
+## 👥 Équipe
 
 Projet est réalisé par:
 
-- [Eric PHILIPPE](https://github.com/janeDoe) (SCRUM Master, Frontend)
-- [Thomas TESTA]() (Frontend)
-- [Marco VALLE]() (Backend)
-- [Loan Gayrard]() (Backend)
-- [Matthieu Robert]() (Backend, DevOps)
-- [Hugo Castel]() (Backend)
+- [Eric PHILIPPE](https://github.com/Eric-Philippe) (Frontend)
+- [Thomas TESTA](https://github.com/SkyFriz) (Frontend)
+- [Marco VALLE](https://github.com/Stemon8) (Backend)
+- [Loan Gayrard](https://github.com/Sonixray) (SCRUM Master, Backend)
+- [Matthieu Robert](https://github.com/matthieurobert) (Backend, DevOps)
+- [Hugo Castell](https://github.com/Hugo-CASTELL) (Backend)
 
-## Contexte général
+## 📕 Contexte général
 
-> TIP: En cas de besoin, n'hésitez pas à me contacter (jean-michel.bruel@univ-tlse2.fr) ou à me poser des questions via le Discord de l'IUT.
+L'IUT de Blagnac évalue ses étudiants en organisant des projets. Chaque projet est unique et a besoin d'une organisation complexe en fonction des compétences à évaluer, des professeurs et des élèves. Pour organiser un projet et avoir le suivi du projet chaque professeur à ça méthode, ses outils, qu'il a cherché avant de la partager aux élèves. Un élève doit donc s'adapter aux méthodes du professeur pour commencer à trvailler.
+
+Dans ce contexte ProGest permet de faciliter l'organisation d'un projet en permmettant d'organiser la gestion de groupe d'élève et de suivre la progression du projet en tant que professeur.
+
+## 📚 Documentation
+
+| Documentation                                 |
+|:---------------:                              |
+| [Sources backend](./backend)                  |
+| [Sources frontend](./frontend)                |
+| [Documentation Utilisateur](./documentation)  |
+| [Documentation Technique](./documentation)    |
