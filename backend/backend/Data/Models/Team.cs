@@ -11,6 +11,7 @@ namespace backend.Data.Models
         public string color { get; set; }
 
         public Guid id_sae { get; set; }
+        [JsonIgnore]
         public Sae sae { get; set; }
         
         [JsonIgnore]
