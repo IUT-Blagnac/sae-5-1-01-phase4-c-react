@@ -40,7 +40,7 @@ export default function SignInSide() {
     try {
       const resLogin = await fetch(API_URL + "/api/Auth/login", {
         method: "POST",
-        headers: { "Content-Type": "application/json"},
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify(body),
       });
 
@@ -64,6 +64,25 @@ export default function SignInSide() {
         localStorage.setItem("firstname", resultUser.firstname);
         localStorage.setItem("lastname", resultUser.lastname);
         localStorage.setItem("statut", resultUser.role);
+
+        fetch(API_URL + `/api/Character/user/${resultUser.id}`, {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        }).then(async (res) => {
+          if (res.status === 200) {
+            const data = await res.json();
+            if (data.length === 0)
+              localStorage.setItem(
+                "hasDoneSkills",
+                data.length === 0 ? "false" : "true"
+              );
+          } else {
+            throw new Error("Erreur lors de la récupération des compétences");
+          }
+        });
 
         window.location.href = "/dashboard";
       } else {

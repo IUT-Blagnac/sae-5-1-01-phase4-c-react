@@ -1,16 +1,26 @@
 import { useEffect, useState } from "react";
 import Sae from "../../../models/Sae";
 import Topic from "../../../models/Topic";
-import FetchData from "../../../assets/temp/FetchData";
 import Loading from "../../../components/Loading";
 import BlankPage from "../../templates/BlankPage";
 import { Status } from "../../../assets/enums/Status.enum";
 import AuthChecker from "../../../middlewares/AuthChecker";
-import { Card } from "@mui/joy";
+import {
+  Card,
+  CardContent,
+  CircularProgress,
+  Divider,
+  Typography,
+} from "@mui/joy";
 import API_URL from "../../../env";
+import {
+  convertSaeStatutEnumToHText,
+  convertSaeIntToStatutEnum,
+  getFetchHeaders,
+} from "../../../utils/Utils";
+import { DocumentScannerOutlined } from "@mui/icons-material";
 
 export default function ConsultSAE() {
-  const saeId = window.location.href.split("/")[4];
   const [loading, setLoading] = useState(true);
   const [sae, setSae] = useState<Sae>() as [
     Sae,
@@ -20,23 +30,91 @@ export default function ConsultSAE() {
 
   useEffect(() => {
     let saeId = window.location.href.split("/")[4];
-    fetch(API_URL + "/api/Sae/user/" + localStorage.getItem("userid"), {
+    fetch(API_URL + "/api/Subject/sae/" + saeId, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
         Authorization: "Bearer " + localStorage.getItem("token"),
       },
     }).then((res) => {
-      console.log(res);
+      if (res.status === 200) {
+        res.json().then((data) => {
+          setTopics(data);
+          fetch(API_URL + "/api/Sae/user/" + localStorage.getItem("userid"), {
+            method: "GET",
+            headers: getFetchHeaders(),
+          }).then((res) => {
+            if (res.status === 200) {
+              res.json().then((data) => {
+                let saes = data as Sae[];
+                setSae(saes.find((sae) => sae.id === saeId) as Sae);
+
+                fetch(API_URL + "/api/Team/sae/" + saeId, {
+                  method: "GET",
+                  headers: getFetchHeaders(),
+                }).then(async (res) => {
+                  if (res.status === 200) {
+                    const data = await res.json();
+                    // @ts-ignore
+                    let teamId = data[0].id;
+                    console.log(teamId);
+                  }
+                });
+                setLoading(false);
+              });
+            }
+          });
+        });
+      }
     });
-  });
+  }, []);
 
   if (loading) return <Loading />;
+
+  // @ts-ignore
+  let saeState: number = sae?.state;
 
   return (
     <AuthChecker>
       <BlankPage role={Status.STUDENT} pageTitle="Consulter une SAE">
-        <Card></Card>
+        <Card variant="solid" color="primary" invertedColors>
+          <CardContent orientation="horizontal">
+            <CircularProgress size="lg" determinate value={(saeState + 1) * 20}>
+              <DocumentScannerOutlined />
+            </CircularProgress>
+            <CardContent>
+              <Typography level="body-md">IUT Blagnac</Typography>
+              <Typography level="h2">{sae?.name}</Typography>
+              <Typography level="body-md">
+                {convertSaeStatutEnumToHText(
+                  // @ts-ignore
+                  convertSaeIntToStatutEnum(sae?.state)
+                )}
+              </Typography>
+              <Typography level="body-sm">{sae?.description}</Typography>
+            </CardContent>
+          </CardContent>
+        </Card>
+        <Divider sx={{ mt: 2, mb: 2 }} />
+        {topics.map((topic) => (
+          <Card
+            key={topic.id}
+            sx={{
+              mt: 2,
+              ":hover": {
+                cursor: "pointer",
+                border: "1px solid",
+              },
+            }}
+          >
+            <Typography level="title-sm" sx={{ mb: 2 }}>
+              {topic.name}
+            </Typography>
+            <Typography level="body-sm" sx={{ mb: 2 }}>
+              {topic.description}
+            </Typography>
+          </Card>
+        ))}
       </BlankPage>
     </AuthChecker>
   );

@@ -20,7 +20,7 @@ export function convertSaeIntToStatutEnum(statut: number) {
 export function convertSaeStatutEnumToHText(statut: SAEStatus) {
   switch (statut) {
     case SAEStatus.PENDING_USERS:
-      return "En attente du remplissage des fiches";
+      return "En attente du remplissage des fiches étudiantes";
     case SAEStatus.PENDING_WISHES:
       return "En attente du remplissage des voeux";
     case SAEStatus.LAUNCHED:
@@ -43,4 +43,11 @@ export function cutText(str: string, max: number) {
     return str.substr(0, max) + "...";
   }
   return str;
+}
+
+export function getFetchHeaders() {
+  return {
+    "Content-Type": "application/json",
+    Authorization: "Bearer " + localStorage.getItem("token"),
+  };
 }

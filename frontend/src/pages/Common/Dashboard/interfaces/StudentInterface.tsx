@@ -6,7 +6,6 @@ import FolderRoundedIcon from "@mui/icons-material/FolderRounded";
 import { Box } from "@mui/joy";
 import { useEffect, useState } from "react";
 import Sae from "../../../../models/Sae";
-import FetchData from "../../../../assets/temp/FetchData";
 import Loading from "../../../../components/Loading";
 import {
   convertSaeIntToStatutEnum,
@@ -14,14 +13,9 @@ import {
 } from "../../../../utils/Utils";
 import API_URL from "../../../../env";
 
-// custom
-
 function StudentInterface() {
   const [loading, setLoading] = useState(true);
   const [saes, setSaes] = useState<Sae[]>([]);
-
-  const hasDoneSkillSheet = false;
-  const signedSae = ["1"];
 
   useEffect(() => {
     fetch(API_URL + "/api/Sae/user/" + localStorage.getItem("userid"), {
@@ -33,11 +27,13 @@ function StudentInterface() {
     }).then(async (res) => {
       if (res.status === 200) {
         const data = await res.json();
+        console.log(data);
+
         setSaes(data);
         setLoading(false);
       }
     });
-  });
+  }, []);
 
   if (loading) return <Loading />;
 
@@ -85,9 +81,6 @@ function StudentInterface() {
               <th>
                 <Typography level="title-sm">État de la SAE</Typography>
               </th>
-              <th>
-                <Typography level="title-sm">Inscrit ?</Typography>
-              </th>
             </tr>
           </thead>
           <tbody>
@@ -116,13 +109,8 @@ function StudentInterface() {
                   <Typography level="body-sm">
                     {convertSaeStatutEnumToHText(
                       // @ts-ignore
-                      convertSaeIntToStatutEnum(sae?.statut)
+                      convertSaeIntToStatutEnum(sae?.state)
                     )}
-                  </Typography>
-                </td>
-                <td>
-                  <Typography level="body-sm">
-                    {signedSae.includes(sae.id) ? "✅" : "❌"}
                   </Typography>
                 </td>
               </tr>

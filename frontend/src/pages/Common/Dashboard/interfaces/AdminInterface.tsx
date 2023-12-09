@@ -6,19 +6,28 @@ import FolderRoundedIcon from "@mui/icons-material/FolderRounded";
 import { Box, Button } from "@mui/joy";
 import { useEffect, useState } from "react";
 import Sae from "../../../../models/Sae";
-import FetchData from "../../../../assets/temp/FetchData";
 import Loading from "../../../../components/Loading";
+import API_URL from "../../../../env";
+import { getFetchHeaders } from "../../../../utils/Utils";
 
 function AdminInterface() {
   const [loading, setLoading] = useState(true);
   const [saes, setSaes] = useState<Sae[]>([]);
 
   useEffect(() => {
-    FetchData.fetchSaes().then((data) => {
-      setSaes(data);
-      setLoading(false);
+    fetch(API_URL + "/api/Sae/admin/" + localStorage.getItem("userid"), {
+      method: "GET",
+      headers: getFetchHeaders(),
+    }).then(async (res) => {
+      if (res.status === 200) {
+        const data = await res.json();
+        console.log(data);
+
+        setSaes(data);
+        setLoading(false);
+      }
     });
-  });
+  }, []);
 
   if (loading) return <Loading />;
 
