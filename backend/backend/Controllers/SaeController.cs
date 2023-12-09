@@ -39,7 +39,7 @@ namespace backend.Controllers
         }
 
         [HttpGet("user/{id}")]
-        [Authorize]
+        [Authorize(Roles = RoleAccesses.Student)]
         public ActionResult<List<Sae>> GetSaesByUserId(Guid id)
         {
             var saes = _saeService.GetSaeByUserId(id);
@@ -52,18 +52,25 @@ namespace backend.Controllers
             return saes;
         }
 
-        [HttpGet("admin/{id}")]
-        [Authorize]
-        public ActionResult<List<SaeAdminResponse>> GetSaesAdminByUserId(Guid id)
+        [HttpGet("admin")]
+        [Authorize(Roles = RoleAccesses.Admin)]
+        public ActionResult<List<SaeAdminResponse>> GetSaesAdmin()
         {
-            var saesNbGroups = _saeService.GetSaeAdminNbGroupByUserId(id);
+            return _saeService.GetSaes();
+        }
+
+        [HttpGet("admin/{user_id}")]
+        [Authorize(Roles = RoleAccesses.Admin)]
+        public ActionResult<List<SaeAdminResponse>> GetSaesAdminByUserId(Guid user_id)
+        {
+            var saesNbGroups = _saeService.GetSaeAdminNbGroupByUserId(user_id);
 
             if (saesNbGroups == null)
             {
                 return NotFound();
             }
 
-            var saesNbCharacter = _saeService.GetSaeAdminNbStudentByUserId(id);
+            var saesNbCharacter = _saeService.GetSaeAdminNbStudentByUserId(user_id);
 
             if (saesNbCharacter == null)
             {
