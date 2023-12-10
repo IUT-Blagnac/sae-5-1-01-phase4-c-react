@@ -20,6 +20,12 @@ public class UserController : ControllerBase
         _logger = logger;
     }
 
+    /// <summary>
+    /// Get the authenticated user of the http context (<see cref="HttpContext"/>)
+    /// </summary>
+    /// <returns>List of the teachers as <see cref="ApiModels.Output.OutputGetTeachers"/></returns>
+    /// <response code="200">The authenticated user of the <see cref="HttpContext"/></response>
+    /// <response code="401">User not authenticated</response>
     [HttpGet("currentUser")]
     [AllowAnonymous]
     public IActionResult GetAuthenticatedUser()
@@ -38,6 +44,12 @@ public class UserController : ControllerBase
         }
     }
 
+    /// <summary>
+    /// Lists all the teachers of the base
+    /// </summary>
+    /// <returns>List of the teachers as <see cref="ApiModels.Output.OutputGetTeachers"/></returns>
+    /// <response code="200">Returns the teachers</response>
+    /// <response code="401">Not authorized to access this method. [Teacher access minimum]</response>
     [HttpGet("teachers")]
     [Authorize(Roles = RoleAccesses.Teacher)]
     public IActionResult GetTeachers()
