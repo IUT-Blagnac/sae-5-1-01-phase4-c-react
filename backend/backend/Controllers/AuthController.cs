@@ -36,6 +36,23 @@ public class AuthController : ControllerBase
         _roleUserService = roleUserService;
     }
 
+    /// <summary>
+    /// Login a user with an email and a password
+    /// </summary>
+    /// <param name="userLogin"></param>
+    /// <returns>A JWT token</returns>
+    /// <remarks>
+    /// Sample request:
+    /// 
+    ///     POST /login
+    ///     {
+    ///         "email": "test@test",
+    ///         "password": "test"
+    ///     }
+    /// 
+    /// </remarks>
+    /// <response code="200">Returns a JWT token</response>
+    /// <response code="401">If the user is not found</response>
     [HttpPost("login")]
     [AllowAnonymous]
     public ActionResult Login([FromBody] UserLogin userLogin)
@@ -50,6 +67,28 @@ public class AuthController : ControllerBase
 
     }
 
+    /// <summary>
+    /// Register a user with an email, a password, a first name, a last name and a group id (if the user is a student)
+    /// </summary>
+    /// <param name="userRegister"></param>
+    /// <returns>The email and the first name of the new user created</returns>
+    /// <remarks>
+    /// Sample request:
+    ///
+    ///     POST /register
+    ///     {
+    ///     "email": "test@test",
+    ///     "password": "test",
+    ///     "first_name": "test",
+    ///     "last_name": "test",
+    ///     }
+    ///
+    /// </remarks>
+    /// <response code="201">Returns the email and the first name of the new user created</response>
+    /// <response code="400">If there is database error</response>
+    /// <response code="403">If the password is too short</response>
+    /// <response code="409">If the user is already registered</response>
+    /// <response code="500">If there is and internal error</response>
     [HttpPost("register")]
     [AllowAnonymous]
     public async Task<ActionResult> Register([FromBody] UserRegister userRegister)

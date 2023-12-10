@@ -1,3 +1,4 @@
+using System.Reflection;
 using backend.Data;
 using backend.Services.Class;
 using backend.Services.Interfaces;
@@ -60,6 +61,9 @@ builder.Services.AddSwaggerGen(opt =>
                 new string[]{}
             }
         });
+        
+        var xmlFilename = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+        opt.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, xmlFilename));
     });
 
 builder.Services.AddScoped<ITeamService, TeamService>();

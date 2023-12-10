@@ -18,6 +18,14 @@ public class CategoryController : ControllerBase
         _logger = logger;
     }
 
+    /// <summary>
+    /// Get all categories possible for a sae subject
+    /// Note: Only teachers can access this route
+    /// </summary>
+    /// <returns>A list with all the categories</returns>
+    /// <response code="200">Returns a list with all the categories</response>
+    /// <response code="401">If the user is not a teacher</response>
+    /// <response code="400">If an error occured</response>
     [HttpGet]
     [Authorize(Roles = RoleAccesses.Teacher)]
     public ActionResult GetCategories()
