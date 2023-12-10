@@ -21,18 +21,21 @@ services:
       context: ./backend
       dockerfile: Dockerfile
     expose:
+      - 443
       - 80
     depends_on:
       - db
     environment:
-      - ConnectionStrings__DatabaseConnection=Host=db;Port=5432;Database=postgres;Username=postgres;Password=postgres
+      - ConnectionStrings__DatabaseConnection=Server=db;Port=5432;Database=postgres;Username=postgres;Password=postgres
     networks:
       - reverse_proxy
       - db
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.back.rule=Host(`api.$DOMAIN_NAME`)" 
+      - "traefik.http.routers.back.rule=Host(`api.$DOMAIN_NAME`)"
       - "traefik.http.services.back.loadbalancer.server.port=80"
+      - "traefik.http.routers.back.entrypoints=websecure"
+      - "traefik.http.routers.back.tls.certresolver=mvallew"
 
   frontend:
     image: frontend
@@ -40,14 +43,14 @@ services:
     build:
       context: ./frontend
       dockerfile: Dockerfile
-    expose:
-      - 80
     depends_on:
       - backend
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.front.rule=Host(`$DOMAIN_NAME`)" 
+      - "traefik.http.routers.front.rule=Host(`$DOMAIN_NAME`)"
       - "traefik.http.services.front.loadbalancer.server.port=80"
+      - "traefik.http.routers.front.entrypoints=websecure"
+      - "traefik.http.routers.front.tls.certresolver=mvallew"
     networks:
       - reverse_proxy
 
