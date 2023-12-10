@@ -1,6 +1,7 @@
 ﻿using System.Security.Claims;
 using backend.Data;
 using backend.Data.Models;
+using backend.FormModels;
 using backend.Services.Class;
 using backend.Services.Interfaces;
 using backend.Utils;
@@ -30,6 +31,22 @@ public class GroupController: ControllerBase
         {
             var groups = _groupService.GetGroups();
             return Ok(groups);
+        }
+        catch (Exception e)
+        {
+            _logger.LogError(e.Message);
+            return BadRequest();
+        }
+    }
+    
+    [HttpPost]
+    [Authorize(Roles = RoleAccesses.Teacher)]
+    public IActionResult CreateGroup([FromBody] GroupForm group)
+    {
+        try
+        {
+            var new_group = _groupService.CreateGroup(group.name, group.is_apprenticeship);
+            return Ok(new_group);
         }
         catch (Exception e)
         {

@@ -17,5 +17,24 @@ namespace backend.Services.Class
         {
             return _context.Groups.ToList();
         }
+
+        public Group CreateGroup(string name, bool is_apprenticeship)
+        {
+            Group? group = _context.Groups.FirstOrDefault(x => x.name == name);
+
+            if (group is not null)
+                throw new Exception("Group already exits");
+
+            var new_group = new Group
+            {
+                id = Guid.NewGuid(),
+                name = name,
+                is_apprenticeship = is_apprenticeship
+            };
+
+            _context.Groups.Add(new_group);
+
+            return new_group;   
+        }
     }
 }
