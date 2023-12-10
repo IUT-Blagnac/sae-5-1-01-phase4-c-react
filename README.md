@@ -1,12 +1,4 @@
----
-title: "BUT-Info/S5.A.01 : Développement avancé"
-author: "Jean-Michel Bruel"
-version: "v23.1"
----
-
 # ProGest
-
-
 
 ## Content
 
