@@ -53,6 +53,32 @@ L'IUT de Blagnac évalue ses étudiants en organisant des projets. Chaque projet
 
 Dans ce contexte ProGest permet de faciliter l'organisation d'un projet en permmettant d'organiser la gestion de groupe d'élève et de suivre la progression du projet en tant que professeur.
 
+## Installation et déploiement
+
+### Prérequis
+
+- [Docker](https://docs.docker.com/get-docker/)
+
+### Installation
+
+1. Cloner le projet
+
+```bash
+git clone git@github.com:IUT-Blagnac/sae-5-1-01-phase4-c-react.git
+cd sae-5-1-01-phase4-c-react
+```
+
+2. Lancer le docker-compose
+
+```bash
+docker-compose up -d --build
+```
+
+3. Accéder au site
+
+Ouvre un navigateur et accède à l'adresse suivante : http://localhost:80  
+Pour accéder à la documentation de l'api : http://localhost:8080/swagger/index.html
+
 ## 📚 Documentation
 
 | Documentation                                                     |
