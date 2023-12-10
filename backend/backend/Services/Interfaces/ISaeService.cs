@@ -15,5 +15,6 @@ namespace backend.Services.Interfaces
         public SaeAdminResponse GetSaeNbStudent(Guid saeId);
         public SaeAdminResponse SetSaeToPendingWishes(Guid saeId);
         public SaeAdminResponse SetSaeToLaunched(Guid id);
+        public SaeAdminResponse SetSaeToClosed(Guid id);
     }
 }

@@ -403,6 +403,20 @@ namespace backend.Services.Class
             return new SaeAdminResponse(sae);
         }
 
+        public SaeAdminResponse SetSaeToClosed(Guid id)
+        {
+            var sae = GetSae(id);
+            if (sae is not { state: State.LAUNCHED })
+            {
+                throw new HttpRequestException("Sae in the required state not found", null, HttpStatusCode.NotFound);
+            }
+
+            sae.state = State.CLOSED;
+            _context.SaveChanges();
+
+            return new SaeAdminResponse(sae);
+        }
+
         public static List<TeamSubject> AssignTeamsToSubjects(List<Team?> teams, List<Subject> subjects, List<TeamWish> teamWishes)
         {
             List<TeamSubject> assignments = new List<TeamSubject>();
