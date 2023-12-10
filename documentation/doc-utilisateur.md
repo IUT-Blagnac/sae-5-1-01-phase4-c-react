@@ -123,12 +123,12 @@ Il pourra alors envoyer un fichier csv ou json contenant les informations des ut
 Exemple de fichier csv :
 
 ```csv
-FirstName,LastName,Email,Password
-eric,philippe,eric@msn.fr,57722003
-loan,gayrard,loan@orange.fr,985639281
-matthieu,robert,matthieu@hotmail.fr,985639281
-hugo,castell,hugo@test.be,985639281
-toma,testa,toma@webetud.io,985639281
+FirstName,LastName,Email
+eric,philippe,eric@msn.fr
+loan,gayrard,loan@orange.fr
+matthieu,robert,matthieu@hotmail.fr
+hugo,castell,hugo@test.be
+toma,testa,toma@webetud.io
 ```
 
 ## Documentation Etudiant
