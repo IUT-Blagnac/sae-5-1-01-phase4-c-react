@@ -6,6 +6,7 @@ namespace backend.Services.Interfaces;
 
 public interface IUserService
 {
+    public List<UserCSVResponse> RegisterUsers(IEnumerable<UserCSVRegister> userRegisters, Guid id_group);
     public List<User> RegisterUsers(IEnumerable<UserRegister> userRegisters);
     public User RegisterUser(string email, string passwd, string first_name, string last_name, Guid id_group);
     public User? GetCurrentUser(HttpContext httpContext);

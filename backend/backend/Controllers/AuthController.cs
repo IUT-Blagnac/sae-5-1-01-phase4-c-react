@@ -121,32 +121,6 @@ public class AuthController : ControllerBase
     [Authorize(Roles = RoleAccesses.Teacher)]
     public async Task<ActionResult> RegisterMultiplesFromJson([FromBody] List<UserRegister> userRegisters)
     {
-        return RegisterMultiples(userRegisters);
-    }
-
-    [HttpPost("register_multiple_csv")]
-    [Authorize(Roles = RoleAccesses.Teacher)]
-    public async Task<ActionResult> RegisterMultiplesFromCsv([FromForm] IFormFile file)
-    {
-        List<UserRegister> userRegisters;
-        try
-        {
-            var enumerable = _csvService.ReadCSV<UserRegister>(file.OpenReadStream());
-
-            userRegisters = enumerable.ToList();
-        }
-        catch (Exception)
-        {
-            return StatusCode(422, new { message = "Invalid file or well not formated" });
-        }
-
-        return RegisterMultiples(userRegisters);
-    }
-
-    #region Private Helpers
-
-    private ActionResult RegisterMultiples(List<UserRegister> userRegisters)
-    {
         List<User> new_users;
         try
         {
@@ -165,9 +139,47 @@ public class AuthController : ControllerBase
             return StatusCode(400, new { message = "Unknown exception" });
         }
 
-        return Ok();
+        return new OkObjectResult(new_users);
     }
 
+    [HttpPost("sendcsv/{id_group}")]
+    [Authorize(Roles = RoleAccesses.Teacher)]
+    public async Task<ActionResult> RegisterMultiplesFromCsv([FromForm] IFormFile file, Guid id_group)
+    {
+        List<UserCSVRegister> userRegisters;
+        try
+        {
+            var enumerable = _csvService.ReadCSV<UserCSVRegister>(file.OpenReadStream());
+
+            userRegisters = enumerable.ToList();
+        }
+        catch (Exception)
+        {
+            return StatusCode(422, new { message = "Invalid file or well not formated" });
+        }
+
+        List<UserCSVResponse> new_users;
+        try
+        {
+            new_users = _userService.RegisterUsers(userRegisters, id_group);
+        }
+        catch (UserService.RegisterException reg_ex)
+        {
+            return StatusCode(reg_ex.StatusCode, new { message = reg_ex.Message });
+        }
+        catch (DbException)
+        {
+            return StatusCode(400, new { message = "Database error" });
+        }
+        catch
+        {
+            return StatusCode(400, new { message = "Unknown exception" });
+        }
+
+        return new OkObjectResult(new_users);
+    }
+
+    #region Private Helpers
 
     private User? Authenticate(UserLogin userLogin)
     {
