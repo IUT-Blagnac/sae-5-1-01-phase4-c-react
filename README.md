@@ -34,7 +34,8 @@ Découvrez les fonctionnalités riches et adaptées de ProGest, conçues pour r�
 - Dashboard
 - Manage SAE
 - Créer une SAE
-- Importer des urilisateurs
+- Importer des utilisateurs
+- Générer des teams automatiquements
 
 ### 🖋️​ Étudiant
 - Fiche de compétences
