@@ -6,7 +6,7 @@ export default function Copyright(props: any) {
     <Typography variant="body2" color="text.secondary" {...props}>
       {"Copyright © "}
       <Link color="inherit" href="https://mui.com/">
-        CiReact SAE Manager
+        ProGest SAE Manager
       </Link>{" "}
       {new Date().getFullYear()}
       {"."}

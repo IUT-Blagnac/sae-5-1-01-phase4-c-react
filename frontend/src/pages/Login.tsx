@@ -127,7 +127,7 @@ export default function SignInSide() {
             <LockOutlinedIcon />
           </Avatar>
           <Typography component="h2" variant="h4">
-            CiReact SAE
+            ProGest SAE
           </Typography>
           <Typography component="h2" variant="h5">
             Se connecter

@@ -28,7 +28,7 @@ export default function Footer() {
         }}
       >
         <Container maxWidth="sm">
-          <Typography variant="body1">CiReact SAE Manager</Typography>
+          <Typography variant="body1">ProGest SAE Manager</Typography>
           <Copyright />
         </Container>
       </Box>
