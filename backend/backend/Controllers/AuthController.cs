@@ -36,9 +36,8 @@ public class AuthController : ControllerBase
         _roleUserService = roleUserService;
     }
 
+    [HttpPost("login")]
     [AllowAnonymous]
-    [HttpPost]
-    [Route("login")]
     public ActionResult Login([FromBody] UserLogin userLogin)
     {
         var user = Authenticate(userLogin);
@@ -51,9 +50,8 @@ public class AuthController : ControllerBase
 
     }
 
+    [HttpPost("register")]
     [AllowAnonymous]
-    [HttpPost]
-    [Route("register")]
     public async Task<ActionResult> Register([FromBody] UserRegister userRegister)
     {
         try
@@ -79,6 +77,34 @@ public class AuthController : ControllerBase
         return Created("User created", new { Email = userRegister.Email, FirstName = userRegister.FirstName });
     }
 
+    [HttpPost("register_multiple_json")]
+    [Authorize(Roles = RoleAccesses.Teacher)]
+    public async Task<ActionResult> RegisterMultiplesFromJson([FromBody] List<UserRegister> userRegisters)
+    {
+        return RegisterMultiples(userRegisters);
+    }
+
+    [HttpPost("register_multiple_csv")]
+    [Authorize(Roles = RoleAccesses.Teacher)]
+    public async Task<ActionResult> RegisterMultiplesFromCsv([FromForm] IFormFile file)
+    {
+        List<UserRegister> userRegisters;
+        try
+        {
+            var enumerable = _csvService.ReadCSV<UserRegister>(file.OpenReadStream());
+
+            userRegisters = enumerable.ToList();
+        }
+        catch (Exception)
+        {
+            return StatusCode(422, new { message = "Invalid file or well not formated" });
+        }
+
+        return RegisterMultiples(userRegisters);
+    }
+
+    #region Private Helpers
+
     private ActionResult RegisterMultiples(List<UserRegister> userRegisters)
     {
         List<User> new_users;
@@ -102,33 +128,6 @@ public class AuthController : ControllerBase
         return Ok();
     }
 
-    [HttpPost]
-    [Route("register_multiple_json")]
-    [Authorize(Roles = RoleAccesses.Teacher)]
-    public async Task<ActionResult> RegisterMultiplesFromJson([FromBody] List<UserRegister> userRegisters)
-    {
-        return RegisterMultiples(userRegisters);
-    }
-
-    [HttpPost]
-    [Route("register_multiple_csv")]
-    [Authorize(Roles = RoleAccesses.Teacher)]
-    public async Task<ActionResult> RegisterMultiplesFromCsv([FromForm] IFormFile file)
-    {
-        List<UserRegister> userRegisters;
-        try
-        {
-            var enumerable = _csvService.ReadCSV<UserRegister>(file.OpenReadStream());
-
-            userRegisters = enumerable.ToList();
-        }
-        catch (Exception)
-        {
-            return StatusCode(422, new { message = "Invalid file or well not formated" });
-        }
-
-        return RegisterMultiples(userRegisters);
-    }
 
     private User? Authenticate(UserLogin userLogin)
     {
@@ -173,4 +172,6 @@ public class AuthController : ControllerBase
 
         return new JwtSecurityTokenHandler().WriteToken(token);
     }
+
+    #endregion Private Helpers
 }

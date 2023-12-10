@@ -10,7 +10,7 @@ namespace backend.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
-public class CharacterController: ControllerBase
+public class CharacterController : ControllerBase
 {
     private readonly ICharacterService _characterService;
     private readonly IUserService _userService;
@@ -41,8 +41,8 @@ public class CharacterController: ControllerBase
             });
     }
 
-    [HttpGet]
-    [Route("{id}")]
+    [HttpGet("{id}")]
+    [Authorize(Roles = RoleAccesses.Student)]
     public ActionResult<Character> GetCharacterById(Guid id)
     {
         var character = _characterService.getCharacterById(id);
@@ -55,9 +55,8 @@ public class CharacterController: ControllerBase
         return Ok();
     }
 
-    [HttpGet]
-    [Authorize]
-    [Route("user/{id}")]
+    [HttpGet("user/{id}")]
+    [Authorize(Roles = RoleAccesses.Student)]
     public ActionResult<List<CharacterSkills>> GetCharacterByUserId(Guid id)
     {
         var characters = _characterService.getCharacterByUserId(id);
@@ -70,8 +69,8 @@ public class CharacterController: ControllerBase
         return characters;
     }
 
-    [HttpGet]
-    [Route("sae/{id}")]
+    [HttpGet("sae/{id}")]
+    [Authorize(Roles = RoleAccesses.Student)]
     public ActionResult<List<Character>> GetCharacterBySaeId(Guid id)
     {
         var characters = _characterService.getCharactersBySaeId(id);
@@ -85,6 +84,7 @@ public class CharacterController: ControllerBase
     }
 
     [HttpGet]
+    [Authorize(Roles = RoleAccesses.Student)]
     public ActionResult<List<Character>> GetCharacters()
     {
         return _characterService.getCharacters();

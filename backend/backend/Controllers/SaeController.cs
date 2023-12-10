@@ -95,7 +95,7 @@ namespace backend.Controllers
         }
 
         [HttpGet("{id}")]
-        [Authorize]
+        [Authorize(Roles = RoleAccesses.Student)]
         public ActionResult<SaeAdminResponse> GetSaes(Guid id)
         {
             var saesNbGroups = _saeService.GetSaeNbGroup(id);

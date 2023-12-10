@@ -1,5 +1,6 @@
 ﻿using backend.Data.Models;
 using backend.Services.Interfaces;
+using backend.Utils;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -17,7 +18,7 @@ public class SubjectController : ControllerBase
     }
 
     [HttpGet("sae/{id}")]
-    [Authorize]
+    [Authorize(Roles = RoleAccesses.Student)]
     public ActionResult<List<Subject>> GetSubjectBySaeId(Guid id)
     {
         var subjects = _subjectService.GetSubjectsBySaeId(id);
