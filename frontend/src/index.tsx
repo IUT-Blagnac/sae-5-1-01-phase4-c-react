@@ -3,6 +3,12 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
+var dotenv = require('dotenv')
+var dotenvExpand = require('dotenv-expand')
+
+var myEnv = dotenv.config()
+dotenvExpand.expand(myEnv)
+
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement

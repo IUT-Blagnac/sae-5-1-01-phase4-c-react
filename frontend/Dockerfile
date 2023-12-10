@@ -1,6 +1,6 @@
 FROM node:20-alpine as build
 
-ARG REACT_APP_API_URL
+ARG API_URL
 
 WORKDIR /app
 
