@@ -43,9 +43,9 @@ Projet est réalisé par:
 - [Eric PHILIPPE](https://github.com/Eric-Philippe) (Frontend)
 - [Thomas TESTA](https://github.com/SkyFriz) (Frontend)
 - [Marco VALLE](https://github.com/Stemon8) (Backend)
-- [Loan Gayrard](https://github.com/Sonixray) (SCRUM Master, Backend)
-- [Matthieu Robert](https://github.com/matthieurobert) (Backend, DevOps)
-- [Hugo Castell](https://github.com/Hugo-CASTELL) (Backend)
+- [Loan GAYRARD](https://github.com/Sonixray) (SCRUM Master, Backend)
+- [Matthieu ROBERT](https://github.com/matthieurobert) (Backend, DevOps)
+- [Hugo CASTELL](https://github.com/Hugo-CASTELL) (Backend)
 
 ## 📕 Contexte général
 
