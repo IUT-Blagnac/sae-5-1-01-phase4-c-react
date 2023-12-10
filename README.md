@@ -11,18 +11,20 @@
 
 ## ✅ Release
 
-Site internet : [ProGest](https://sae.homelab.mrobert.fr/) 
+Site internet : [ProGest](https://sae.homelab.mrobert.fr/)
 
 URL du site internet : https://sae.homelab.mrobert.fr/
 
 ## 🔎 Fonctionnalités
 
-Découvrez les fonctionnalités riches et adaptées de ProGest, conçues pour répondre aux besoins spécifiques de chaque type d'utilisateur. Explorez en détail toutes les capacités offertes par notre plateforme en consultant la [Documentation Utilisateur](./documentation/doc-utilisateur.md)  complète.
+Découvrez les fonctionnalités riches et adaptées de ProGest, conçues pour répondre aux besoins spécifiques de chaque type d'utilisateur. Explorez en détail toutes les capacités offertes par notre plateforme en consultant la [Documentation Utilisateur](./documentation/doc-utilisateur.md) complète.
 
 ### 👤​ Utilisateur commun
+
 - Page de connexion
 
 ### ​💻​ Administrateur
+
 - Dashboard
 - Manage SAE
 - Créer une SAE
@@ -30,10 +32,12 @@ Découvrez les fonctionnalités riches et adaptées de ProGest, conçues pour r�
 - Générer des teams automatiquements
 
 ### 🖋️​ Étudiant
+
 - Fiche de compétences
 - Consulter SAE
 
 ### 🧑‍🏫​ Professeur
+
 - Consulter SAE professeur
 - Noter SAE
 
@@ -84,9 +88,10 @@ Plus d'informations sur l'installation et le déploiement dans la [Documentation
 
 ## 📚 Documentation
 
-| Documentation                                                     |
-|:---------------:                                                  |
-| [Sources backend](./backend)                                      |
-| [Sources frontend](./frontend)                                    |
-| [Documentation Utilisateur](./documentation/doc-utilisateur.md)   |
-| [Documentation Technique](./documentation/doc-technique-back.md)  |
+|                               Documentation                               |
+| :-----------------------------------------------------------------------: |
+|                       [Sources backend](./backend)                        |
+|                      [Sources frontend](./frontend)                       |
+|      [Documentation Utilisateur](./documentation/doc-utilisateur.md)      |
+| [Documentation Technique Frontend](./documentation/doc-technique-back.md) |
+| [Documentation Technique Backend](./documentation/doc-technique-front.md) |
