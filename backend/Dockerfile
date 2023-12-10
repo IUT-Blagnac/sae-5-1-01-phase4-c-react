@@ -3,6 +3,9 @@ WORKDIR /app
 EXPOSE 80
 EXPOSE 443
 
+#pass environment variables to the container
+ARG ConnectionStrings__DatabaseConnection
+
 FROM mcr.microsoft.com/dotnet/sdk:7.0 AS build
 WORKDIR /src
 COPY ["backend/backend.csproj", "backend/"]

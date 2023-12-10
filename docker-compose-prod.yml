@@ -25,11 +25,7 @@ services:
     depends_on:
       - db
     environment:
-      - DB_HOST=db
-      - DB_PORT=5432
-      - DB_USER=postgres
-      - DB_PASSWORD=postgres
-      - DB_NAME=postgres
+      - ConnectionStrings__DatabaseConnection=Host=db;Port=5432;Database=postgres;Username=postgres;Password=postgres
     networks:
       - reverse_proxy
       - db
