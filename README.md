@@ -27,7 +27,7 @@ URL du site internet : https://sae.homelab.mrobert.fr/
 
 Découvrez les fonctionnalités riches et adaptées de ProGest, conçues pour répondre aux besoins spécifiques de chaque type d'utilisateur. Explorez en détail toutes les capacités offertes par notre plateforme en consultant la [Documentation Utilisateur](./documentation/doc-utilisateur.md)  complète.
 
-### Utilisateur commun
+### 👤​ Utilisateur commun
 - Page de connexion
 
 ### ​💻​ Administrateur
