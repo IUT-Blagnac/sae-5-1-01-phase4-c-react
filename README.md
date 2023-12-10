@@ -12,6 +12,7 @@ date: { localdate }
 ## Content
 
 - [Release](#-release)
+- [Fonctionnalité](#-fonctionnalité)
 - [Équipe](#-équipe)
 - [Contexte général](#-contexte-général)
 - [Documentation](#-documentation)
@@ -21,6 +22,27 @@ date: { localdate }
 Site internet : [ProGest](https://sae.homelab.mrobert.fr/) 
 
 URL du site internet : https://sae.homelab.mrobert.fr/
+
+## 🔎 Fonctionnalité
+
+Découvrez les fonctionnalités riches et adaptées de ProGest, conçues pour répondre aux besoins spécifiques de chaque type d'utilisateur. Explorez en détail toutes les capacités offertes par notre plateforme en consultant la [Documentation Utilisateur](./documentation/doc-utilisateur.md)  complète.
+
+### Utilisateur commun
+- Page de connexion
+
+### ​💻​ Administrateur
+- Dashboard
+- Manage SAE
+- Créer une SAE
+- Importer des urilisateurs
+
+### 🖋️​ Étudiant
+- Fiche de compétences
+- Consulter SAE
+
+### 🧑‍🏫​ Professeur
+- Consulter SAE professeur
+- Noter SAE
 
 ## 👥 Équipe
 
@@ -41,9 +63,9 @@ Dans ce contexte ProGest permet de faciliter l'organisation d'un projet en permm
 
 ## 📚 Documentation
 
-| Documentation                                 |
-|:---------------:                              |
-| [Sources backend](./backend)                  |
-| [Sources frontend](./frontend)                |
-| [Documentation Utilisateur](./documentation)  |
-| [Documentation Technique](./documentation)    |
+| Documentation                                                     |
+|:---------------:                                                  |
+| [Sources backend](./backend)                                      |
+| [Sources frontend](./frontend)                                    |
+| [Documentation Utilisateur](./documentation/doc-utilisateur.md)   |
+| [Documentation Technique](./documentation/doc-technique-back.md)  |
