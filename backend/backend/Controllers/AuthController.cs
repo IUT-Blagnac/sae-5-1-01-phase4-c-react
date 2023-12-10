@@ -47,7 +47,7 @@ public class AuthController : ControllerBase
     ///     POST /login
     ///     {
     ///         "email": "test@test",
-    ///         "password": "test"
+    ///         "password": "testtest"
     ///     }
     /// 
     /// </remarks>
@@ -78,7 +78,7 @@ public class AuthController : ControllerBase
     ///     POST /register
     ///     {
     ///     "email": "test@test",
-    ///     "password": "test",
+    ///     "password": "testtest",
     ///     "first_name": "test",
     ///     "last_name": "test",
     ///     }
