@@ -2,7 +2,6 @@
 title: "BUT-Info/S5.A.01 : Développement avancé"
 author: "Jean-Michel Bruel"
 version: "v23.1"
-date: { localdate }
 ---
 
 # ProGest
@@ -12,7 +11,7 @@ date: { localdate }
 ## Content
 
 - [Release](#-release)
-- [Fonctionnalité](#-fonctionnalité)
+- [Fonctionnalités](#-fonctionnalités)
 - [Équipe](#-équipe)
 - [Contexte général](#-contexte-général)
 - [Documentation](#-documentation)
@@ -23,7 +22,7 @@ Site internet : [ProGest](https://sae.homelab.mrobert.fr/)
 
 URL du site internet : https://sae.homelab.mrobert.fr/
 
-## 🔎 Fonctionnalité
+## 🔎 Fonctionnalités
 
 Découvrez les fonctionnalités riches et adaptées de ProGest, conçues pour répondre aux besoins spécifiques de chaque type d'utilisateur. Explorez en détail toutes les capacités offertes par notre plateforme en consultant la [Documentation Utilisateur](./documentation/doc-utilisateur.md)  complète.
 
