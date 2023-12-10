@@ -1,15 +1,10 @@
-﻿using System.Collections;
-using System.Security.Claims;
-using backend.ApiModels.Output;
-using backend.Data;
+﻿using backend.ApiModels.Output;
 using backend.Data.Models;
 using backend.FormModels;
-using backend.Services.Class;
 using backend.Services.Interfaces;
 using backend.Utils;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Routing.Template;
 using Microsoft.EntityFrameworkCore;
 
 namespace backend.Controllers;
@@ -37,6 +32,7 @@ public class TeamController : ControllerBase
     }
 
     [HttpGet("{id}")]
+    [Authorize(Roles = RoleAccesses.Student)]
     public async Task<ActionResult<Team>> GetTeam(Guid id)
     {
         var team = _teamService.GetTeam(id);
@@ -49,8 +45,7 @@ public class TeamController : ControllerBase
         return team;
     }
 
-    [HttpGet]
-    [Route("{user_id}/{sae_id}")]
+    [HttpGet("{user_id}/{sae_id}")]
     [Authorize(Roles = RoleAccesses.Student)]
     public Team? GetTeamByUserIdAndSaeId(Guid user_id, Guid sae_id)
     {
@@ -77,7 +72,7 @@ public class TeamController : ControllerBase
     }
 
     [HttpPut("{id}")]
-    [Authorize]
+    [Authorize(Roles = RoleAccesses.Student)]
     public async Task<ActionResult<Team>> ModifyTeam(Guid id, TeamForm teamForm)
     {
         var user = _userService.GetCurrentUser(HttpContext);

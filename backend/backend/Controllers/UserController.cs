@@ -1,8 +1,4 @@
-﻿using System.Security.Claims;
-using backend.Data;
-using backend.Data.Models;
-using backend.Services.Class;
-using backend.Services.Interfaces;
+﻿using backend.Services.Interfaces;
 using backend.Utils;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -11,7 +7,7 @@ namespace backend.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
-public class UserController: ControllerBase
+public class UserController : ControllerBase
 {
     private readonly IUserService _userService;
     private readonly IRoleUserService _roleUserService;
@@ -24,8 +20,8 @@ public class UserController: ControllerBase
         _logger = logger;
     }
 
-    [HttpGet]
-    [Route("currentUser")]
+    [HttpGet("currentUser")]
+    [AllowAnonymous]
     public IActionResult GetAuthenticatedUser()
     {
         var currentUser = _userService.GetCurrentUser(HttpContext);
@@ -34,7 +30,7 @@ public class UserController: ControllerBase
         {
             var role = _roleUserService.GetRole(currentUser.id_role);
 
-            return new OkObjectResult( new { id = currentUser.id, email = currentUser.email, firstname = currentUser.first_name, lastname = currentUser.last_name, role = role.name});
+            return new OkObjectResult(new { id = currentUser.id, email = currentUser.email, firstname = currentUser.first_name, lastname = currentUser.last_name, role = role.name });
         }
         else
         {
@@ -42,9 +38,8 @@ public class UserController: ControllerBase
         }
     }
 
-    [HttpGet]
+    [HttpGet("teachers")]
     [Authorize(Roles = RoleAccesses.Teacher)]
-    [Route("teachers")]
     public IActionResult GetTeachers()
     {
         try

@@ -10,7 +10,7 @@ namespace backend.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
-public class ChallengeController: ControllerBase
+public class ChallengeController : ControllerBase
 {
     private readonly IChallengeservice _challengeservice;
 
@@ -50,7 +50,7 @@ public class ChallengeController: ControllerBase
         {
             return NotFound();
         }
-        
+
         return challenge;
     }
 
@@ -93,7 +93,5 @@ public class ChallengeController: ControllerBase
         {
             return NotFound();
         }
-        
-        
     }
 }
