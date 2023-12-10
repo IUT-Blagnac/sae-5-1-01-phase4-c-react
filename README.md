@@ -93,5 +93,5 @@ Plus d'informations sur l'installation et le déploiement dans la [Documentation
 |                       [Sources backend](./backend)                        |
 |                      [Sources frontend](./frontend)                       |
 |      [Documentation Utilisateur](./documentation/doc-utilisateur.md)      |
-| [Documentation Technique Frontend](./documentation/doc-technique-back.md) |
-| [Documentation Technique Backend](./documentation/doc-technique-front.md) |
+| [Documentation Technique Frontend](./documentation/doc-technique-front.md) |
+| [Documentation Technique Backend](./documentation/doc-technique-back.md) |
