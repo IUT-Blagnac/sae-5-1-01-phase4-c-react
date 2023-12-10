@@ -120,6 +120,17 @@ _Le formulaire renvoie un message de succès ou d'erreur en fonction de la réus
 L'administrateur peut importer des groupes classes à l'aide d'un fichier csv ou json. Pour cela il suffit de se diriger dans la sidebar ouvrir le menu "Utilisateur" qui donnera accès à l'option "Importer des utilisateurs".
 Il pourra alors envoyer un fichier csv ou json contenant les informations des utilisateurs à importer (email, nom, prénom, groupe) et le système s'occupera de les ajouter en base, avec un mot de passe par défaut.
 
+Exemple de fichier csv :
+
+```csv
+FirstName,LastName,Email,Password
+eric,philippe,eric@msn.fr,57722003
+loan,gayrard,loan@orange.fr,985639281
+matthieu,robert,matthieu@hotmail.fr,985639281
+hugo,castell,hugo@test.be,985639281
+toma,testa,toma@webetud.io,985639281
+```
+
 ## Documentation Etudiant
 
 ### Fiche de compétences
