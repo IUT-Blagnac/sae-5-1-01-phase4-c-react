@@ -27,6 +27,7 @@ services:
       - db
     environment:
       - ConnectionStrings__DatabaseConnection=Server=db;Port=5432;Database=postgres;Username=postgres;Password=postgres
+      - ConnectionStrings__DomainConnection=https://mvallew.com
     networks:
       - reverse_proxy
       - db
@@ -46,7 +47,7 @@ services:
     depends_on:
       - backend
     environment:
-      - REACT_APP_API_URL=https://backend
+      - API_URL=https://api.mvallew.com
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.front.rule=Host(`$DOMAIN_NAME`)"
