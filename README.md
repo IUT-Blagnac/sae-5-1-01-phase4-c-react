@@ -6,6 +6,7 @@
 - [Fonctionnalités](#-fonctionnalités)
 - [Équipe](#-équipe)
 - [Contexte général](#-contexte-général)
+- [Déploiement](#-installation-et-déploiement)
 - [Documentation](#-documentation)
 
 ## ✅ Release
@@ -53,7 +54,7 @@ L'IUT de Blagnac évalue ses étudiants en organisant des projets. Chaque projet
 
 Dans ce contexte ProGest permet de faciliter l'organisation d'un projet en permmettant d'organiser la gestion de groupe d'élève et de suivre la progression du projet en tant que professeur.
 
-## Installation et déploiement
+## 🐋 Installation et déploiement
 
 ### Prérequis
 
