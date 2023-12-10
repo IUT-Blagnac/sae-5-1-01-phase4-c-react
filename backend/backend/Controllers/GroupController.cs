@@ -23,6 +23,13 @@ public class GroupController: ControllerBase
         _logger = logger;
     }
 
+    /// <summary>
+    /// Get all groups
+    /// Note: Only teachers can access this route
+    /// </summary>
+    /// <returns>A list of all groups</returns>
+    /// <response code="200">Returns a list of all groups</response>
+    /// <response code="401">If the user is not a teacher</response>
     [HttpGet]
     [Authorize(Roles = RoleAccesses.Teacher)]
     public IActionResult GetGroups()
@@ -39,6 +46,24 @@ public class GroupController: ControllerBase
         }
     }
     
+    /// <summary>
+    /// Create a new group by giving a name and a boolean to know if it's an apprenticeship group or not
+    /// Note: Only teachers can access this route
+    /// </summary>
+    /// <param name="group"></param>
+    /// <returns>The created group</returns>
+    /// <remarks>
+    /// Sample request:
+    ///
+    ///     POST /group
+    ///     {
+    ///     "name": "test",
+    ///     "is_apprenticeship": true
+    ///     }
+    /// 
+    /// </remarks>
+    /// <response code="200">Returns the created group</response>
+    /// <response code="401">If the user is not a teacher</response>
     [HttpPost]
     [Authorize(Roles = RoleAccesses.Teacher)]
     public IActionResult CreateGroup([FromBody] GroupForm group)
