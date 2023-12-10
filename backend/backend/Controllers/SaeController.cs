@@ -214,16 +214,13 @@ namespace backend.Controllers
                     break;
                 case State.PENDING_WISHES:
                     return _saeService.SetSaeToPendingWishes(id);
-                    break;
                 case State.LAUNCHED:
                     return _saeService.SetSaeToLaunched(id);
-                    break;
                 case State.LAUNCHED_OPEN_FOR_INTERNSHIP:
                     //"not implemented";
                     break;
                 case State.CLOSED:
-                    //"not implemented";
-                    break;
+                    return _saeService.SetSaeToClosed(id);
             }
 
 
