@@ -15,12 +15,14 @@ var  MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
 
 var connectionString = builder.Configuration.GetConnectionString("DatabaseConnection");
 
+var domainString = builder.Configuration.GetConnectionString("DomainConnection");
+
 builder.Services.AddCors(options =>
 {
     options.AddDefaultPolicy(
         builder => 
         {
-            builder.WithOrigins("http://sae.mrobert.fr", "http://localhost", "http://localhost:3000")
+            builder.WithOrigins(domainString, "http://localhost", "http://localhost:3000")
                 .AllowAnyMethod()
                 .AllowAnyHeader();
         });

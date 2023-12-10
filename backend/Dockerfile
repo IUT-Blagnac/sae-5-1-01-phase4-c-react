@@ -5,6 +5,7 @@ EXPOSE 443
 
 #pass environment variables to the container
 ARG ConnectionStrings__DatabaseConnection
+ARG ConnectionStrings__DomainConnection
 
 FROM mcr.microsoft.com/dotnet/sdk:7.0 AS build
 WORKDIR /src
