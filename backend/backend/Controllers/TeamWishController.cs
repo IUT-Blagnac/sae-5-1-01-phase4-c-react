@@ -111,7 +111,7 @@ public class TeamWishController : ControllerBase
     /// <response code="200">Returns the list of <see cref="TeamWish"/> of the team</response>
     /// <response code="400">Database error or unknown exception</response>
     /// <response code="401">Not authorized to access this method. [Teacher access minimum]</response>
-    [HttpGet("team/{id}")]
+    [HttpGet("team/{id_team}")]
     [Authorize(Roles = RoleAccesses.Student)]
     public ActionResult<List<TeamWish>> GetWishesByTeam(Guid id_team)
     {
