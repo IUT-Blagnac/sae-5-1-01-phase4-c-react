@@ -111,7 +111,7 @@ public class TeamWishController : ControllerBase
     /// <response code="400">Database error or unknown exception</response>
     /// <response code="401">Not authorized to access this method. [Teacher access minimum]</response>
     [HttpGet("team/{id}")]
-    [Authorize(Roles = RoleAccesses.Teacher)]
+    [Authorize(Roles = RoleAccesses.Student)]
     public ActionResult<List<TeamWish>> GetWishesByTeam(Guid id_team)
     {
         return _teamWishService.GetWishesByTeamId(id_team);
