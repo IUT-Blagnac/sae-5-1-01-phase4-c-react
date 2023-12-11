@@ -1,4 +1,4 @@
-import FetcherGET from "./Fetcher";
+import APIGetter from "./APIGetter";
 
 export interface User {
   id: string;
@@ -18,6 +18,6 @@ export default class TeamServices {
     colorTeam: string;
     users: User[];
   }> {
-    return await FetcherGET(`Team/${userId}/${saeId}`);
+    return await APIGetter(`Team/${userId}/${saeId}`);
   }
 }

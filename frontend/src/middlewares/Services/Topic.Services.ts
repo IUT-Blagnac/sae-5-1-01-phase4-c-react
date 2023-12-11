@@ -1,8 +1,8 @@
 import Topic from "../../models/Topic";
-import FetcherGET from "./Fetcher";
+import APIGetter from "./APIGetter";
 
 export default class TopicServices {
   static async getTopicsFromSae(saeId: string): Promise<Topic[]> {
-    return await FetcherGET(`Subject/sae/${saeId}`);
+    return await APIGetter(`Subject/sae/${saeId}`);
   }
 }

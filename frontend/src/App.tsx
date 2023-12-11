@@ -11,6 +11,7 @@ import ManageSAE from "./pages/Admin/ManageSAE/ManageSAE";
 import Skill from "./pages/Student/Skill/Skill";
 import EasterEgg from "./pages/Common/EasterEgg/EasterEgg";
 import ConsultSAE from "./pages/Student/ConsultSAE/ConsultSAE";
+import CreateGroup from "./pages/Admin/CreateGroup/CreateGroup";
 
 function App() {
   return (
@@ -28,6 +29,7 @@ function App() {
         <Route path={URLs.CREATE_SAE} Component={CreateSAE} />
         <Route path={URLs.SAE_MANAGE} Component={ManageSAE} />
         <Route path={URLs.IMPORT_STUDENTS} Component={ImportUser} />
+        <Route path={URLs.CREATE_GROUP} Component={CreateGroup} />
 
         {/** Student Only routes */}
         <Route path={URLs.SKILLS} Component={Skill} />

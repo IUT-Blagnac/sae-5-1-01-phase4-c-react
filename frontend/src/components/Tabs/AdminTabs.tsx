@@ -84,7 +84,14 @@ export default function AdminTabs() {
               <ListItemButton>Consulter un utilisateur</ListItemButton>
             </ListItem>
             <ListItem>
-              <ListItemButton>Roles & permission</ListItemButton>
+              <ListItemButton
+                role="menuitem"
+                component="a"
+                href={URLs.CREATE_GROUP}
+                selected={currentURL === URLs.CREATE_GROUP}
+              >
+                Créer un groupe
+              </ListItemButton>
             </ListItem>
           </List>
         </Toggler>

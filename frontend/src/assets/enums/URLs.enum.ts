@@ -8,5 +8,6 @@ export enum URLs {
   SKILLS = "/skills",
   STUDENTS = "/students",
   IMPORT_STUDENTS = "/students/import",
+  CREATE_GROUP = "/students/create-group",
   EASTER = "/easter",
 }

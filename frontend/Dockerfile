@@ -1,6 +1,6 @@
 FROM node:20-alpine as build
 
-ARG API_URL
+ARG API_URL, ENV
 
 WORKDIR /app
 

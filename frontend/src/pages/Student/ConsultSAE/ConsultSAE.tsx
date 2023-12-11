@@ -12,11 +12,9 @@ import {
   Divider,
   Typography,
 } from "@mui/joy";
-import API_URL from "../../../env";
 import {
   convertSaeStatutEnumToHText,
   convertSaeIntToStatutEnum,
-  getFetchHeaders,
 } from "../../../utils/Utils";
 import { DocumentScannerOutlined } from "@mui/icons-material";
 import TopicServices from "../../../middlewares/Services/Topic.Services";
@@ -24,6 +22,9 @@ import SaeServices from "../../../middlewares/Services/Sae.Services";
 import TeamServices, {
   User,
 } from "../../../middlewares/Services/Team.Services";
+import WishServices, {
+  Wish,
+} from "../../../middlewares/Services/Wish.Services";
 
 export default function ConsultSAE() {
   const [loading, setLoading] = useState(true);
@@ -38,6 +39,7 @@ export default function ConsultSAE() {
     colorTeam: string;
     users: User[];
   }>();
+  const [wish, setWish] = useState<Wish>();
 
   useEffect(() => {
     const saeId = window.location.href.split("/")[4];
@@ -49,7 +51,11 @@ export default function ConsultSAE() {
       setTopics(await TopicServices.getTopicsFromSae(saeId));
 
       if (sae?.state >= 1) {
-        setTeam(await TeamServices.getTeamFromUserSae(userId, saeId));
+        const team = await TeamServices.getTeamFromUserSae(userId, saeId);
+        setTeam(team);
+
+        const wish = await WishServices.getTeamWish(team.idTeam);
+        setWish(wish);
       }
     };
 
@@ -57,6 +63,24 @@ export default function ConsultSAE() {
   }, []);
 
   if (loading) return <Loading />;
+
+  const makeWish = (topicId: string) => async () => {
+    if (sae?.state !== 1) return;
+    if (wish) return;
+    const _wish = window.confirm(
+      "Êtes-vous sûr de vouloir faire un vœu sur ce sujet ?"
+    );
+
+    if (_wish) {
+      WishServices.postTeamWish(team?.idTeam as string, topicId);
+
+      const topic = document.getElementById(`topic-${topicId}`) as HTMLElement;
+      if (topic) {
+        topic.style.border = "1px solid";
+        topic.style.borderColor = "lightblue";
+      }
+    }
+  };
 
   return (
     <AuthChecker>
@@ -84,16 +108,32 @@ export default function ConsultSAE() {
           </CardContent>
         </Card>
         <Divider sx={{ mt: 2, mb: 2 }} />
+        <Typography level="title-lg" sx={{ mb: 2 }}>
+          Sujets
+        </Typography>
+        <Typography level="body-sm" sx={{ mb: 2 }}>
+          ⚪ L'attribution des sujets n'est pas encore faite. <br />
+          🔵 Le sujet entouré en bleu est le sujet sur lequel vous avez fait un
+          vœu. <br />
+          🟢 Si le sujet est entouré en vert c'est que vous avez été affecté
+          dessus.
+        </Typography>
         {topics.map((topic) => (
           <Card
             key={topic.id}
+            onClick={makeWish(topic.id as string)}
             sx={{
               mt: 2,
               ":hover": {
                 cursor: "pointer",
                 border: "1px solid",
               },
+              ...(wish?.id_subject === topic.id && {
+                border: "1px solid",
+                borderColor: "lightblue",
+              }),
             }}
+            id={`topic-${topic.id}`}
           >
             <Typography level="title-sm" sx={{ mb: 2 }}>
               {topic.name}

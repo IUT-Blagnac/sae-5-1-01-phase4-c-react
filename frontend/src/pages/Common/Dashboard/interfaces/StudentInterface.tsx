@@ -11,7 +11,6 @@ import {
   convertSaeIntToStatutEnum,
   convertSaeStatutEnumToHText,
 } from "../../../../utils/Utils";
-import API_URL from "../../../../env";
 import SaeServices from "../../../../middlewares/Services/Sae.Services";
 
 function StudentInterface() {

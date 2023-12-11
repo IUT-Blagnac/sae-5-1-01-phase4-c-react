@@ -1,5 +1,5 @@
 import Sae from "../../models/Sae";
-import FetcherGET from "./Fetcher";
+import APIGetter from "./APIGetter";
 
 export default class SaeServices {
   static async getSaeInfoFromUserId(
@@ -11,10 +11,10 @@ export default class SaeServices {
   }
 
   static async getSaeInfoFromAdminUserId(): Promise<Sae[]> {
-    return (await FetcherGET(`Sae/admin`)) as Sae[];
+    return (await APIGetter(`Sae/admin`)) as Sae[];
   }
 
   static async getAllSaeFromUserId(userId: string): Promise<Sae[]> {
-    return (await FetcherGET(`Sae/user/${userId}`)) as Sae[];
+    return (await APIGetter(`Sae/user/${userId}`)) as Sae[];
   }
 }

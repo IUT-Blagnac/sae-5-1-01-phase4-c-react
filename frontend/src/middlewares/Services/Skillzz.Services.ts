@@ -1,4 +1,4 @@
-import FetcherGET from "./Fetcher";
+import APIGetter from "./APIGetter";
 
 export interface SkillCharacter {
   id: string;
@@ -13,10 +13,10 @@ export interface Skillzz {
 
 export default class SkilzzServices {
   static async getSkilzzFromUserId(userId: string): Promise<SkillCharacter[]> {
-    return await FetcherGET(`Character/user/${userId}`);
+    return await APIGetter(`Character/user/${userId}`);
   }
 
   static async getSkillzz(): Promise<Skillzz[]> {
-    return await FetcherGET(`Skill`);
+    return await APIGetter(`Skill`);
   }
 }

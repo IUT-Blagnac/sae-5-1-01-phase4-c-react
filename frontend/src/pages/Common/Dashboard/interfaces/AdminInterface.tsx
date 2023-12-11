@@ -7,11 +7,9 @@ import { Box, Button } from "@mui/joy";
 import { useEffect, useState } from "react";
 import Sae from "../../../../models/Sae";
 import Loading from "../../../../components/Loading";
-import API_URL from "../../../../env";
 import {
   convertSaeIntToStatutEnum,
   convertSaeStatutEnumToHText,
-  getFetchHeaders,
 } from "../../../../utils/Utils";
 import SaeServices from "../../../../middlewares/Services/Sae.Services";
 
