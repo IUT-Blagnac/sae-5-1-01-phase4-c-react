@@ -61,7 +61,7 @@ public class TeamController : ControllerBase
     }
 
     /// <summary>
-    /// Returns the <see cref="Team"/> corresponding to the user id on a sae id
+    /// Returns the <see cref="OutputGetTeamByUserIdAndSaeId"/> corresponding to the user id on a sae id
     /// </summary>
     /// <param name="user_id">User id</param>
     /// <param name="sae_id">SAE id</param>
@@ -71,7 +71,7 @@ public class TeamController : ControllerBase
     /// <response code="401">Not authorized to access this method. [Student access minimum]</response>
     [HttpGet("{user_id}/{sae_id}")]
     [Authorize(Roles = RoleAccesses.Student)]
-    public Team? GetTeamByUserIdAndSaeId(Guid user_id, Guid sae_id)
+    public OutputGetTeamByUserIdAndSaeId? GetTeamByUserIdAndSaeId(Guid user_id, Guid sae_id)
     {
         return _teamService.GetTeamByUserIdAndSaeId(user_id, sae_id);
     }

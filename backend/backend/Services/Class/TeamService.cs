@@ -1,4 +1,5 @@
 ﻿using System.Net;
+using backend.ApiModels.Output;
 using backend.Data;
 using backend.Data.Models;
 using backend.FormModels;
@@ -21,22 +22,28 @@ public class TeamService : ITeamService
         return teams;
     }
 
-    public Team? GetTeamByUserIdAndSaeId(Guid userId, Guid saeId)
+    public OutputGetTeamByUserIdAndSaeId? GetTeamByUserIdAndSaeId(Guid userId, Guid saeId)
     {
         
-        var query = (from u in _context.Users
-                     join ut in _context.UserTeams on u.id equals ut.id_user
-                     join t in _context.Teams on ut.id_team equals t.id
-                     where u.id == userId && t.id_sae == saeId
-                     select new Team()
-                     {
-                         id = t.id,
-                         name = t.name,
-                         color = t.color,
-                         id_sae = t.id_sae
-                     }).FirstOrDefault();
+        var team = (from u in _context.Users
+                   join ut in _context.UserTeams on u.id equals ut.id_user
+                   join t in _context.Teams on ut.id_team equals t.id
+                   where u.id == userId && t.id_sae == saeId
+                   select new OutputGetTeamByUserIdAndSaeId()
+                   {
+                       idTeam = t.id,
+                       nameTeam = t.name,
+                       colorTeam = t.color,
+                   }).FirstOrDefault();
 
-        return query;
+        if (team == null)
+            return null;
+
+        List<Guid> usersId = _context.UserTeams.Where(x => x.id_team == team.idTeam).Select(x => x.id_user).ToList();
+        List<User> users = _context.Users.Where(x => usersId.Contains(x.id)).ToList();
+        team.users = users;
+
+        return team;
     }
 
     public List<Team> GetTeams(Guid userId)
