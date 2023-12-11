@@ -131,6 +131,10 @@ hugo,castell,hugo@test.be
 toma,testa,toma@webetud.io
 ```
 
+### Créer un groupe
+
+L'administrateur peut créer un groupe en cliquant sur le bouton "Créer un groupe" présent sur la sidebar. Il peut alors créer un groupe avec la possibilité de spécifier un nom, et préciser si c'est un groupe alternant ou non. L'administrateur peut évidémment consulter les groupes existants dans la même page afin de ne pas créer de doublons.
+
 ## Documentation Etudiant
 
 ### Fiche de compétences

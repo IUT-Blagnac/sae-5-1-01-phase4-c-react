@@ -48,6 +48,38 @@ Elle est réutilisable partout dans l'application.
 
 Ce composant est le composant principal permettant la centralisation des composants communs à toutes les pages. Il permet d'y intégrer la sidebar, les middlewares de connexion, ceux de vérification des droits.
 
+#### API Service
+
+L'entièreté des appels API sont centralisés dans des fichiers pour chaque entité. Cela permet d'éviter des codes de la sorte :
+
+```tsx
+fetch("...").then((res) => {
+  res.json().then((data) => {
+    fetch("...").then((res) => {
+      res.json().then((data) => {
+        fetch("...").then((res) => {
+          res.json().then((data) => {
+            // Do something
+          });
+        });
+      });
+    });
+  });
+});
+```
+
+Avec les API Services, il est possible de faire des appels API de la sorte :
+
+```tsx
+useEffect(() => {
+  const fetchData = async () => {
+    const data = await GroupService.getGroupById("1234567891011");
+    setStudent(data);
+  };
+  fetchData().then(() => setLoading(false));
+}, []);
+```
+
 ### Pages
 
 Chaque page est rangée dans un dossier ./pages/ qui lui même se décompose en trois types de sous-dossiers majeurs :
