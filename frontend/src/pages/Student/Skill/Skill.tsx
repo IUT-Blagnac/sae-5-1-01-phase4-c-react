@@ -16,6 +16,7 @@ import {
 } from "@mui/icons-material";
 import Loading from "../../../components/Loading";
 import API_URL from "../../../env";
+import SkilzzServices from "../../../middlewares/Services/Skillzz.Services";
 
 interface SkillCharacter {
   id: string;
@@ -34,73 +35,32 @@ export default function Skill() {
 
   useEffect(() => {
     const userId = localStorage.getItem("userid");
-    // Fetch all the skills of the user
-    fetch(API_URL + `/api/Character/user/${userId}`, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${localStorage.getItem("token")}`,
-      },
-    })
-      .then((res) => {
-        if (res.status === 200) {
-          return res.json();
-        } else {
-          throw new Error("Erreur lors de la récupération des compétences");
-        }
-      })
-      .then((allSkillsCharachters: SkillCharacter[]) => {
-        // Fetch all the skills
-        fetch(API_URL + `/api/Skill`, {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
-        })
-          .then((res) => {
-            if (res.status === 200) {
-              return res.json();
-            } else {
-              throw new Error("Erreur lors de la récupération des compétences");
-            }
-          })
-          .then((data: { id: string; name: string }[]) => {
-            const skillCharacters_: SkillCharacter[] = [];
 
-            for (const skill of data) {
-              let found: SkillCharacter | undefined = undefined;
-              for (const skillCharacter__ of allSkillsCharachters) {
-                if (areTheSame(skillCharacter__, skill)) {
-                  found = skillCharacter__;
-                  break;
-                }
-              }
-              if (!found) {
-                skillCharacters_.push({
-                  id: skill.id,
-                  name: skill.name,
-                  confidence_level: 0,
-                });
-              } else {
-                skillCharacters_.push({
-                  id: skill.id,
-                  name: skill.name,
-                  confidence_level: found.confidence_level,
-                });
-              }
-            }
+    const fetchData = async () => {
+      let skillChar = await SkilzzServices.getSkilzzFromUserId(
+        userId as string
+      );
+      let allSkills = await SkilzzServices.getSkillzz();
 
-            setSkillCharacters(skillCharacters_);
-            setLoading(false);
+      for (const skill of allSkills) {
+        if (
+          !skillChar.some((skillChar) => {
+            return areTheSame(skillChar, skill);
           })
-          .catch((err) => {
-            console.error(err);
+        ) {
+          skillChar.push({
+            id: skill.id,
+            name: skill.name,
+            confidence_level: 0,
           });
-      })
-      .catch((err) => {
-        console.error(err);
-      });
+        }
+      }
+
+      setSkillCharacters(skillChar);
+      setLoading(false);
+    };
+
+    fetchData();
   }, []);
 
   if (loading) return <Loading />;

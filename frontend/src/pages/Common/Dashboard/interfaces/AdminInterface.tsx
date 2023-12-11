@@ -13,24 +13,18 @@ import {
   convertSaeStatutEnumToHText,
   getFetchHeaders,
 } from "../../../../utils/Utils";
+import SaeServices from "../../../../middlewares/Services/Sae.Services";
 
 function AdminInterface() {
   const [loading, setLoading] = useState(true);
   const [saes, setSaes] = useState<Sae[]>([]);
 
   useEffect(() => {
-    fetch(API_URL + "/api/Sae/admin", {
-      method: "GET",
-      headers: getFetchHeaders(),
-    }).then(async (res) => {
-      if (res.status === 200) {
-        const data = await res.json();
-        console.log(data);
-
-        setSaes(data);
-        setLoading(false);
-      }
-    });
+    const fetchData = async () => {
+      setSaes((await SaeServices.getSaeInfoFromAdminUserId()) as Sae[]);
+      setLoading(false);
+    };
+    fetchData();
   }, []);
 
   if (loading) return <Loading />;

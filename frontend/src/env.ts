@@ -1,7 +1,5 @@
-import React from 'react';
+import React from "react";
 
-const API_URL = process.env.REACT_APP_API_URL || "https://api.mvallew.com";
-
-
+const API_URL = "http://localhost:8080";
 
 export default API_URL;

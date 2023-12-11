@@ -19,6 +19,11 @@ import {
   getFetchHeaders,
 } from "../../../utils/Utils";
 import { DocumentScannerOutlined } from "@mui/icons-material";
+import TopicServices from "../../../middlewares/Services/Topic.Services";
+import SaeServices from "../../../middlewares/Services/Sae.Services";
+import TeamServices, {
+  User,
+} from "../../../middlewares/Services/Team.Services";
 
 export default function ConsultSAE() {
   const [loading, setLoading] = useState(true);
@@ -27,67 +32,42 @@ export default function ConsultSAE() {
     React.Dispatch<React.SetStateAction<Sae>>
   ];
   const [topics, setTopics] = useState<Topic[]>([]);
-  const [team, setTeam] = useState<any[]>([]);
+  const [team, setTeam] = useState<{
+    idTeam: string;
+    nameTeam: string;
+    colorTeam: string;
+    users: User[];
+  }>();
 
   useEffect(() => {
-    let saeId = window.location.href.split("/")[4];
-    fetch(API_URL + "/api/Subject/sae/" + saeId, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: "Bearer " + localStorage.getItem("token"),
-      },
-    }).then((res) => {
-      if (res.status === 200) {
-        res.json().then((data) => {
-          setTopics(data);
-          fetch(API_URL + "/api/Sae/user/" + localStorage.getItem("userid"), {
-            method: "GET",
-            headers: getFetchHeaders(),
-          }).then((res) => {
-            if (res.status === 200) {
-              res.json().then((data) => {
-                let saes = data as Sae[];
-                setSae(saes.find((sae) => sae.id === saeId) as Sae);
+    const saeId = window.location.href.split("/")[4];
+    const userId = localStorage.getItem("userid") as string;
 
-                fetch(
-                  API_URL +
-                    "/api/Team/sae/" +
-                    localStorage.getItem("userid") +
-                    "/" +
-                    saeId,
-                  {
-                    method: "GET",
-                    headers: getFetchHeaders(),
-                  }
-                ).then(async (res) => {
-                  if (res.status === 200) {
-                    const data = await res.json();
-                    // @ts-ignore
-                    let teamId = data[0].id;
-                    console.log(teamId);
-                  }
-                });
-                setLoading(false);
-              });
-            }
-          });
-        });
+    const fetchData = async () => {
+      const sae = await SaeServices.getSaeInfoFromUserId(userId, saeId);
+      setSae(sae);
+      setTopics(await TopicServices.getTopicsFromSae(saeId));
+
+      if (sae?.state >= 1) {
+        setTeam(await TeamServices.getTeamFromUserSae(userId, saeId));
       }
-    });
+    };
+
+    fetchData().then(() => setLoading(false));
   }, []);
 
   if (loading) return <Loading />;
-
-  // @ts-ignore
-  let saeState: number = sae?.state;
 
   return (
     <AuthChecker>
       <BlankPage role={Status.STUDENT} pageTitle="Consulter une SAE">
         <Card variant="solid" color="primary" invertedColors>
           <CardContent orientation="horizontal">
-            <CircularProgress size="lg" determinate value={(saeState + 1) * 20}>
+            <CircularProgress
+              size="lg"
+              determinate
+              value={(sae?.state + 1) * 20}
+            >
               <DocumentScannerOutlined />
             </CircularProgress>
             <CardContent>
@@ -123,6 +103,27 @@ export default function ConsultSAE() {
             </Typography>
           </Card>
         ))}
+        {team && (
+          <>
+            <Divider sx={{ mt: 2, mb: 2 }} />
+            <Card>
+              <Typography level="title-lg" sx={{ mb: 2 }}>
+                Équipe
+              </Typography>
+              <Typography level="title-md">
+                {team.nameTeam} | Team {team.colorTeam}
+              </Typography>
+              <Divider sx={{ mt: 2, mb: 2 }} />
+              <Typography level="body-sm" sx={{ mb: 2 }}>
+                {team.users.map((user) => (
+                  <p key={user.id}>
+                    {user.first_name} {user.last_name}
+                  </p>
+                ))}
+              </Typography>
+            </Card>
+          </>
+        )}
       </BlankPage>
     </AuthChecker>
   );

@@ -12,27 +12,21 @@ import {
   convertSaeStatutEnumToHText,
 } from "../../../../utils/Utils";
 import API_URL from "../../../../env";
+import SaeServices from "../../../../middlewares/Services/Sae.Services";
 
 function StudentInterface() {
   const [loading, setLoading] = useState(true);
   const [saes, setSaes] = useState<Sae[]>([]);
 
   useEffect(() => {
-    fetch(API_URL + "/api/Sae/user/" + localStorage.getItem("userid"), {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: "Bearer " + localStorage.getItem("token"),
-      },
-    }).then(async (res) => {
-      if (res.status === 200) {
-        const data = await res.json();
-        console.log(data);
-
-        setSaes(data);
-        setLoading(false);
-      }
-    });
+    const userId = localStorage.getItem("userid");
+    const fetchData = async () => {
+      setSaes(
+        (await SaeServices.getAllSaeFromUserId(userId as string)) as Sae[]
+      );
+      setLoading(false);
+    };
+    fetchData();
   }, []);
 
   if (loading) return <Loading />;
