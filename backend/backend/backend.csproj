@@ -33,7 +33,6 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="ApiModels\Input\" />
       <Folder Include="Migrations\" />
     </ItemGroup>
 

@@ -21,7 +21,7 @@ public class TeamWishService : ITeamWishService
         };
 
         _context.TeamWishes.Add(new_wish);
-        _context.SaveChangesAsync();
+        _context.SaveChanges();
 
         return new_wish;
     }

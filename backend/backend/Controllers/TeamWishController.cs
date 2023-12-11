@@ -1,4 +1,5 @@
-﻿using backend.Data.Models;
+﻿using backend.ApiModels.Input;
+using backend.Data.Models;
 using backend.Services.Interfaces;
 using backend.Utils;
 using Microsoft.AspNetCore.Authorization;
@@ -28,11 +29,11 @@ public class TeamWishController : ControllerBase
     /// <response code="401">Not authorized to access this method. [Student access minimum]</response>
     [HttpPost]
     [Authorize(Roles = RoleAccesses.Student)]
-    public async Task<ActionResult<TeamWish>> AddTeamWish(Guid team_id, Guid subject_id)
+    public async Task<ActionResult<TeamWish>> AddTeamWish([FromBody] InputTeamWish teamWish)
     {
         try
         {
-            _teamWishService.AddWish(team_id, subject_id);
+            _teamWishService.AddWish(teamWish.team_id, teamWish.subject_id);
         }
         catch (DbException)
         {
@@ -52,13 +53,13 @@ public class TeamWishController : ControllerBase
     /// <response code="200">TeamWish has been deleted successfully</response>
     /// <response code="400">Database error or unknown exception</response>
     /// <response code="401">Not authorized to access this method. [Student access minimum]</response>
-    [HttpDelete]
+    [HttpDelete()]
     [Authorize(Roles = RoleAccesses.Student)]
-    public async Task<ActionResult<TeamWish>> RemoveTeamWish(Guid team_id, Guid subject_id)
+    public async Task<ActionResult<TeamWish>> RemoveTeamWish([FromBody] InputTeamWish teamWish)
     {
         try
         {
-            _teamWishService.RemoveWish(team_id, subject_id);
+            _teamWishService.RemoveWish(teamWish.team_id, teamWish.subject_id);
         }
         catch (DbException)
         {
