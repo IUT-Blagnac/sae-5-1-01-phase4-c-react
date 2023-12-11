@@ -44,17 +44,16 @@ export default function ConsultSAE() {
     const userId = localStorage.getItem("userid") as string;
 
     const fetchData = async () => {
-      setSae(await SaeServices.getSaeInfoFromUserId(userId, saeId));
+      const sae = await SaeServices.getSaeInfoFromUserId(userId, saeId);
+      setSae(sae);
       setTopics(await TopicServices.getTopicsFromSae(saeId));
 
       if (sae?.state >= 1) {
         setTeam(await TeamServices.getTeamFromUserSae(userId, saeId));
       }
-
-      setLoading(false);
     };
 
-    fetchData();
+    fetchData().then(() => setLoading(false));
   }, []);
 
   if (loading) return <Loading />;
