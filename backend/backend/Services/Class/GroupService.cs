@@ -34,6 +34,8 @@ namespace backend.Services.Class
 
             _context.Groups.Add(new_group);
 
+            _context.SaveChanges();
+
             return new_group;   
         }
     }
