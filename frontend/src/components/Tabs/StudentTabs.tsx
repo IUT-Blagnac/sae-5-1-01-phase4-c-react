@@ -36,15 +36,6 @@ export default function StudentTabs() {
       </ListItem>
 
       <ListItem>
-        <ListItemButton>
-          <DashboardRoundedIcon />
-          <ListItemContent>
-            <Typography level="title-sm">Mes SAEs</Typography>
-          </ListItemContent>
-        </ListItemButton>
-      </ListItem>
-
-      <ListItem>
         <ListItemButton
           role="menuitem"
           component="a"

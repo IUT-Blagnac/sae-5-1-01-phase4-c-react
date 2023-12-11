@@ -56,7 +56,7 @@ export default function Support() {
                 </td>
                 <td>
                   <Typography level="body-sm">
-                    Cela signigie que l'enseignant attend que les étudiants
+                    Cela signifie que l'enseignant attend que les étudiants
                     remplissent leurs fiches de compétences avant de générer les
                     groupes automatiquement.
                   </Typography>
@@ -74,7 +74,7 @@ export default function Support() {
                 </td>
                 <td>
                   <Typography level="body-sm">
-                    Cela signigie que l'enseignant attend qu'un étudiant par
+                    Cela signifie que l'enseignant attend qu'un étudiant par
                     groupe choisisse ses voeux parmi les sujets proposés.
                   </Typography>
                 </td>
@@ -91,7 +91,7 @@ export default function Support() {
                 </td>
                 <td>
                   <Typography level="body-sm">
-                    Cela signigie que l'enseignant a lancé l'association des
+                    Cela signifie que l'enseignant a lancé l'association des
                     sujets, les étudiants peuvent alors consulter leurs groupes
                     et leurs sujets.
                   </Typography>
@@ -109,7 +109,7 @@ export default function Support() {
                 </td>
                 <td>
                   <Typography level="body-sm">
-                    Cela signigie que l'enseignant a rouvert l'ajout des
+                    Cela signifie que l'enseignant a rouvert l'ajout des
                     alternants aux groupes.
                   </Typography>
                 </td>
@@ -126,7 +126,7 @@ export default function Support() {
                 </td>
                 <td>
                   <Typography level="body-sm">
-                    Cela signigie que la SAE est terminée, les étudiants ne
+                    Cela signifie que la SAE est terminée, les étudiants ne
                     peuvent plus rien faire.
                   </Typography>
                 </td>
