@@ -75,9 +75,16 @@ public class UserService : IUserService
 
         _context.Users.Add(registered_user);
 
-        registered_user.password = passwd;
-
-        return registered_user;
+        return new User()
+        {
+            id = registered_user.id,
+            email = registered_user.email,
+            first_name = registered_user.first_name,
+            last_name = registered_user.last_name,
+            password = passwd,
+            role_user = registered_user.role_user,
+            id_group = registered_user.id_group,
+        };
     }
 
     public User RegisterUser(string email, string passwd, string first_name, string last_name, Guid id_group)
