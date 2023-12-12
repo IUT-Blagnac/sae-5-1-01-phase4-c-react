@@ -28,7 +28,7 @@ function StudentInterface() {
     fetchData();
   }, []);
 
-  if (loading) return <Loading />;
+  if (loading) return <Loading showWholePage={false} />;
 
   return (
     <Box>
