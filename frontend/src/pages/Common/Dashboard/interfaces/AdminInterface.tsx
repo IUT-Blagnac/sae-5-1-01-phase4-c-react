@@ -21,9 +21,7 @@ function AdminInterface() {
   useEffect(() => {
     const fetchData = async () => {
       setSaes((await SaeServices.getSaeInfoFromAdminUserId()) as Sae[]);
-      setTimeout(() => {
-        setLoading(false);
-      }, 4000);
+      setLoading(false);
     };
     fetchData();
   }, []);
