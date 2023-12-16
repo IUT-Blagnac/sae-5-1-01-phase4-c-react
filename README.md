@@ -84,6 +84,7 @@ docker-compose up -d --build
 Ouvre un navigateur et accède à l'adresse suivante : http://localhost:80  
 Pour accéder à la documentation de l'api : http://localhost:8080/swagger/index.html
 
+Plus d'inforamations sur le build des images docker dans la [Documentation de build](./documentation/build.md)
 Plus d'informations sur l'installation et le déploiement dans la [Documentation Technique](./documentation/doc-technique-back.md)
 
 ## 📚 Documentation
@@ -95,3 +96,4 @@ Plus d'informations sur l'installation et le déploiement dans la [Documentation
 |      [Documentation Utilisateur](./documentation/doc-utilisateur.md)      |
 | [Documentation Technique Frontend](./documentation/doc-technique-front.md) |
 | [Documentation Technique Backend](./documentation/doc-technique-back.md) |
+| [Documentation de build](./documentation/build.md)                        |
