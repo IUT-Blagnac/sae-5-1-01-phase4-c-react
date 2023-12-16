@@ -34,7 +34,7 @@ jobs:
         id: meta-backend 
         uses: docker/metadata-action@9ec57ed1fcdbf14dcef7dfbe97b2010124a938b7
         with:
-          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}-backend:${{ github.ref }}
+          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}-backend
       
       - name: Build and push Docker image backend
         uses: docker/build-push-action@f2a1d5e99d037542a71f64918e516c093c6f3fc4
@@ -48,7 +48,7 @@ jobs:
         id: meta-frontend
         uses: docker/metadata-action@9ec57ed1fcdbf14dcef7dfbe97b2010124a938b7
         with:
-          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}-frontend:${{ github.ref }}
+          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}-frontend
       
       - name: Build and push Docker image frontend
         uses: docker/build-push-action@f2a1d5e99d037542a71f64918e516c093c6f3fc4
