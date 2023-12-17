@@ -15,9 +15,9 @@ Site internet : [ProGest](https://sae.homelab.mrobert.fr/)
 
 URL du site internet : https://sae.homelab.mrobert.fr/
 
-Projet : </br>
-https://github.com/orgs/IUT-Blagnac/projects/160 </br>
-https://github.com/orgs/IUT-Blagnac/projects/167
+Suivi ce la gestion de projet : </br>
+[Traçabilité code](https://github.com/orgs/IUT-Blagnac/projects/160) </br>
+[Backlog produit](https://github.com/orgs/IUT-Blagnac/projects/167)
 
 ## 🔎 Fonctionnalités
 
