@@ -5,6 +5,7 @@
 | Duo | Lien du fork |
 | :---------------: | :---------------:|
 | Loan Gayrard/Matthieu Robert | https://github.com/matthieurobert/sae-5-1-01-phase4-c-react |
+| Eric PHILIPPE/Thomas TESTA | | https://github.com/Eric-Philippe/SAE-Manager---IUT-Blagnac |
 
 ## Content
 
